@@ -1,0 +1,13 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  min-height: 100svh;
+  font-family: sans-serif;
+}
+.contenedor{
+  width: 90%;
+  max-width: 1000px;
+  margin: 30px auto;
+}
