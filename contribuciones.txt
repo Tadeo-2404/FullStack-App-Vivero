@@ -19,15 +19,21 @@ un comentario en el ISSUE existente y mencionar al propietario del ISSUE.
 -Si deseas agregar un nuevo ISSUE puedes hacerlo desde el apartado de ISSUE o desde el apatado projects/vivero
 -Si deseas que alguien mas lo revise/haga, sientete libre de asignnarlo a otro colaborador.
 -Si necesitas ayuda con tu ISSUE, crea un comentario usando el @NombreDeColaborador, asi la persona mencionada podra ayudarte
+-Los ISSUES contienen Assignees (personas encargadas del ISSUE) asi como Labels, en la parte derecha del ISSUE vienen varios apartados relacionados
+que brindan informacion extra del ISSUE, favor de rellenar los campos Labels y/o Assignee o colaborador.
+
 
 Realizar PULL-REQUEST
 Un PULL-REQUEST es una solicitud de cambio a un branch en especifico, para poder realizarlo vamos al apartado PULL-REQUEST, cabe mencionar que
-sera necesario clonar el repositorio o crear un fork del repositorio,  en este caso sera necesario un fork puesto que asi sera mas facil actualizar 
+sera necesario clonar el repositorio o crear un fork del repositorio,  en este caso sera necesario un clone puesto que asi sera mas facil actualizar 
 los cambios que otros colaboradores vayan realizando al repositorio
-Cuando realices un PULL-REQUEST es necesario que tenga la siguiente estructura:
+Cada ISSUE tiene un ID unico, ese ID debera colocarse para poder hacer referencia a el, por lo que tambien se debera añadir o vincular el PR 
+con el ISSUE.
+Si tu PULL-REQUEST todavia no esta terminado, entoces seleciona DRAFT-PULL-REQUEST.
 
-TITULO DEL PULL-REQUESTH
-ISSUE  SOLUCIONADO: #ID DEL ISSUE QUE TU PR ARREGLA
-Descripcion breve de tu pull request
+Cuando realices un PULL-REQUEST es necesario que tenga la siguiente estructura:
+--TITULO DEL PULL-REQUEST
+--ISSUE  SOLUCIONADO: #ID DEL ISSUE QUE TU PR ARREGLA
+--Descripcion breve de tu pull request
 
 Una vez realizado el PULL-REQUEST, la persona encargada revisara tus cambios y los autorizara/negara.
