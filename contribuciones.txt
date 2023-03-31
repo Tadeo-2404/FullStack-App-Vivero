@@ -1,0 +1,33 @@
+CONTRIBUCIONES PROYECTO VIVERO
+Para realizar contribuciones al repositorio es necesari clonarlo o realizar un fork del mismo, dependiendo del caso.
+La estructura del proyecto de divide en dos partes:
+1.- /frontend - la carpeta frontend que incluye todo el codigo relacionado con el frontend (parte visual)
+2.- /backend - la carpeta backend que incluye todo el codigo relacionado con el backend (parte logica)
+3.- /demas archivos - toda la documentacion asi como el READ.me o las carpetas con la informacion de la base de datos, iran fueran de frontend
+y de backend, partiendo desde la raiz del proyecto
+
+--/backend
+--/frontend
+--READ.me
+--/carpeta_db
+--etc...
+
+Escoger un ISSUE
+Un ISSUE representa una funcion, una sugerencia, una correcion de codigo del repositorio, puedes escoger, colaborar y crear ISSUES.
+-Si deseas colaborar con un ISSUE ya existente es necesario escogerlo y asignartelo a ti mismo, si el ISSUE ya esta ocupado, puedes agregar 
+un comentario en el ISSUE existente y mencionar al propietario del ISSUE.
+-Si deseas agregar un nuevo ISSUE puedes hacerlo desde el apartado de ISSUE o desde el apatado projects/vivero
+-Si deseas que alguien mas lo revise/haga, sientete libre de asignnarlo a otro colaborador.
+-Si necesitas ayuda con tu ISSUE, crea un comentario usando el @NombreDeColaborador, asi la persona mencionada podra ayudarte
+
+Realizar PULL-REQUEST
+Un PULL-REQUEST es una solicitud de cambio a un branch en especifico, para poder realizarlo vamos al apartado PULL-REQUEST, cabe mencionar que
+sera necesario clonar el repositorio o crear un fork del repositorio,  en este caso sera necesario un fork puesto que asi sera mas facil actualizar 
+los cambios que otros colaboradores vayan realizando al repositorio
+Cuando realices un PULL-REQUEST es necesario que tenga la siguiente estructura:
+
+TITULO DEL PULL-REQUESTH
+ISSUE  SOLUCIONADO: #ID DEL ISSUE QUE TU PR ARREGLA
+Descripcion breve de tu pull request
+
+Una vez realizado el PULL-REQUEST, la persona encargada revisara tus cambios y los autorizara/negara.
