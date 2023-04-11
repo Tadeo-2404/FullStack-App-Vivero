@@ -5,6 +5,7 @@ import cors from "cors";
 
 //instancias
 import db from './db/db.js';
+import clienteRoutes from './routes/clienteRoutes.js';
 
 //conexion base de datos
 try {
@@ -22,9 +23,7 @@ app.use(json()); //habilitamos formato json
 app.use(cors()); //habilitamos cors
 dotenv.config(); //habilitamos variables de entorno
 
-app.get('/', (req, res) => {
-    res.json({msg: "vivero app"})
-})
+app.use('/cliente', clienteRoutes);
 
 app.listen(port, () => {
     console.log(`APP WORKING ON PORT ${port}`)
