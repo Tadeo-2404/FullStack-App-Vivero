@@ -11,11 +11,11 @@ const confirmar_cuenta = (req, res) => {
     res.json({msg: "confirmar cuenta"});
 }
 
-const olvide_contraseña = (req, res) => {
+const olvide_contrasena = (req, res) => {
     res.json({msg: "olvide contraseña"})
 }
 
-const nueva_contraseña = (req, res) => {
+const nueva_contrasena = (req, res) => {
     res.json({msg: "nueva contraseña"})
 }
 
@@ -23,6 +23,6 @@ export {
     inciar_sesion,
     registrarse,
     confirmar_cuenta,
-    olvide_contraseña,
-    nueva_contraseña
+    olvide_contrasena,
+    nueva_contrasena
 }
