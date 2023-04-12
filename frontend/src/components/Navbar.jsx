@@ -4,7 +4,7 @@ function Navbar(){
     return(
         <nav className="navbar">
             <NavLink to="/">Inicio</NavLink>
-            <NavLink to="/otro-lado">Otro lado</NavLink>
+            <NavLink to="/admin/publicar">Publicar producto</NavLink>
         </nav>
     )
 }
