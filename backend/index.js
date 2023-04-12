@@ -6,6 +6,7 @@ import cors from "cors";
 //instancias
 import db from './db/db.js';
 import clienteRoutes from './routes/clienteRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 //conexion base de datos
 try {
@@ -24,6 +25,7 @@ app.use(cors()); //habilitamos cors
 dotenv.config(); //habilitamos variables de entorno
 
 app.use('/cliente', clienteRoutes);
+app.use('/admin', adminRoutes);
 
 app.listen(port, () => {
     console.log(`APP WORKING ON PORT ${port}`)
