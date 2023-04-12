@@ -1,7 +1,7 @@
 
 //rutas publicas
-const inciar_sesion = (req, res) => {
-    res.json({msg: "inciar sesion"})
+const iniciar_sesion = (req, res) => {
+    res.json({msg: "iniciar sesion"})
 }
 
 const olvide_contrasena = (req, res) => {
@@ -13,7 +13,7 @@ const nueva_contrasena = (req, res) => {
 }
 
 //rutas privadas
-const incio = (req, res) => {
+const inicio = (req, res) => {
     res.json({msg: "desde incio"});
 }
 
@@ -31,10 +31,10 @@ const eliminar_producto = (req, res) => {
 
 
 export {
-    inciar_sesion,
+    iniciar_sesion,
     olvide_contrasena,
     nueva_contrasena,
-    incio,
+    inicio,
     publicar_producto,
     editar_producto,
     eliminar_producto
