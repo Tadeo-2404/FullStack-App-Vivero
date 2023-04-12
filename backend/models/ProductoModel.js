@@ -32,6 +32,7 @@ class Producto extends Model {
         });
     }
 
+    //cada producto pertenece a un admin quien lo crea
     static associate(models) {
         Producto.belongsTo(models.Administrador, {foreignKey: 'id'})
     }
