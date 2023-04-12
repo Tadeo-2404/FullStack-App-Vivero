@@ -1,11 +1,14 @@
 import express from 'express';
 const router = express.Router();
-import { confirmar_cuenta, inciar_sesion, nueva_contrasena, olvide_contrasena, registrarse } from '../controllers/ClienteController.js';
+import { confirmar_cuenta, inciar_sesion, inicio, nueva_contrasena, olvide_contrasena, registrarse } from '../controllers/ClienteController.js';
 
-//inciar sesion
-router.post('/', inciar_sesion);
+//inicio (mostrar todos los productos)
+router.get('/', inicio);
 
-//registrar cuenta
+//inciar sesion (permitir inicio de sesion)
+router.post('/iniciar_sesion', inciar_sesion);
+
+//registrar cuenta (permitir crear cuenta)
 router.post('/registrarse', registrarse);
 
 //confirmar cuenta usando token de autenticacion
