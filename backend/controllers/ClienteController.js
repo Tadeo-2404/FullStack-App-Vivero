@@ -4,7 +4,7 @@ const inciar_sesion = (req, res) => {
 }
 
 const registrarse = (req, res) => {
-    res.json({msg: "registrarse"});
+   console.log(req.body);
 }
 
 const confirmar_cuenta = (req, res) => {
