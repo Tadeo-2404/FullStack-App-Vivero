@@ -1,7 +1,7 @@
 function FormPublicarProducto(){   
     return(
         <div className="contenedor">
-            <h1 class="titulo">Formulario Publicar Producto</h1>
+            <h1 className="titulo">Formulario Publicar Producto</h1>
             <form action="" className="form">
 
                 <div className="form__apartado">

@@ -141,3 +141,14 @@ body{
   }
   .navbar__contenedor.activo div{ opacity: 1; }
 }
+
+/* FOOTER */
+.footer_container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 10px;
+}
