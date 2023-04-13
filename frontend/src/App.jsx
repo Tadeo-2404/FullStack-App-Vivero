@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
         <Routes>
-          <Route path="/cliente" element={<TemplateLayoutCliente />}>
+          <Route path="/" element={<TemplateLayoutCliente />}>
             {/* CLIENTES */}
             <Route index element={<Inicio />} />
             <Route path="/registrarse" element={<Registro />} />
