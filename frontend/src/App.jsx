@@ -21,9 +21,9 @@ function App() {
           <Route path="/cliente" element={<TemplateLayoutCliente />}>
             {/* CLIENTES */}
             <Route index element={<Inicio />} />
-            <Route path="registrarse" element={<Registro />} />
-            <Route path="iniciar_sesion" element={<IniciarSesion />} />
-            <Route path="sucursales" element={<Sucursales />} />
+            <Route path="/registrarse" element={<Registro />} />
+            <Route path="/iniciar_sesion" element={<IniciarSesion />} />
+            <Route path="/sucursales" element={<Sucursales />} />
             <Route path="*" element={<NotFound />} />
           </Route>
 
@@ -31,8 +31,8 @@ function App() {
             {/* ADMIN */}
             {/* <Route path="/admin/inicio-sesion" element={<InicioSesionAdmin />} /> */}
             <Route index element={<Inicio />} />
-            <Route path="admin/publicar" element={<FormPublicarProducto />} />
-            <Route path="admin/editar/:id" element={<FormEditarProducto />} />
+            <Route path="/admin/publicar" element={<FormPublicarProducto />} />
+            <Route path="/admin/editar/:id" element={<FormEditarProducto />} />
             {/* <Route path="/admin/proveedores" element={<Proveedores />} /> */}
             <Route path="*" element={<NotFound />} />
           </Route>
