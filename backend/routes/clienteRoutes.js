@@ -1,9 +1,12 @@
 import express from 'express';
 const router = express.Router();
-import { confirmar_cuenta, inciar_sesion, nueva_contrasena, olvide_contrasena, registrarse } from '../controllers/ClienteController.js';
+import { confirmar_cuenta, inciar_sesion, inicio, nueva_contrasena, olvide_contrasena, registrarse } from '../controllers/ClienteController.js';
 
-//inciar sesion
-router.post('/', inciar_sesion);
+//inicio
+router.get('/', inicio);
+
+//iniciar sesion
+router.post('/iniciar_sesion', inciar_sesion);
 
 //registrar cuenta
 router.post('/registrarse', registrarse);

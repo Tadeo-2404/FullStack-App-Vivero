@@ -1,4 +1,9 @@
 
+//rutas publicas
+const inicio = (req, res) => {
+    res.json({msg: "desde incio"});
+}
+
 const inciar_sesion = (req, res) => {
     res.json({msg: "inciar sesion"})
 }
@@ -20,6 +25,7 @@ const nueva_contrasena = (req, res) => {
 }
 
 export {
+    inicio,
     inciar_sesion,
     registrarse,
     confirmar_cuenta,
