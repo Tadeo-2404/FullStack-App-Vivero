@@ -8,6 +8,7 @@ import "./App.css";
 
 // Componentes compartidos
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Inicio from "./pages/Inicio";
 import NotFound from "./pages/NotFound";
 import Sucursales from "./pages/Sucursales";
@@ -44,6 +45,8 @@ function App() {
             <Route path="*" element={<NotFound />} />
             
         </Routes>
+
+        <Footer />
     </Router>
   );
 }
