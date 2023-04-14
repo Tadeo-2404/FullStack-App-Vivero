@@ -7,10 +7,10 @@ import { inicio, iniciar_sesion, olvide_contrasena, nueva_contrasena, publicar_p
 router.post('/', iniciar_sesion);
 
 //obtener token contraseña temporal
-router.get('/olvide_contrasena', olvide_contrasena);
+router.get('/olvide-contrasena', olvide_contrasena);
 
 //enviar nueva contrasena
-router.post('/nueva_contrasena', nueva_contrasena);
+router.post('/nueva-contrasena', nueva_contrasena);
 
 /* rutas privadas */
 //pagina de incio (obtiene todos los productos, sucursales y sustratos)

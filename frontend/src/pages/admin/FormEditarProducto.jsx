@@ -7,7 +7,7 @@ function FormEditarProducto(){
         // En inputs, cargar toda la información (fetch del producto)
         // Al darle a enviar, hacer una petición para actualizar los datos
         <div className="contenedor">
-            <h1 class="titulo">Formulario editar producto: #{id}</h1>
+            <h1 className="titulo">Formulario editar producto: #{id}</h1>
             <form action="" className="form">
 
                 <div className="form__apartado">

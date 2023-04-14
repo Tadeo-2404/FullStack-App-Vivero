@@ -1,8 +1,7 @@
-
-const Registro = () => {
-  return (
-    <div>Registro Cliente</div>
-  )
+function Registro(){
+    return(
+        <h1>Registro Cliente</h1>
+    )
 }
 
-export default Registro
+export default Registro;
