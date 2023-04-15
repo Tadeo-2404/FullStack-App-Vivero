@@ -13,7 +13,7 @@ function Footer(){
     return (
         <>
             <footer className="footer">
-                <div className="contenedor footer__contenedor">
+                <div className="footer__contenedor">
                     <h1 className="titulo footer_title">Todos los derechos resevados &copy; {fecha}</h1>
                 </div>
             </footer>

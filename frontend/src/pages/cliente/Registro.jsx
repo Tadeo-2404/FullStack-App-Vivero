@@ -1,6 +1,8 @@
 function Registro(){
     return(
-        <h1>Registro Cliente</h1>
+        <main className="main">
+            <h1 className="titulo">Registro Cliente</h1>
+        </main>
     )
 }
 

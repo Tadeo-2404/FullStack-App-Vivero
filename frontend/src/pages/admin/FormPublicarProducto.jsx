@@ -1,8 +1,8 @@
 function FormPublicarProducto(){   
     return(
-        <div className="contenedor">
+        <main className="main">
             <h1 className="titulo">Formulario Publicar Producto</h1>
-            <form action="" className="form">
+            <form action="" className="form contenedor">
 
                 <div className="form__apartado">
                     <label htmlFor="nombre">Nombre</label>
@@ -60,7 +60,7 @@ function FormPublicarProducto(){
                 <input type="submit" className="form__input form__input--boton boton" value="Publicar" />
 
             </form>
-        </div>
+        </main>
     )
 }
 

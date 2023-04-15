@@ -1,5 +1,9 @@
 :root{
   --color-primario: #02a;
+  --bg: #ddd;
+  --bg-card: #eee;
+  --nav-height: 60px;
+  --footer-height: 100px;
 }
 *{
   margin: 0;
@@ -10,6 +14,7 @@ body{
   min-height: 100svh;
   font-family: sans-serif;
   padding-top: 60px; /* Para el espacio del navbar */
+  background: var(--bg);
 }
 .contenedor{
   width: 90%;
@@ -42,7 +47,7 @@ body{
 .navbar{
   position: fixed;
   width: 100%;
-  height: 60px;
+  height: var(--nav-height);
   top: 0;
   left: 0;
   display: flex;
@@ -68,8 +73,21 @@ body{
   text-decoration: none;
 }
 
+/*! FOOTER */
+.footer{
+  background: var(--color-primario);
+  color: #fff;
+}
+.footer__contenedor{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--footer-height);
+}
+
 /*! FORMULARIOS */
 .form{
+  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,6 +112,30 @@ body{
 }
 .form__input--boton{
   width: max-content;
+}
+
+/*! PRODUCTOS */
+.productos{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.producto{
+  background: var(--bg-card);
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(200, 200, 200, .5);
+  line-height: 1.5;
+}
+.producto__nombre{
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+.producto__descripcion{
+  text-align: justify;
+  margin-bottom: 20px;
 }
 
 /*! MEDIA QUERIES */

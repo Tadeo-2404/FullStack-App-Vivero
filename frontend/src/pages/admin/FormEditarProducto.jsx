@@ -6,9 +6,9 @@ function FormEditarProducto(){
     return(
         // En inputs, cargar toda la información (fetch del producto)
         // Al darle a enviar, hacer una petición para actualizar los datos
-        <div className="contenedor">
+        <main className="main">
             <h1 className="titulo">Formulario editar producto: #{id}</h1>
-            <form action="" className="form">
+            <form action="" className="form contenedor">
 
                 <div className="form__apartado">
                     <label htmlFor="nombre">Nombre</label>
@@ -66,7 +66,7 @@ function FormEditarProducto(){
                 <input type="submit" className="form__input form__input--boton boton" value="Editar" />
 
             </form>
-        </div>
+        </main>
     )
 }
 

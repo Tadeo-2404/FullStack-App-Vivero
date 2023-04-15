@@ -1,6 +1,8 @@
 function Sucursales(){
     return(
-        <h1>Sucursales</h1>
+        <main className="main">
+            <h1 className="titulo">Sucursales</h1>
+        </main>
     )
 }
 

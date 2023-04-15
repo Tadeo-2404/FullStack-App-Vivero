@@ -1,6 +1,8 @@
 function InicioSesionAdmin(){
     return(
-        <h1>Inicio Sesión Admin</h1>
+        <main className="main">
+            <h1 className="titulo">Inicio Sesión Admin</h1>
+        </main>
     )
 }
 
