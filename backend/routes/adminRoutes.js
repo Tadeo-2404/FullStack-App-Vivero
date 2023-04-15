@@ -10,10 +10,10 @@ router.get('/', inicio);
 router.post('/iniciar_sesion', iniciar_sesion);
 
 //obtener token contraseña temporal
-router.get('/olvide_contrasena', olvide_contrasena);
+router.get('/olvide-contrasena', olvide_contrasena);
 
 //enviar nueva contrasena
-router.post('/nueva_contrasena', nueva_contrasena);
+router.post('/nueva-contrasena', nueva_contrasena);
 
 /* rutas privadas */
 

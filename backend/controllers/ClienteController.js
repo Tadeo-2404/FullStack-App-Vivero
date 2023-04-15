@@ -1,5 +1,3 @@
-
-
 //controller para la pagina de incio (no login necesario)
 const inicio = (req, res) => {
     res.json({msg: "desde incio"});
@@ -7,12 +5,14 @@ const inicio = (req, res) => {
 
 //controller para iniciar sesion
 const inciar_sesion = (req, res) => {
-    res.json({msg: "inciar sesion"})
+    console.log(req.body);
+    res.json({msg: "inciar sesion"});
 }
 
 //controller para registrarse
 const registrarse = (req, res) => {
    console.log(req.body);
+   res.json({msg: "cuenta registrada"});
 }
 
 //controller para confirmar cuenta
@@ -27,6 +27,7 @@ const olvide_contrasena = (req, res) => {
 
 //controller para la nueva contraseña
 const nueva_contrasena = (req, res) => {
+    console.log(req.body);
     res.json({msg: "nueva contraseña"})
 }
 

@@ -24,7 +24,7 @@ app.use(json()); //habilitamos formato json
 app.use(cors()); //habilitamos cors
 dotenv.config(); //habilitamos variables de entorno
 
-app.use('/cliente', clienteRoutes);
+app.use('/', clienteRoutes);
 app.use('/admin', adminRoutes);
 
 app.listen(port, () => {
