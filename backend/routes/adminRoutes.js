@@ -3,8 +3,11 @@ const router = express.Router();
 import { inicio, iniciar_sesion, olvide_contrasena, nueva_contrasena, publicar_producto, editar_producto, eliminar_producto } from '../controllers/AdminController.js';
 
 /* rutas publicas */
+//pagina de incio (obtiene todos los productos, sucursales y sustratos)
+router.get('/', inicio);
+
 //inciar sesion
-router.post('/', iniciar_sesion);
+router.post('/iniciar_sesion', iniciar_sesion);
 
 //obtener token contraseña temporal
 router.get('/olvide_contrasena', olvide_contrasena);
@@ -13,8 +16,6 @@ router.get('/olvide_contrasena', olvide_contrasena);
 router.post('/nueva_contrasena', nueva_contrasena);
 
 /* rutas privadas */
-//pagina de incio (obtiene todos los productos, sucursales y sustratos)
-router.get('/inicio', inicio);
 
 //permite publicar un producto
 router.post('/publicar', publicar_producto);
