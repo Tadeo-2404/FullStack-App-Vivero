@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
 //clase cliente que extiende un modelo
-class Client extends Model {
+class Cliente extends Model {
     static init(sequelize) {
         return super.init({
             id: {
@@ -29,4 +29,4 @@ class Client extends Model {
     }
 }
 
-export default Client
+export default Cliente

@@ -1,4 +1,5 @@
 
+
 //controller para la pagina de incio (no login necesario)
 const inicio = (req, res) => {
     res.json({msg: "desde incio"});
