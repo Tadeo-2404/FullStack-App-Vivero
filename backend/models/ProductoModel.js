@@ -1,41 +1,35 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
+import sequelize from '../db/db.js';
 
-//clase producto que extiende un modelo
-class Producto extends Model {
-    static init(sequelize) {
-        return super.init({
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
-            },
-            nombre: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            descripcion: {
-                type: DataTypes.TEXT('long'),
-                allowNull: false
-            },
-            precio: {
-                type: DataTypes.FLOAT,
-                allowNull: false
-            },
-            cantidad: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-        }, {
-            sequelize,
-            tableName: 'Producto', //nombre de la tabla
-            modelName: 'Producto', //nombre del modelo
-        });
-    }
+class Producto extends Model {}
 
-    //cada producto pertenece a un admin quien lo crea
-    static associate(models) {
-        Producto.belongsTo(models.Administrador, {foreignKey: 'id'})
-    }
-}
+Producto.init({
+    id_producto: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    nombre: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    descripcion: {
+        type: DataTypes.TEXT('long'),
+        allowNull: false
+    },
+    precio: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    cantidad: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+}, {
+    sequelize,
+    tableName: 'producto', //nombre de la tabla
+    modelName: 'Producto', //nombre del modelo,
+    timestamps: false,
+});
 
-export default Producto
+export default Producto;
