@@ -1,4 +1,5 @@
 :root{
+  --bg-footer: #000;
   --color-primario: #02a;
   --bg: #ddd;
   --bg-card: #eee;
@@ -75,7 +76,7 @@ body{
 
 /*! FOOTER */
 .footer{
-  background: var(--color-primario);
+  background: var(--bg-footer);
   color: #fff;
 }
 .footer__contenedor{
