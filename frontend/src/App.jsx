@@ -22,7 +22,7 @@ import Registro from "./pages/cliente/Registro";
 // Componentes de administrador
 import InicioSesionAdmin from "./pages/admin/InicioSesionAdmin";
 import FormPublicarProducto from "./pages/admin/FormPublicarProducto";
-import FormEditarProducto from "./pages/admin/FormEditarProducto";
+import FormEditarArticulo from "./pages/admin/FormEditarArticulo";
 import Proveedores from "./pages/admin/Proveedores";
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
             {/* ADMIN */}
             <Route path="/admin/iniciar-sesion" element={<InicioSesionAdmin />} />
             <Route path="/admin/publicar" element={<FormPublicarProducto />} />
-            <Route path="/admin/editar/:id" element={<FormEditarProducto />} />
+            <Route path="/admin/editar/:tipo/:id" element={<FormEditarArticulo />} />
             <Route path="/admin/proveedores" element={<Proveedores />} />
 
             <Route path="*" element={<NotFound />} />

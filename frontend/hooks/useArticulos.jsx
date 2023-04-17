@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
-function useArticulos(opciones){
-    const { url, limite } = opciones;
+function useArticulos({ url, limite }){
+    const [cargando, setCargando] = useState(true);
     const [articulos, setArticulos] = useState(null);
 
     useEffect(() => {
+        setCargando(true);
+
         const obtenerArticulos = async () => {
             // Se limita a 5 articulos (para mostrar en inicio)
             let paramLimite = limite && `limite=${limite}`
@@ -12,11 +14,12 @@ function useArticulos(opciones){
             let data = await res.json();
 
             setArticulos(data);
+            setCargando(false);
         }
         obtenerArticulos();
-    }, [opciones])
+    }, [url, limite])
 
-    return { articulos }
+    return [ cargando, articulos ];
 }
 
 export default useArticulos;
