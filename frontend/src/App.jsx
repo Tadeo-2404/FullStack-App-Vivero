@@ -11,6 +11,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Inicio from "./pages/Inicio";
 import NotFound from "./pages/NotFound";
+import Productos from "./pages/Productos";
+import Sustratos from "./pages/Sustratos";
 import Sucursales from "./pages/Sucursales";
 
 // Componentes de usuarios
@@ -34,6 +36,8 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/registrarse" element={<Registro />} />
             <Route path="/iniciar-sesion" element={<InicioSesion />} />
+            <Route path="/productos" element={<Productos />} />
+            <Route path="/sustratos" element={<Sustratos />} />
             <Route path="/sucursales" element={<Sucursales />} />
 
             {/* ADMIN */}

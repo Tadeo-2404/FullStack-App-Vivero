@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-//clase sucursal que extiende un modelo
+// Clase sucursal que extiende un modelo
 class Sucursal extends Model {
     static init(sequelize) {
         return super.init({
@@ -31,15 +31,21 @@ class Sucursal extends Model {
             },
         }, {
             sequelize,
-            tableName: 'Sucursal', //nombre de la tabla
-            modelName: 'Sucursal', //nombre del modelo
+            tableName: 'Sucursal', // Nombre de la tabla
+            modelName: 'Sucursal', // Nombre del modelo
         });
     }
 
     static associate(models) {
-        Sucursal.hasOne(models.Administrador, {foreignKey: 'id'}); //sucursal tiene un administrador
-        Sucursal.hasMany(models.Empleado, {foreignKey: 'id'}); //sucursal tiene muchos empleados
+        Sucursal.hasOne(models.Administrador, {foreignKey: 'id'}); // Sucursal tiene un administrador
+        Sucursal.hasMany(models.Empleado, {foreignKey: 'id'}); // Sucursal tiene muchos empleados
     }
 }
 
-export default Sucursal
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Sucursal.sync({ alter: true });
+
+export default Sucursal;

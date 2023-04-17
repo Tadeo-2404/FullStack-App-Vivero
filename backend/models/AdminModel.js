@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-//clase cliente que extiende un modelo
+// Clase cliente que extiende un modelo
 class Administrador extends Model {
     static init(sequelize) {
         return super.init({
@@ -27,8 +27,8 @@ class Administrador extends Model {
             },
         }, {
             sequelize,
-            tableName: 'Administrador', //nombre de la tabla
-            modelName: 'Administrador', //nombre del modelo
+            tableName: 'Administrador', // Nombre de la tabla
+            modelName: 'Administrador', // Nombre del modelo
         });
     }
 
@@ -38,4 +38,10 @@ class Administrador extends Model {
     }
 }
 
-export default Administrador
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Administrador.sync({ alter: true });
+
+export default Administrador;

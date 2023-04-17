@@ -27,9 +27,15 @@ Sustrato.init({
     },
 }, {
     sequelize,
-    tableName: 'sustrato', //nombre de la tabla
-    modelName: 'Sustrato', //nombre del modelo,
+    tableName: 'sustrato', // Nombre de la tabla
+    modelName: 'Sustrato', // Nombre del modelo,
     timestamps: false,
 });
+
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Sustrato.sync({ alter: true });
 
 export default Sustrato;
