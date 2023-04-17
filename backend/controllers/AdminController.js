@@ -2,8 +2,7 @@ import Administrador from "../models/AdminModel.js";
 
 //rutas publicas
 const iniciar_sesion = (req, res) => {
-    const { correo, contrasena } = req.body;
-
+    const { correo, contrasena } = req.body
 }
 
 const olvide_contrasena = (req, res) => {
