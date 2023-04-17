@@ -32,7 +32,9 @@ function Inicio(){
 
             <div className="contenedor">
                 <h2 className="titulo">Rutas de prueba para ver el funcionamiento</h2>
-                <Link to="/admin/editar/1">Prueba ruta editar producto 1 (admin)</Link>
+                <Link to="/admin/editar/productos/1">Prueba ruta editar producto 1 (admin)</Link>
+                <br />
+                <Link to="/admin/editar/sustratos/1">Prueba ruta editar sustrato 1 (admin)</Link>
                 <br />
                 <Link to="/sucursales">Sucursales</Link>
                 <br />
