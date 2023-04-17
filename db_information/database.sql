@@ -11,16 +11,16 @@ CREATE DATABASE vivero
 CREATE TABLE producto (
 	id_producto SERIAL PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
-	descripcion VARCHAR(50) NOT NULL,
-	precio int NOT NULL,
+	descripcion TEXT NOT NULL,
+	precio float NOT NULL,
 	cantidad int NOT NULL
 );
 
 CREATE TABLE sustrato (
 	id SERIAL PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
-	descripcion  VARCHAR(50) NOT NULL,
-	precio int NOT NULL,
+	descripcion TEXT NOT NULL,
+	precio float NOT NULL,
 	cantidad int NOT NULL
 );
 
