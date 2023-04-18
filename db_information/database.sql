@@ -35,6 +35,14 @@ CREATE TABLE cliente (
 	nombre VARCHAR(30) NOT NULL
 );
 
+CREATE TABLE administrador (
+	id SERIAL PRIMARY KEY,
+	nombre VARCHAR(30) NOT NULL,
+	apellido VARCHAR(30) NOT NULL,
+	correo VARCHAR(30) NOT NULL,
+	contrasena VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE sucursal (
 	id SERIAL PRIMARY KEY,
 	direccion VARCHAR(50) NOT NULL,
