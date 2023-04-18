@@ -1,5 +1,5 @@
 import Card from "./CardArticulo";
-import useArticulos from "../../hooks/useArticulos";
+import useArticulos from "../hooks/useArticulos";
 
 function GaleriaArticulos({ opciones }){
     const [ cargando, articulos ] = useArticulos(opciones);
