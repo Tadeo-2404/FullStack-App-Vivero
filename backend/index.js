@@ -2,6 +2,7 @@
 import express, { json } from 'express';
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from 'cookie-parser';
 
 //instancias
 import sequelize from './db/db.js'; //conexion base de datos
@@ -28,6 +29,7 @@ const port = 3000 || process.env.PORT; //instancia de puerto
 
 app.use(json()); //habilitamos formato json
 app.use(cors()); //habilitamos cors
+app.use(cookieParser()); //habilitamos las cookies
 dotenv.config(); //habilitamos variables de entorno
 
 //entidades interactivas
