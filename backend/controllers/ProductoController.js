@@ -21,7 +21,8 @@ const crear_producto = async (req, res) => {
 
 //retornar todos los productos
 const obtener_productos = async  (req, res) => {
-    const consulta = await Producto.findAll(); //realiza la consulta
+    const { limite } = req.query;
+    let consulta = await Producto.findAll({ limit: limite }); // Realiza la consulta
 
     //muestra error si no hay productos
     if(!consulta) {

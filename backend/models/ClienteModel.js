@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-//clase cliente que extiende un modelo
+// Clase cliente que extiende un modelo
 class Cliente extends Model {
     static init(sequelize) {
         return super.init({
@@ -15,18 +15,24 @@ class Cliente extends Model {
             }
         }, {
             sequelize,
-            tableName: 'Cliente', //nombre de la tabla
-            modelName: 'Cliente', //nombre del modelo
+            tableName: 'Cliente', // Nombre de la tabla
+            modelName: 'Cliente', // Nombre del modelo
         });
     }
 
-    //se definen los foreing key de la entidad cliente
-    /* en este caso la entidad cliente cuenta con muchos productos
+    //Se definen los foreing key de la entidad cliente
+    /* En este caso la entidad cliente cuenta con muchos productos
     y con muchos sustratos */
     static associate(models) {
-        Client.hasMany(models.Producto, {foreignKey: 'id'});
-        Client.hasMany(models.Sustrato,  {foreignKey: 'id'});
+        Cliente.hasMany(models.Producto, {foreignKey: 'id'});
+        Cliente.hasMany(models.Sustrato,  {foreignKey: 'id'});
     }
 }
 
-export default Cliente
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Cliente.sync({ alter: true });
+
+export default Cliente;

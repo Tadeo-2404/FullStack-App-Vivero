@@ -1,14 +1,40 @@
 import { Link } from "react-router-dom";
-import GaleriaProductos from "../components/GaleriaProductos";
+import GaleriaArticulos from "../components/GaleriaArticulos";
 
 function Inicio(){
     return(
         <main className="main">
-            <h1 className="titulo">Productos</h1>
-            <GaleriaProductos />
+            <article className="galeria">
+                <h2 className="titulo galeria__titulo">Productos</h2>
+
+                <GaleriaArticulos opciones={{
+                    url: "http://localhost:3000/api/productos",
+                    limite: 5
+                }} />
+
+                <div className="contenedor galeria__botones">
+                    <Link to={"/productos"}>Ver más</Link>
+                </div>
+            </article>
+
+            <article className="galeria">
+                <h2 className="titulo galeria__titulo">Sustratos</h2>
+
+                <GaleriaArticulos opciones={{
+                    url: "http://localhost:3000/api/sustratos",
+                    limite: 5
+                }} />
+
+                <div className="contenedor galeria__botones">
+                    <Link to={"/sustratos"}>Ver más</Link>
+                </div>
+            </article>
+
             <div className="contenedor">
                 <h2 className="titulo">Rutas de prueba para ver el funcionamiento</h2>
-                <Link to="/admin/editar/1">Prueba ruta editar producto 1 (admin)</Link>
+                <Link to="/admin/editar/productos/1">Prueba ruta editar producto 1 (admin)</Link>
+                <br />
+                <Link to="/admin/editar/sustratos/1">Prueba ruta editar sustrato 1 (admin)</Link>
                 <br />
                 <Link to="/sucursales">Sucursales</Link>
                 <br />

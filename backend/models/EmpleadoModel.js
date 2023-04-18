@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-//clase empleado que extiende un modelo
+// Clase empleado que extiende un modelo
 class Empleado extends Model {
     static init(sequelize) {
         return super.init({
@@ -15,16 +15,22 @@ class Empleado extends Model {
             }
         }, {
             sequelize,
-            tableName: 'Empleado', //nombre de la tabla
-            modelName: 'Empleado', //nombre del modelo
+            tableName: 'Empleado', // Nombre de la tabla
+            modelName: 'Empleado', // Nombre del modelo
         });
     }
 
-    //se definen los foreing key de la entidad Empleado
+    // Se definen los foreing key de la entidad Empleado
     static associate(models) {
-        Empleado.belongsTo(models.Sucursal, {foreignKey: 'id'}); //empleado pertenece a una sucursal
-        Empleado.hasMany(models.Cliente,  {foreignKey: 'id'}); //empleado tiene uno o muchos clientes
+        Empleado.belongsTo(models.Sucursal, {foreignKey: 'id'}); // Empleado pertenece a una sucursal
+        Empleado.hasMany(models.Cliente,  {foreignKey: 'id'}); // Empleado tiene uno o muchos clientes
     }
 }
 
-export default Empleado
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Empleado.sync({ alter: true });
+
+export default Empleado;

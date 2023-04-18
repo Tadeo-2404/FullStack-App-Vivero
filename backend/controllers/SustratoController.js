@@ -21,7 +21,8 @@ const crear_sustrato = async (req, res) => {
 
 //retornar todos los sustratos
 const obtener_sustratos = async  (req, res) => {
-    const consulta = await Sustrato.findAll(); //realiza la consulta
+    const { limite } = req.query;
+    let consulta = await Sustrato.findAll({ limit: limite }) //realiza la consulta
 
     //muestra error si no hay sustratos
     if(!consulta) {

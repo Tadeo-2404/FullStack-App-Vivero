@@ -9,7 +9,7 @@ CREATE DATABASE vivero
     IS_TEMPLATE = False;
 	
 CREATE TABLE producto (
-	id_producto SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	nombre VARCHAR(50) NOT NULL,
 	descripcion TEXT NOT NULL,
 	precio float NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE cliente (
 );
 
 CREATE TABLE sucursal (
-	id_sucursal SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	direccion VARCHAR(50) NOT NULL,
 	telefono VARCHAR(10) NOT NULL,
 	email VARCHAR(30) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE sucursal (
 );
 
 CREATE TABLE empleado (
-	id_empleado SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	nombre VARCHAR(30) NOT NULL,
 	hora_entrada TIME NOT NULL,
 	hora_salida TIME NOT NULL,

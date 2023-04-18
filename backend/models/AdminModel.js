@@ -32,4 +32,10 @@ Administrador.init({
     timestamps: false,
 });
 
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Administrador.sync({ alter: true });
+
 export default Administrador;

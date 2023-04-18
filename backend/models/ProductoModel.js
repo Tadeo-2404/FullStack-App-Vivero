@@ -4,7 +4,7 @@ import sequelize from '../db/db.js';
 class Producto extends Model {}
 
 Producto.init({
-    id_producto: {
+    id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -27,9 +27,15 @@ Producto.init({
     },
 }, {
     sequelize,
-    tableName: 'producto', //nombre de la tabla
-    modelName: 'Producto', //nombre del modelo,
+    tableName: 'producto', // Nombre de la tabla
+    modelName: 'Producto', // Nombre del modelo,
     timestamps: false,
 });
+
+/*
+    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
+    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
+*/
+await Producto.sync({ alter: true });
 
 export default Producto;
