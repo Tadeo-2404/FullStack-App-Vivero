@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useArticulos from "../../../hooks/useArticulos";
+import useArticulos from "../../hooks/useArticulos";
 
 function FormEditarArticulo(){
     const navigate = useNavigate();
