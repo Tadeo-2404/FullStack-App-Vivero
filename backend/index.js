@@ -13,6 +13,7 @@ import adminRoutes from './routes/adminRoutes.js'; //rutas admin
 
 //instancias de consulta API
 import productoRoutes from './routes/productoRoutes.js'; //rutas producto
+import proveedorRoutes from './routes/proveedorRoutes.js' //rutas proveedor
 import sustratoRoutes from './routes/sustratoRoutes.js' //rutas sustratos
 
 //conexion base de datos
@@ -38,6 +39,7 @@ app.use('/admin', adminRoutes);
 
 //entidades para consulta API
 app.use('/api/productos', productoRoutes);
+app.use('/api/proveedores', proveedorRoutes);
 app.use('/api/sustratos', sustratoRoutes);
 
 app.listen(port, () => {
