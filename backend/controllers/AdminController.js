@@ -1,6 +1,7 @@
 import Administrador from "../models/AdminModel.js"; //modelo de admin
 import bcrypt from 'bcrypt'; //encriptar password
 import generarJWT from "../helpers/generarJWT.js"; //enviar info a frontend
+import generarToken from "../helpers/generarToken.js"; //generar token temporal
 
 //rutas publicas
 const registrarse = async (req, res) => {
@@ -144,7 +145,7 @@ const olvide_contrasena = async (req, res) => {
 
     try {
         //se asigna el token
-        encontrado.token = generarJWT(encontrado.id);
+        encontrado.token = generarToken(encontrado.id);
 
         //se guarda el registro con su nuevo token
         await encontrado.save();
@@ -156,8 +157,51 @@ const olvide_contrasena = async (req, res) => {
     }
 }
 
-const nueva_contrasena = (req, res) => {
-    res.json({ msg: "nueva contraseña" })
+const nueva_contrasena = async (req, res) => {
+    const { contrasena } = req.body; //leer input usuario
+    const { token } = req.params; //leemos el token para identificar la usuario
+
+    const admin = await Administrador.findOne({where: {token: token}}); //buscamos al usuario con ese token
+
+    //si no se encuentra arrojamos error
+    if(!admin) {
+        const error = new Error("registro no encontrado");
+        res.status(404).json({ msg: error.message });
+        return;
+    }
+
+    //expresion regular para validar contraseña
+    const regexPasswd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])(?!.*\s).{8,30}$/;
+
+    //validamos contraseña
+    if(!contrasena.match(regexPasswd)) {
+        const error = new Error("La contraseña no cumple con los requisitos mínimos de seguridad. Debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un carácter especial y un número.");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    try {
+        admin.token = null; //eliminamos el token
+        admin.contrasena = contrasena; //asginamos la nueva contraseña
+        await admin.save; //guardamos el registro
+        res.status(200).send({msg: "contraseña actualizada correctamente"});
+    } catch (e) {
+        const error = new Error(e.name);
+        res.status(404).send({msg: error.message});
+    }
+}
+
+const comprobarToken = async (req, res) => {
+    const { token } = req.params; //leemos el token desde la url
+    const tokenValido = await Administrador.findOne({where: {token: token}}); //buscamos registro con ese token
+
+    //validamos si hay un registro
+    if(tokenValido) {
+        res.json({msg: "Introduce tu nueva contraseña"});
+    } else {
+        const error = new Error("Ops!! Este token no es valido");
+        return res.status(400).json({msg: error.message});
+    }
 }
 
 
@@ -166,4 +210,5 @@ export {
     iniciar_sesion,
     olvide_contrasena,
     nueva_contrasena,
+    comprobarToken
 }
