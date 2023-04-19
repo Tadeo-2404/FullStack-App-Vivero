@@ -47,15 +47,6 @@ CREATE TABLE administrador (
 	token TEXT DEFAULT NULL
 );
 
-CREATE TABLE sucursal (
-	id SERIAL PRIMARY KEY,
-	direccion VARCHAR(50) NOT NULL,
-	telefono VARCHAR(10) NOT NULL,
-	email VARCHAR(30) NOT NULL,
-	hora_apertura TIME NOT NULL,
-	hora_cierre TIME NOT NULL
-);
-
 CREATE TABLE empleado (
 	id SERIAL PRIMARY KEY,
 	nombre VARCHAR(30) NOT NULL,
