@@ -32,7 +32,10 @@ CREATE TABLE proveedor (
 
 CREATE TABLE cliente (
 	id SERIAL PRIMARY KEY,
-	nombre VARCHAR(30) NOT NULL
+	nombre VARCHAR(30) NOT NULL,
+	correo VARCHAR(30) DEFAULT NULL,
+	contrasena VARCHAR(50) DEFAULT NULL,
+	token TEXT DEFAULT NULL
 );
 
 CREATE TABLE administrador (
@@ -40,7 +43,8 @@ CREATE TABLE administrador (
 	nombre VARCHAR(30) NOT NULL,
 	apellido VARCHAR(30) NOT NULL,
 	correo VARCHAR(30) NOT NULL,
-	contrasena VARCHAR(50) NOT NULL
+	contrasena VARCHAR(50) NOT NULL,
+	token TEXT DEFAULT NULL
 );
 
 CREATE TABLE sucursal (

@@ -25,6 +25,10 @@ Administrador.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    token: {
+        type: DataTypes.STRING,
+        defaultValue: null
+    }
 }, {
     sequelize,
     tableName: 'administrador', //nombre de la tabla

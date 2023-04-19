@@ -12,6 +12,18 @@ class Cliente extends Model {
             nombre: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            correo: {
+                type: DataTypes.STRING,
+                defaultValue: null
+            },
+            contrasena: {
+                type: DataTypes.STRING,
+                defaultValue: null
+            },
+            token: {
+                type: DataTypes.STRING,
+                defaultValue: null
             }
         }, {
             sequelize,
