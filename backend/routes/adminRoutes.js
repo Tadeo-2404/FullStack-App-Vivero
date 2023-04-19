@@ -10,7 +10,7 @@ router.post('/iniciar-sesion', iniciar_sesion);
 router.post('/registrarse', registrarse);
 
 //obtener token contraseña temporal
-router.get('/olvide-contrasena', olvide_contrasena);
+router.post('/olvide-contrasena', olvide_contrasena);
 
 //enviar nueva contrasena
 router.post('/nueva-contrasena', nueva_contrasena);
