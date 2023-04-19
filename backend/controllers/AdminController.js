@@ -62,8 +62,6 @@ const registrarse = async (req, res) => {
     try {
         const admin = await Administrador.create(data); //crear admin
         let token = generarJWT(admin.id); //generar jwt 
-        admin.token = token; //asignamos el token
-        await admin.save();
         res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true }); //generar cookie
 
         //retornar respuesta
@@ -107,8 +105,6 @@ const iniciar_sesion = async (req, res) => {
         }
 
         let token = generarJWT(admin.id); //generar jwt 
-        admin.token = token; //asignar nuevo token
-        await admin.save(); //guardar registro con nuevo token
         res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true }); //generar cookie
 
         //retornar respuesta
