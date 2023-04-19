@@ -46,12 +46,3 @@ CREATE TABLE administrador (
 	contrasena VARCHAR(50) NOT NULL,
 	token TEXT DEFAULT NULL
 );
-
-CREATE TABLE empleado (
-	id SERIAL PRIMARY KEY,
-	nombre VARCHAR(30) NOT NULL,
-	hora_entrada TIME NOT NULL,
-	hora_salida TIME NOT NULL,
-	id_sucursal int NOT NULL,
-	FOREIGN KEY (id_sucursal) REFERENCES sucursal(id_sucursal)
-);
