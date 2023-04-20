@@ -8,7 +8,6 @@ import cookieParser from 'cookie-parser';
 import sequelize from './db/db.js'; //conexion base de datos
 
 //instancias interactivas
-import clienteRoutes from './routes/clienteRoutes.js'; //rutas cliente
 import adminRoutes from './routes/adminRoutes.js'; //rutas admin
 
 //instancias de consulta API
@@ -34,7 +33,6 @@ app.use(cookieParser()); //habilitamos las cookies
 dotenv.config(); //habilitamos variables de entorno
 
 //entidades interactivas
-app.use('/', clienteRoutes);
 app.use('/admin', adminRoutes);
 
 //entidades para consulta API

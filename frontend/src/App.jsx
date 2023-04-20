@@ -15,10 +15,6 @@ import Productos from "./pages/Productos";
 import Sustratos from "./pages/Sustratos";
 import Sucursales from "./pages/Sucursales";
 
-// Componentes de usuarios
-import InicioSesion from "./pages/cliente/InicioSesion";
-import Registro from "./pages/cliente/Registro";
-
 // Componentes de administrador
 import InicioSesionAdmin from "./pages/admin/InicioSesionAdmin";
 import FormPublicarProducto from "./pages/admin/FormPublicarProducto";
@@ -34,8 +30,6 @@ function App() {
 
             {/* CLIENTES O CUALQUIER USUARIO */}
             <Route path="/" element={<Inicio />} />
-            <Route path="/registrarse" element={<Registro />} />
-            <Route path="/iniciar-sesion" element={<InicioSesion />} />
             <Route path="/productos" element={<Productos />} />
             <Route path="/sustratos" element={<Sustratos />} />
             <Route path="/sucursales" element={<Sucursales />} />
