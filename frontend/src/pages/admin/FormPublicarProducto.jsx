@@ -1,8 +1,12 @@
-function FormPublicarProducto(){   
+function FormPublicarProducto(){
+    const handleSubmit = e => {
+        e.preventDefault();
+    }
+    
     return(
         <main className="main">
             <h1 className="titulo">Formulario Publicar Producto</h1>
-            <form action="" className="form contenedor">
+            <form action="" className="form contenedor" onSubmit={handleSubmit}>
 
                 <div className="form__apartado">
                     <label htmlFor="nombre">Nombre</label>

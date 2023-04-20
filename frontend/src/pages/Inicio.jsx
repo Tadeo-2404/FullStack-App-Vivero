@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import GaleriaArticulos from "../components/GaleriaArticulos";
+import GaleriaProductos from "../components/GaleriaProductos";
 
 function Inicio(){
     return(
@@ -7,7 +7,7 @@ function Inicio(){
             <article className="galeria">
                 <h2 className="titulo galeria__titulo">Productos</h2>
 
-                <GaleriaArticulos opciones={{
+                <GaleriaProductos opciones={{
                     url: "http://localhost:3000/api/productos",
                     limite: 5
                 }} />
@@ -17,26 +17,9 @@ function Inicio(){
                 </div>
             </article>
 
-            <article className="galeria">
-                <h2 className="titulo galeria__titulo">Sustratos</h2>
-
-                <GaleriaArticulos opciones={{
-                    url: "http://localhost:3000/api/sustratos",
-                    limite: 5
-                }} />
-
-                <div className="contenedor galeria__botones">
-                    <Link to={"/sustratos"}>Ver más</Link>
-                </div>
-            </article>
-
             <div className="contenedor">
                 <h2 className="titulo">Rutas de prueba para ver el funcionamiento</h2>
-                <Link to="/admin/editar/productos/1">Prueba ruta editar producto 1 (admin)</Link>
-                <br />
-                <Link to="/admin/editar/sustratos/1">Prueba ruta editar sustrato 1 (admin)</Link>
-                <br />
-                <Link to="/sucursales">Sucursales</Link>
+                <Link to="/admin/editar-producto/1">Prueba ruta editar producto 1 (admin)</Link>
                 <br />
                 <Link to="/admin/proveedores">Proveedores (admin)</Link>
             </div>
