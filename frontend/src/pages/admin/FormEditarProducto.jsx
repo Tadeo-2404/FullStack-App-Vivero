@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useArticulos from "../../hooks/useArticulos";
+import useProductos from "../../hooks/useProductos";
 
-function FormEditarArticulo(){
+function FormEditarProducto(){
     const navigate = useNavigate();
 
-    const { tipo, id } = useParams(); // tipo -> productos - sustratos
-    const [articulo, setArticulo] = useState(null);
+    const { id } = useParams();
+    const [producto, setProducto] = useState(null);
 
     const opciones = {
-        url: `http://localhost:3000/api/${tipo}/${id}`,
+        url: `http://localhost:3000/api/productos/${id}`,
         limite: 1
     }
-    const [ cargando, datos ] = useArticulos(opciones);
+    const [ cargando, datos ] = useProductos(opciones);
 
-    // Si llegan datos, se pasa a articulo
+    // Si llegan datos, se pasa a producto
     useEffect(() => {
-        if(datos) setArticulo(datos);
+        if(datos) setProducto(datos);
     }, [datos])
 
     const handleSubmit = e => {
         e.preventDefault();
 
         // Hacer fetch con method put para actualizar los datos
-        fetch(`http://localhost:3000/api/${tipo}/${id}`, {
+        fetch(`http://localhost:3000/api/productos/${id}`, {
             method: "PUT",
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(articulo)
+            body: JSON.stringify(producto)
         })
         .then(res => res.json())
         .then(res => {
@@ -38,18 +38,18 @@ function FormEditarArticulo(){
     }
 
     const handleInput = e => {
-        setArticulo({
-            ...articulo,
+        setProducto({
+            ...producto,
             [e.target.name]: e.target.value
         });
     }
 
     if(cargando) return <h1 className="titulo">Cargando...</h1>
-    if(!articulo) return <h1 className="titulo">No hay articulo</h1>
+    if(!producto) return <h1 className="titulo">No hay producto</h1>
 
     return(
         <main className="main">
-            <h1 className="titulo">Formulario editar {tipo == "productos" ? "producto" : "sustrato"}: #{id}</h1>
+            <h1 className="titulo">Formulario editar producto: #{id}</h1>
             <form action="" className="form contenedor" onSubmit={handleSubmit}>
 
                 <div className="form__apartado">
@@ -60,7 +60,7 @@ function FormEditarArticulo(){
                         className="form__input"
                         type="text"
                         onInput={handleInput}
-                        value={articulo.nombre}
+                        value={producto.nombre}
                         required
                     />
                 </div>
@@ -74,7 +74,7 @@ function FormEditarArticulo(){
                         cols="30"
                         rows="10"
                         onInput={handleInput}
-                        value={articulo.descripcion}
+                        value={producto.descripcion}
                         required>
                     </textarea>
                 </div>
@@ -87,7 +87,7 @@ function FormEditarArticulo(){
                         className="form__input"
                         type="number"
                         onInput={handleInput}
-                        value={articulo.precio}
+                        value={producto.precio}
                         required
                     />
                 </div>
@@ -100,7 +100,7 @@ function FormEditarArticulo(){
                         className="form__input"
                         type="number"
                         onInput={handleInput}
-                        value={articulo.cantidad}
+                        value={producto.cantidad}
                         required
                     />
                 </div>
@@ -112,4 +112,4 @@ function FormEditarArticulo(){
     )
 }
 
-export default FormEditarArticulo;
+export default FormEditarProducto;

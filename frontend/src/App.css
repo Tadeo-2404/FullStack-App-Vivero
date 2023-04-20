@@ -120,27 +120,27 @@ body{
   margin: 10px auto;
 }
 
-/*! ARTICULOS */
-.articulos{
+/*! PRODUCTOS */
+.productos{
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
-.articulo{
+.producto{
   background: var(--bg-card);
   padding: 20px 30px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(200, 200, 200, .5);
   line-height: 1.5;
 }
-.articulo__nombre{
+.producto__nombre{
   text-align: center;
   margin-bottom: 30px;
   letter-spacing: 1px;
   line-height: 1.2;
 }
-.articulo__descripcion{
+.producto__descripcion{
   text-align: justify;
   margin-bottom: 20px;
 }

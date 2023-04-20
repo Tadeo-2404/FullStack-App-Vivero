@@ -16,14 +16,6 @@ CREATE TABLE producto (
 	cantidad int NOT NULL
 );
 
-CREATE TABLE sustrato (
-	id SERIAL PRIMARY KEY,
-	nombre VARCHAR(50) NOT NULL,
-	descripcion TEXT NOT NULL,
-	precio float NOT NULL,
-	cantidad int NOT NULL
-);
-
 CREATE TABLE proveedor (
     id SERIAL PRIMARY KEY, 
     nombre VARCHAR(50) NOT NULL,
