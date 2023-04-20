@@ -14,6 +14,7 @@ import adminRoutes from './routes/adminRoutes.js'; //rutas admin
 import productoRoutes from './routes/productoRoutes.js'; //rutas producto
 import proveedorRoutes from './routes/proveedorRoutes.js' //rutas proveedor
 import ventasRoutes from './routes/ventaRoutes.js' //rutas para ventas
+import ventaProductosRoutes from './routes/ventaProductosRouter.js' //rutas para venta_producto
 
 //conexion base de datos
 try {
@@ -39,6 +40,7 @@ app.use('/admin', adminRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/proveedores', proveedorRoutes);
 app.use('/api/ventas', ventasRoutes);
+app.use('/api/venta_producto', ventaProductosRoutes);
 
 app.listen(port, () => {
     console.log(`APP WORKING ON PORT ${port}`)
