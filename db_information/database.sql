@@ -30,14 +30,6 @@ CREATE TABLE proveedor (
     telefono VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE cliente (
-	id SERIAL PRIMARY KEY,
-	nombre VARCHAR(30) NOT NULL,
-	correo VARCHAR(30) DEFAULT NULL,
-	contrasena VARCHAR(50) DEFAULT NULL,
-	token TEXT DEFAULT NULL
-);
-
 CREATE TABLE administrador (
 	id SERIAL PRIMARY KEY,
 	nombre VARCHAR(30) NOT NULL,
