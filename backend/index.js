@@ -13,6 +13,7 @@ import adminRoutes from './routes/adminRoutes.js'; //rutas admin
 //instancias de consulta API
 import productoRoutes from './routes/productoRoutes.js'; //rutas producto
 import proveedorRoutes from './routes/proveedorRoutes.js' //rutas proveedor
+import ventasRoutes from './routes/ventaRoutes.js' //rutas para ventas
 
 //conexion base de datos
 try {
@@ -37,6 +38,7 @@ app.use('/admin', adminRoutes);
 //entidades para consulta API
 app.use('/api/productos', productoRoutes);
 app.use('/api/proveedores', proveedorRoutes);
+app.use('/api/ventas', ventasRoutes);
 
 app.listen(port, () => {
     console.log(`APP WORKING ON PORT ${port}`)

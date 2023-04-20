@@ -30,3 +30,9 @@ CREATE TABLE administrador (
 	contrasena VARCHAR(50) NOT NULL,
 	token TEXT DEFAULT NULL
 );
+
+CREATE TABLE venta (
+    id SERIAL PRIMARY KEY,
+    fecha DATE NOT NULL,
+    total INT NOT NULL
+);
