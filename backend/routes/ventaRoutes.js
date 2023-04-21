@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { obtener_ventas, obtener_venta, crear_venta, editar_venta, eliminar_venta } from '../controllers/VentaController.js'; //importar controllers
+import { obtener_ventas, obtener_venta, crear_venta, editar_venta, eliminar_venta } from '../controllers/VentaController.js';
 
 //crear producto
 router.post('/', crear_venta);

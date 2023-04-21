@@ -1,10 +1,9 @@
 import Proveedor from "../models/ProveedorModel.js";
+import { regexNombreCompleto, regexTelefono } from "../utils.js";
 
 //crear un proveedor
 const crear_proveedor = async (req, res) => {
     const { nombre, telefono } = req.body; //leer input usuario
-    const regexNombreCompleto = /^[a-zA-ZÀ-ÿ'-]{1,30}\s?[a-zA-ZÀ-ÿ'-]{0,30}$/; //regex para validar nombre
-    const regexTelefono = /^\d{10}$/;
 
     //validamos los campos
     if(!nombre || !telefono) {
@@ -73,8 +72,6 @@ const editar_proveedor = async  (req, res) => {
     const { nombre, telefono } = req.body; //leer input usuario
     const { id } = req.params; //leer el id del proveedor
     const proveedor = await Proveedor.findByPk(id);
-    const regexNombreCompleto = /^[a-zA-ZÀ-ÿ'-]{1,30}\s?[a-zA-ZÀ-ÿ'-]{0,30}$/; //regex para validar nombre
-    const regexTelefono = /^\d{10}$/;
 
     if(!proveedor) {
         const error = new Error("proveedor no encontrado");
