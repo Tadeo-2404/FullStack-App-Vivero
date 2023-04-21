@@ -40,7 +40,7 @@ app.use('/admin', adminRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/proveedores', proveedorRoutes);
 app.use('/api/ventas', ventasRoutes);
-app.use('/api/venta_producto', ventaProductosRoutes);
+app.use('/api/venta-producto', ventaProductosRoutes);
 
 app.listen(port, () => {
     console.log(`APP WORKING ON PORT ${port}`)

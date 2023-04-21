@@ -1,42 +1,42 @@
 import VentaProducto from "../models/VentaProductoModel.js";
 import Producto from "../models/ProductoModel.js";
 import Venta from "../models/VentaModel.js";
+import { regexEnteroPositivo } from "../utils.js";
 
-const crear_venta_producto = async (req, res) => {
-    const { venta_id, producto_id, cantidad, subtotal } = req.body;//leer datos
-    const regexEnteroPositivo = /^[1-9][0-9]*$/; //regex para validar enteros positivos
+//? Esta funcion no es para una ruta, se utiliza internamente en venta controller sin necesidad de una petición
+const crear_venta_producto = async (datos) => {
+    const { venta_id, producto_id, cantidad, subtotal } = datos;
 
-    //validar campos que no esten vacios
+    // Validar campos que no esten vacios
     if(!venta_id || !producto_id || !cantidad || !subtotal) {
-        const error = new Error("todos los campos son obligatorios");
-        res.status(400).json({msg: error.message});
+        const error = new Error("Todos los campos son obligatorios (crear_venta_producto)");
+        console.log(error.message);
         return;
     }
 
-    //validamos que el formato sea valido
-    if(!venta_id.match(regexEnteroPositivo) || !producto_id.match(regexEnteroPositivo) || !cantidad.match(regexEnteroPositivo) || !subtotal.match(regexEnteroPositivo)) {
-        const error = new Error("todos los campos deben ser enteros positivos");
-        res.status(400).json({ msg: error.message });
+    // Validamos que el formato sea valido
+    if(!venta_id > 0 || !producto_id > 0 || !cantidad > 0 || !subtotal > 0) {
+        const error = new Error("Todos los campos deben ser enteros positivos");
+        console.log(error.message);
         return;
     }
 
-    //buscamos producto
+    // Buscamos producto
     const existeProducto = await Producto.findByPk(producto_id);
 
-    //validamos si no existe el producto
+    // Validamos si no existe el producto
     if(!existeProducto) {
-        const error = new Error("el registro debe contener un producto");
-        res.status(400).json({ msg: error.message });
+        const error = new Error("El registro debe contener un producto");
+        console.log(error.message);
         return;
     }
 
     try {
-        const venta_producto =  new VentaProducto(req.body); //creamos objeto
-        await venta_producto.save(); //guardamos objeto
-        res.json(venta_producto);
+        const venta_producto = await VentaProducto.create(datos);
     } catch (e) {
+        console.log(e);
         const error = new Error(e.name);
-        res.status(404).json({msg: error.message});
+        console.log(error.message);
     }
 }
 
@@ -74,7 +74,6 @@ const obtener_venta_producto =  async (req, res) => {
 const editar_venta_producto = async  (req, res) => {
     const { id_venta, id } = req.params;
     const { venta_id, producto_id, cantidad, subtotal } = req.body;//leer datos
-    const regexEnteroPositivo = /^[1-9][0-9]*$/; //regex para validar enteros positivos
 
     //buscamos que exista el registro venta al que pertenece
     const venta_url = await Venta.findByPk(id_venta); //al que pertenece
@@ -138,10 +137,9 @@ const editar_venta_producto = async  (req, res) => {
 //elimina un producto en especifico
 const eliminar_venta_producto = async (req, res) => {
     const { id_venta, id } = req.params; //leer el id del producto
-    const regexEnteroPositivo = /^[1-9][0-9]*$/; //regex para validar enteros positivos
 
     //validamos que el formato sea valido
-    if(!id_venta.match(regexEnteroPositivo)  ,!id.match(regexEnteroPositivo)) {
+    if(!id_venta.match(regexEnteroPositivo), !id.match(regexEnteroPositivo)) {
         const error = new Error("los ID deben ser enteros positivos");
         res.status(400).json({ msg: error.message });
         return;

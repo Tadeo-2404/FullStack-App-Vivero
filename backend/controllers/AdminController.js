@@ -2,17 +2,11 @@ import Administrador from "../models/AdminModel.js"; //modelo de admin
 import bcrypt from 'bcrypt'; //encriptar password
 import generarJWT from "../helpers/generarJWT.js"; //enviar info a frontend
 import generarToken from "../helpers/generarToken.js"; //generar token temporal
+import { regexCorreo, regexNombreCompleto, regexPasswd } from "../utils.js";
 
 //rutas publicas
 const registrarse = async (req, res) => {
     const { nombre, apellido, correo, contrasena } = req.body; //leer input de usuario
-
-    //expresion regular para validar correo
-    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //expresion regular para validar nombre, apellido
-    const regexNombreCompleto = /^[a-zA-ZÀ-ÿ'-]{1,30}\s?[a-zA-ZÀ-ÿ'-]{0,30}$/;
-    //expresion regular para validar contraseña
-    const regexPasswd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])(?!.*\s).{8,30}$/;
 
     //validamos correo
     if(!correo.match(regexCorreo)) {
@@ -75,9 +69,6 @@ const registrarse = async (req, res) => {
 const iniciar_sesion = async (req, res) => {
     const { correo, contrasena } = req.body //leer input usuario
 
-    //expresion regular para validar correo
-    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     //validamos correo
     if(!correo.match(regexCorreo)) {
         const error = new Error("correo invalido");
@@ -118,9 +109,6 @@ const iniciar_sesion = async (req, res) => {
 
 const olvide_contrasena = async (req, res) => {
     const { correo } = req.body; //leer input del usuario
-
-    //expresion regular para validar correo
-    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     //validamos correo
     if(!correo.match(regexCorreo)) {
@@ -165,9 +153,6 @@ const nueva_contrasena = async (req, res) => {
         res.status(404).json({ msg: error.message });
         return;
     }
-
-    //expresion regular para validar contraseña
-    const regexPasswd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])(?!.*\s).{8,30}$/;
 
     //validamos contraseña
     if(!contrasena.match(regexPasswd)) {

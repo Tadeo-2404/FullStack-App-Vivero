@@ -22,18 +22,10 @@ VentaProducto.init({
   venta_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Venta',
-      key: 'id'
-    }
   },
   producto_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Producto',
-      key: 'id'
-    }
   },
   cantidad: {
     type: DataTypes.INTEGER,
@@ -50,12 +42,13 @@ VentaProducto.init({
   timestamps: false
 });
 
+//! BUSCAR SOLUCIÓN: Estas asociaciones agregan atributos a la tabla, no sé como se usa
 // Agregar asociaciones entre los modelos
-Producto.belongsToMany(Venta, { through: VentaProducto });
-Venta.belongsToMany(Producto, { through: VentaProducto });
+// Producto.belongsToMany(Venta, { through: VentaProducto });
+// Venta.belongsToMany(Producto, { through: VentaProducto });
 
 //sincronizar tabla 
-await sequelize.sync({alter: true}).then(() => {
+await VentaProducto.sync({force: true}).then(() => {
     console.log('Tabla venta_producto creada');
 }).catch(error => {
     console.error('Error creando la tabla venta_producto:', error);
