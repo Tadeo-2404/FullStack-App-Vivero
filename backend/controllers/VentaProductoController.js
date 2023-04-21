@@ -1,7 +1,7 @@
 import VentaProducto from "../models/VentaProductoModel.js";
 import Producto from "../models/ProductoModel.js";
 import Venta from "../models/VentaModel.js";
-import { regexEnteroPositivo } from "../utils.js";
+import { regexEnteroPositivo } from "../helpers/utils.js";
 
 //? Esta funcion no es para una ruta, se utiliza internamente en venta controller sin necesidad de una petición
 const crear_venta_producto = async (datos) => {

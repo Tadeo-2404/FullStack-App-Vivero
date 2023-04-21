@@ -1,5 +1,5 @@
 import Proveedor from "../models/ProveedorModel.js";
-import { regexNombreCompleto, regexTelefono } from "../utils.js";
+import { regexNombreCompleto, regexTelefono } from "../helpers/utils.js";
 
 //crear un proveedor
 const crear_proveedor = async (req, res) => {

@@ -1,6 +1,6 @@
 import Venta from "../models/VentaModel.js";
 import { crear_venta_producto } from "./VentaProductoController.js";
-import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../utils.js";
+import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../helpers/utils.js";
 
 const crear_venta = async (req, res) => {
     const { venta, productos } = req.body;

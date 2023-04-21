@@ -2,7 +2,7 @@ import Administrador from "../models/AdminModel.js"; //modelo de admin
 import bcrypt from 'bcrypt'; //encriptar password
 import generarJWT from "../helpers/generarJWT.js"; //enviar info a frontend
 import generarToken from "../helpers/generarToken.js"; //generar token temporal
-import { regexCorreo, regexNombreCompleto, regexPasswd } from "../utils.js";
+import { regexCorreo, regexNombreCompleto, regexPasswd } from "../helpers/utils.js";
 
 //rutas publicas
 const registrarse = async (req, res) => {
