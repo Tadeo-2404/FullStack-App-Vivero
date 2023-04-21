@@ -1,50 +1,49 @@
 import Venta from "../models/VentaModel.js";
 import { crear_venta_producto } from "./VentaProductoController.js";
+import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../helpers/utils.js";
 
 const crear_venta = async (req, res) => {
-    const { venta, productos } = req.body; //leer objetos
-    const { total, fecha } = venta;
-    //fecha: DD-MM-YY
-    const regexFecha = /^([0-9]{2})-([0-9]{2})-([0-9]{2})$/; //regex para validar formato de fecha
-    const regexEnteroPositivo = /^[1-9][0-9]*$/; //regex para validar enteros positivos
+    const { venta, productos } = req.body;
+    let total = venta.total?.toString() || 0;
+    // La fecha viene como DD-MM-YYYY, la cambiamos a un formato apto para la base de datos
+    let fecha = formatoFechaDB(venta.fecha);
 
-    //validacion campos no vacios
+    // Validacion campos no vacios
     if(!total || !fecha) {
-        const error = new Error("todos los campos son obligatorios");
+        const error = new Error("Todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
 
-    //validamos total
+    // Validamos total
     if(!total.match(regexEnteroPositivo)) {
-        const error = new Error("formato de total invalido");
+        const error = new Error("Formato de total invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
 
-    //validamos formato de fecha
+    // Validamos formato de fecha
     if(!fecha.match(regexFecha)) {
-        const error = new Error("formato de fecha invalido");
+        const error = new Error("Formato de fecha invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
 
     try {
-        const venta = new Venta(req.body); //creamos la venta
+        const venta = await Venta.create({ fecha, total }); //? IMPORTANTE guardar en la base de datos y tener el autoIncrement
 
-        /*por cada producto del arreglo de productos creamos un objeto de venta_producto
-        pasando como valores el ID de la venta al que pertenece y demas informacion*/
-        for (const producto of productos) { 
-            const subtotal = producto.precio*producto.cantidad; //calcular subtotal de ese producto
+        /* Por cada producto del arreglo de productos creamos un objeto de venta_producto
+        pasando como valores el ID de la venta al que pertenece y demas informacion */
+        productos.forEach(async producto => {
             await crear_venta_producto({
-                venta_id: venta.id, //id venta
-                producto_id: producto.id, //id del producto
-                cantidad: producto.cantidad, //cantidad de producto
-                subtotal: subtotal //subtotal de ese producto
+                venta_id: venta.id,
+                producto_id: producto.id,
+                cantidad: producto.cantidad,
+                subtotal: producto.precio * producto.cantidad
             });
-        }
+        })
 
-        await venta.save(); //finalmente guardamos la venta
+        await venta.save(); // Se guarda la venta en la base de datos
         res.json(venta);
     } catch (e) {
         const error = new Error(e.name);
@@ -52,12 +51,12 @@ const crear_venta = async (req, res) => {
     }
 }
 
-//retornar todos los ventas
+// Retornar todos los ventas
 const obtener_ventas = async  (req, res) => {
     const { limite } = req.query;
     let consulta = await Venta.findAll({ limit: limite }); // Realiza la consulta
 
-    //muestra error si no hay ventas
+    // Muestra error si no hay ventas
     if(!consulta) {
         const error = new Error("no hay ventas");
         res.status(404).json({msg: error.message});
@@ -86,8 +85,6 @@ const obtener_venta =  async (req, res) => {
 const editar_venta = async  (req, res) => {
     const { fecha, total } = req.body; //leer input usuario
     const { id } = req.params; //leer el id de la venta
-    const regexFecha = /^([0-9]{2})-([0-9]{2})-([0-9]{2})$/; //regex para validar formato de fecha
-    const regexEnteroPositivo = /^[1-9][0-9]*$/; //regex para validar enteros positivos
     const venta = await Venta.findByPk(id);
 
     //validar si la venta no se encuentra
