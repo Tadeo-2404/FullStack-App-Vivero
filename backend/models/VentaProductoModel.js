@@ -22,10 +22,18 @@ VentaProducto.init({
   venta_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: 'venta',
+      key: 'id'
+    }
   },
   producto_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: 'producto',
+      key: 'id'
+    }
   },
   cantidad: {
     type: DataTypes.INTEGER,
