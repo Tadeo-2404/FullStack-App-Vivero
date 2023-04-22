@@ -23,7 +23,6 @@ function Navbar(){
                     <NavLink className="navbar__link" to="/admin/publicar" onClick={closeMenu}>Publicar producto</NavLink>
                 </div>
                 <div className="navbar__sesion">
-                    <NavLink className="navbar__link" to="/registrarse" onClick={closeMenu}>Registrarse</NavLink>
                     <NavLink className="navbar__link" to="/iniciar-sesion" onClick={closeMenu}>Iniciar sesión</NavLink>
                 </div>
             </div>
