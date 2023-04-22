@@ -17,6 +17,7 @@ import Productos from "./pages/Productos";
 import InicioSesionAdmin from "./pages/admin/InicioSesionAdmin";
 import FormPublicarProducto from "./pages/admin/FormPublicarProducto";
 import FormEditarProducto from "./pages/admin/FormEditarProducto";
+import FormAgregarVenta from "./pages/admin/FormAgregarVenta";
 import Proveedores from "./pages/admin/Proveedores";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/admin/iniciar-sesion" element={<InicioSesionAdmin />} />
             <Route path="/admin/publicar" element={<FormPublicarProducto />} />
             <Route path="/admin/editar-producto/:id" element={<FormEditarProducto />} />
+            <Route path="/admin/agregar-venta" element={<FormAgregarVenta />} />
             <Route path="/admin/proveedores" element={<Proveedores />} />
 
             <Route path="*" element={<NotFound />} />
