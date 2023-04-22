@@ -1,6 +1,7 @@
 import Venta from "../models/VentaModel.js";
 import { crear_venta_producto } from "./VentaProductoController.js";
 import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../helpers/utils.js";
+import Producto from "../models/ProductoModel.js";
 
 const crear_venta = async (req, res) => {
     const { venta, productos } = req.body;
@@ -29,26 +30,39 @@ const crear_venta = async (req, res) => {
         return;
     }
 
-    try {
-        const venta = await Venta.create({ fecha, total }); //? IMPORTANTE guardar en la base de datos y tener el autoIncrement
+    try {        
+        // Verificar si cada producto existe en la base de datos
+        const productosNoValidos = await Promise.all(productos.map(async producto => {
+            const existe = await Producto.findOne({ where: { id: producto.id } });
+            if (!existe) {
+                return producto;
+            }
+        }));
+    
+        // Si todos los productos son validos, ejecutamos lo siguiente
+        if (productosNoValidos.length === 0) {
+            const venta = await Venta.create({ fecha, total }); //creamos la venta
 
-        /* Por cada producto del arreglo de productos creamos un objeto de venta_producto
-        pasando como valores el ID de la venta al que pertenece y demas informacion */
-        productos.forEach(async producto => {
-            await crear_venta_producto({
-                venta_id: venta.id,
-                producto_id: producto.id,
-                cantidad: producto.cantidad,
-                subtotal: producto.precio * producto.cantidad
+            //iteramos sobre el arreglo de productos
+            productos.forEach(async producto => {
+
+                //con cada producto creamos un registro de venta_producto
+                await crear_venta_producto({
+                    venta_id: venta.id,
+                    producto_id: producto.id,
+                    cantidad: producto.cantidad,
+                    subtotal: producto.precio * producto.cantidad
+                });
             });
-        })
-
-        await venta.save(); // Se guarda la venta en la base de datos
-        res.json(venta);
+            await venta.save(); //guardamos la venta
+            res.status(200).json(venta);
+        } else {
+            res.status(400).json({msg: 'Existen productos no validos'});
+        }
     } catch (e) {
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
-    }
+    }    
 }
 
 // Retornar todos los ventas
