@@ -40,7 +40,7 @@ const crear_venta = async (req, res) => {
         });
     
         // Si todos los productos son validos, ejecutamos lo siguiente
-        if (productosNoValidos.length === 0) {
+        if (productosNoValidos === 0) {
             const venta = await Venta.create({ fecha, total }); //creamos la venta
 
             //iteramos sobre el arreglo de productos
