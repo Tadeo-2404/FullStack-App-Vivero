@@ -21,6 +21,7 @@ function Navbar(){
                     y automáticamente le ponga la clase navbar__link y los onClick*/}
                     <NavLink className="navbar__link" to="/" onClick={closeMenu}>Inicio</NavLink>
                     <NavLink className="navbar__link" to="/admin/publicar" onClick={closeMenu}>Publicar producto</NavLink>
+                    <NavLink className="navbar__link" to="/admin/agregar-venta" onClick={closeMenu}>Agregar venta</NavLink>
                 </div>
                 <div className="navbar__sesion">
                     <NavLink className="navbar__link" to="/iniciar-sesion" onClick={closeMenu}>Iniciar sesión</NavLink>
