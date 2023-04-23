@@ -3,7 +3,7 @@ const router = express.Router();
 import { obtener_venta_producto, obtener_venta_productos, editar_venta_producto, eliminar_venta_producto } from '../controllers/VentaProductoController.js';
 
 // Obtener todos los productos
-router.get('/', obtener_venta_productos);
+router.get('/:id_venta', obtener_venta_productos);
 
 // Obtener un producto
 router.get('/:id_venta/:id', obtener_venta_producto);

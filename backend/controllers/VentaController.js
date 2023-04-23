@@ -32,12 +32,12 @@ const crear_venta = async (req, res) => {
 
     try {        
         // Verificar si cada producto existe en la base de datos
-        const productosNoValidos = await Promise.all(productos.map(async producto => {
+        const productosNoValidos = await productos.map(async producto => {
             const existe = await Producto.findOne({ where: { id: producto.id } });
             if (!existe) {
                 return producto;
             }
-        }));
+        });
     
         // Si todos los productos son validos, ejecutamos lo siguiente
         if (productosNoValidos.length === 0) {

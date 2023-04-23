@@ -17,14 +17,6 @@ Compra.init({
           key: 'id'
         }
       },
-      producto_proveedor_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'producto_proveedor',
-          key: 'id'
-        }
-      },
     fecha: {
         type: DataTypes.DATE,
         allowNull: false

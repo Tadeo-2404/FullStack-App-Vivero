@@ -42,12 +42,29 @@ const crear_venta_producto = async (datos) => {
 
 //retornar todos los productos
 const obtener_venta_productos = async  (req, res) => {
+    const { id_venta } = req.params; //ID del proveedor 
     const { limite } = req.query; //limite de resultados
-    let consulta = await VentaProducto.findAll({ limit: limite }); // Realiza la consulta
 
+    //buscar que ese venta exista
+    const existeVenta = await Venta.findByPk(id_venta);
+
+    //validar si existe venta
+    if(!existeVenta) {
+        const error = new Error("venta no existe");
+        res.status(404).json({msg: error.message});
+    }
+
+    //consultar los productos en base al venta
+    let consulta = await VentaProducto.findAll({
+        where: {
+          id_venta: id_venta
+        },
+        limit: limite 
+    });
+      
     //muestra error si no hay registros
     if(!consulta) {
-        const error = new Error("no hay productos que mostrar");
+        const error = new Error("no hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }
@@ -57,17 +74,33 @@ const obtener_venta_productos = async  (req, res) => {
 
 //retorna un registro en especifico por ID
 const obtener_venta_producto =  async (req, res) => {
-    const { id } = req.params; //leer el id del producto
-    const consulta = await VentaProducto.findByPk(id); //realiza la consulta
+    const { id_venta, id } = req.params; //ID del venta 
 
-    //si el producto no se encuentra
+    //buscar que ese venta exista
+    const existeVenta = await Venta.findByPk(id_venta);
+
+    //validar si existe venta
+    if(!existeVenta) {
+        const error = new Error("venta no existe");
+        res.status(404).json({msg: error.message});
+    }
+
+    //consultar los productos en base a la venta
+    let consulta = await VentaProducto.findAll({
+        where: {
+          id_venta: id_venta,
+          id: id
+        }
+    });
+      
+    //muestra error si no hay registros
     if(!consulta) {
-        const error = new Error("registro no encontrado");
+        const error = new Error("no hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }
 
-    res.json(consulta); //retorna producto
+    res.json(consulta); //retorna consulta
 }
 
 //edita un producto en especifico
