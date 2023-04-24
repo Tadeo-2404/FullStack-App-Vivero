@@ -33,6 +33,7 @@ const crear_venta_producto = async (datos) => {
 
     try {
         const venta_producto = await VentaProducto.create(datos);
+        console.log(venta_producto);
     } catch (e) {
         console.log(e);
         const error = new Error(e.name);

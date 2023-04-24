@@ -43,15 +43,14 @@ const crear_compra = async (req, res) => {
 
     try {        
         // Verificar si cada provedor_producto existe en la base de datos
-        const productosNoValidos = await productos_proveedor.map(async producto => {
+        const productosNoValidos = 0;
+        productos_proveedor.forEach(async producto => {
             const existe = await ProveedorProducto.findOne({ where: { id: producto.id } });
-            if (!existe) {
-                return producto;
-            }
-        });
+            if (!existe) productosNoValidos++;
+        })
     
         // Si todos los proveedor_productos son validos, ejecutamos lo siguiente
-        if (productosNoValidos.length === 0) {
+        if (productosNoValidos === 0) {
             const compra = await Compra.create({ proveedor_id, fecha, total }); //creamos la compra
 
             //iteramos sobre el arreglo de productos_proveedor

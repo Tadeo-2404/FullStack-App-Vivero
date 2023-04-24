@@ -3,8 +3,8 @@ import { regexEnteroPositivo } from "../helpers/utils.js";
 import Proveedor from "../models/ProveedorModel.js";
 
 //crear un registro
-const crear_proveedor_producto = async (req, res) => {
-    const { proveedor_id, nombre, descripcion, precio, cantidad } = req.body; //recibir datos 
+const crear_proveedor_producto = async (datos) => {
+    const { proveedor_id, nombre, descripcion, precio, cantidad } = datos;
 
     // Validar campos que no esten vacios
     if(!proveedor_id  || !nombre || !descripcion || !precio || !cantidad) {
@@ -37,8 +37,8 @@ const crear_proveedor_producto = async (req, res) => {
     }
 
     try {
-        const proveedor_producto = await ProveedorProducto.create(req.body); //crear registro proveedor_producto
-        proveedor_producto.save(); //guardar registro
+        const proveedor_producto = await ProveedorProducto.create(datos);
+        console.log(proveedor_producto);
     } catch (e) {
         console.log(e);
         const error = new Error(e.name);
