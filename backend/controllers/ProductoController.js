@@ -50,7 +50,6 @@ const obtener_producto =  async (req, res) => {
 
 //edita un producto en especifico
 const editar_producto = async  (req, res) => {
-    console.log("asd");
     const { nombre, descripcion, precio, cantidad } = req.body; //leer input usuario
     const { id } = req.params; //leer el id del producto
     const producto = await Producto.findByPk(id);
