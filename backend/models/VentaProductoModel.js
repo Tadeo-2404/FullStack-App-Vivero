@@ -19,7 +19,7 @@ VentaProducto.init({
     primaryKey: true,
     autoIncrement: true
   },
-  venta_id: {
+  id_venta: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -27,7 +27,7 @@ VentaProducto.init({
       key: 'id'
     }
   },
-  producto_id: {
+  id_producto: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {

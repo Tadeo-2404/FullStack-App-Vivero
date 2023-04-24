@@ -2,6 +2,7 @@ import Venta from "../models/VentaModel.js";
 import { crear_venta_producto } from "./VentaProductoController.js";
 import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../helpers/utils.js";
 import Producto from "../models/ProductoModel.js";
+import VentaProducto from "../models/VentaProductoModel.js";
 
 const crear_venta = async (req, res) => {
     const { venta, productos } = req.body;
@@ -47,8 +48,8 @@ const crear_venta = async (req, res) => {
 
                 //con cada producto creamos un registro de venta_producto
                 await crear_venta_producto({
-                    venta_id: venta.id,
-                    producto_id: producto.id,
+                    id_venta: venta.id,
+                    id_producto: producto.id,
                     cantidad: producto.cantidad,
                     subtotal: producto.precio * producto.cantidad
                 });
@@ -65,7 +66,7 @@ const crear_venta = async (req, res) => {
 }
 
 // Retornar todos los ventas
-const obtener_ventas = async  (req, res) => {
+const obtener_ventas = async (req, res) => {
     const { limite } = req.query;
     let consulta = await Venta.findAll({ limit: limite }); // Realiza la consulta
 
@@ -96,9 +97,13 @@ const obtener_venta =  async (req, res) => {
 
 //edita una venta en especifico
 const editar_venta = async  (req, res) => {
-    const { fecha, total } = req.body; //leer input usuario
+    let { fecha, total } = req.body; //leer input usuario
     const { id } = req.params; //leer el id de la venta
     const venta = await Venta.findByPk(id);
+
+    total = total?.toString() || 0;
+    // La fecha viene como DD-MM-YYYY, la cambiamos a un formato apto para la base de datos
+    fecha = formatoFechaDB(fecha);
 
     //validar si la venta no se encuentra
     if(!venta) {
@@ -139,6 +144,8 @@ const eliminar_venta = async (req, res) => {
     const { id } = req.params; //leer el id del venta
     const venta = await Venta.findByPk(id); //buscamos venta por id
 
+    console.log(venta);
+
     //validamos si la venta no se encuentra
     if(!venta) {
         const error = new Error("venta no encontrado");
@@ -147,9 +154,18 @@ const eliminar_venta = async (req, res) => {
     }
 
     try {
+        // Primero borramos todos los venta_producto que refieren a esta id
+        let ventasProductos = await VentaProducto.findAll({ where: { id_venta: id } });
+        ventasProductos.forEach(async ventaProducto => {
+            await ventaProducto.destroy();
+        })
+
+        // Ahora sí borramos la venta
         await venta.destroy(); //destuimos el registro de venta
-        res.json("venta eliminada");
+
+        res.json(venta);
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }

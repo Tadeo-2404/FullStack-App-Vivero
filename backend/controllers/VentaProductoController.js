@@ -5,24 +5,24 @@ import { regexEnteroPositivo } from "../helpers/utils.js";
 
 //? Esta funcion no es para una ruta, se utiliza internamente en venta controller sin necesidad de una petición
 const crear_venta_producto = async (datos) => {
-    const { venta_id, producto_id, cantidad, subtotal } = datos;
+    const { id_venta, id_producto, cantidad, subtotal } = datos;
 
     // Validar campos que no esten vacios
-    if(!venta_id || !producto_id || !cantidad || !subtotal) {
+    if(!id_venta || !id_producto || !cantidad || !subtotal) {
         const error = new Error("Todos los campos son obligatorios (crear_venta_producto)");
         console.log(error.message);
         return;
     }
 
     // Validamos que el formato sea valido
-    if(!venta_id > 0 || !producto_id > 0 || !cantidad > 0 || !subtotal > 0) {
+    if(!id_venta > 0 || !id_producto > 0 || !cantidad > 0 || !subtotal > 0) {
         const error = new Error("Todos los campos deben ser enteros positivos");
         console.log(error.message);
         return;
     }
 
     // Buscamos producto
-    const existeProducto = await Producto.findByPk(producto_id);
+    const existeProducto = await Producto.findByPk(id_producto);
 
     // Validamos si no existe el producto
     if(!existeProducto) {
@@ -35,7 +35,6 @@ const crear_venta_producto = async (datos) => {
         const venta_producto = await VentaProducto.create(datos);
         console.log(venta_producto);
     } catch (e) {
-        console.log(e);
         const error = new Error(e.name);
         console.log(error.message);
     }
@@ -43,7 +42,7 @@ const crear_venta_producto = async (datos) => {
 
 //retornar todos los productos
 const obtener_venta_productos = async  (req, res) => {
-    const { id_venta } = req.params; //ID del proveedor 
+    const { id_venta } = req.params; //ID del proveedor
     const { limite } = req.query; //limite de resultados
 
     //buscar que ese venta exista
@@ -53,6 +52,7 @@ const obtener_venta_productos = async  (req, res) => {
     if(!existeVenta) {
         const error = new Error("venta no existe");
         res.status(404).json({msg: error.message});
+        return;
     }
 
     //consultar los productos en base al venta
@@ -106,11 +106,11 @@ const obtener_venta_producto =  async (req, res) => {
 
 //edita un producto en especifico
 const editar_venta_producto = async  (req, res) => {
-    const { id_venta, id } = req.params;
-    const { venta_id, producto_id, cantidad, subtotal } = req.body;//leer datos
+    const { id_venta:idVenta, id } = req.params;
+    const { id_venta, id_producto, cantidad, subtotal } = req.body;//leer datos
 
     //buscamos que exista el registro venta al que pertenece
-    const venta_url = await Venta.findByPk(id_venta); //al que pertenece
+    const venta_url = await Venta.findByPk(idVenta); //al que pertenece
 
     //validamos si no existe
     if(!venta_url) {
@@ -130,21 +130,21 @@ const editar_venta_producto = async  (req, res) => {
     }
 
     //validar campos que no esten vacios
-    if(!venta_id || !producto_id || !cantidad || !subtotal) {
+    if(!id_venta || !id_producto || !cantidad || !subtotal) {
         const error = new Error("todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
 
     //validamos que el formato sea valido
-    if(!id_venta.match(regexEnteroPositivo)  || !id.match(regexEnteroPositivo) || !venta_id.match(regexEnteroPositivo) || !producto_id.match(regexEnteroPositivo) || !cantidad.match(regexEnteroPositivo) || !subtotal.match(regexEnteroPositivo)) {
+    if(!id_venta.match(regexEnteroPositivo)  || !id.match(regexEnteroPositivo) || !id_venta.match(regexEnteroPositivo) || !id_producto.match(regexEnteroPositivo) || !cantidad.match(regexEnteroPositivo) || !subtotal.match(regexEnteroPositivo)) {
         const error = new Error("todos los campos deben ser enteros positivos");
         res.status(400).json({ msg: error.message });
         return;
     }
 
     //buscamos producto
-    const existeProducto = await Producto.findByPk(producto_id); //id que recibe desde req.body
+    const existeProducto = await Producto.findByPk(id_producto); //id que recibe desde req.body
 
     //validamos si no existe el producto
     if(!existeProducto) {
@@ -154,8 +154,8 @@ const editar_venta_producto = async  (req, res) => {
     }
 
     //asignamos valores
-    venta_producto.venta_id = venta_id || venta_producto.venta_id;
-    venta_producto.producto_id = producto_id || venta_producto.producto_id;
+    venta_producto.id_venta = id_venta || venta_producto.id_venta;
+    venta_producto.id_producto = id_producto || venta_producto.id_producto;
     venta_producto.cantidad = cantidad || venta_producto.cantidad;
     venta_producto.subtotal = subtotal || venta_producto.subtotal;
 
@@ -207,7 +207,6 @@ const eliminar_venta_producto = async (req, res) => {
         res.status(404).json({msg: error.message});
     }
 }
-
 
 export {
     crear_venta_producto,

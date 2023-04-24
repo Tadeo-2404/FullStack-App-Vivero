@@ -26,10 +26,7 @@ const crear_proveedor = async (req, res) => {
 
     try {
         //crear objeto proveedor
-        const proveedor =  new Proveedor(req.body);
-
-        //guardar el objeto en la base de datos
-        await proveedor.save();
+        const proveedor = await Proveedor.create(req.body);
         res.json(proveedor);
     } catch (e) {
         const error = new Error(e.name);
@@ -79,13 +76,13 @@ const editar_proveedor = async  (req, res) => {
         return;
     }
 
-    if(!nombre.match(regexNombreCompleto)) {
+    if(nombre && !nombre.match(regexNombreCompleto)) {
         const error = new Error("nombre solo debe contener caracteres");
         res.status(400).json({ msg: error.message });
         return;
     }
 
-    if(!telefono.match(regexTelefono)) {
+    if(telefono && !telefono.match(regexTelefono)) {
         const error = new Error("telefono debe contener 10 digitos y solo numeros 0-9");
         res.status(400).json({ msg: error.message });
         return;
@@ -119,7 +116,7 @@ const eliminar_proveedor = async (req, res) => {
 
     try {
         await proveedor.destroy(); //eliminamos el proveedor
-        res.json("proveedor eliminado");
+        res.json(proveedor);
     } catch (e) {
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});

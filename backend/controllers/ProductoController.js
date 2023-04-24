@@ -10,8 +10,7 @@ const crear_producto = async (req, res) => {
     }
 
     try {
-        const producto =  new Producto(req.body);
-        await producto.save();
+        const producto = await Producto.create(req.body);
         res.json(producto);
     } catch (e) {
         const error = new Error(e.name);
@@ -51,7 +50,8 @@ const obtener_producto =  async (req, res) => {
 
 //edita un producto en especifico
 const editar_producto = async  (req, res) => {
-    const { nombre, descripcion, precio, cantidad} = req.body; //leer input usuario
+    console.log("asd");
+    const { nombre, descripcion, precio, cantidad } = req.body; //leer input usuario
     const { id } = req.params; //leer el id del producto
     const producto = await Producto.findByPk(id);
 
@@ -89,7 +89,7 @@ const eliminar_producto = async (req, res) => {
 
     try {
         await producto.destroy();
-        res.json("producto eliminado");
+        res.json(producto);
     } catch (e) {
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
