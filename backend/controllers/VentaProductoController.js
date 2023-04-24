@@ -40,27 +40,23 @@ const crear_venta_producto = async (datos) => {
     }
 }
 
-//retornar todos los productos
+/*
+    Retorna todos los venta_productos
+    Se puede poner un límite: ...?limite=1
+    Se puede filtrar por id de la venta: ...?venta=1
+    Se puede filtrar por id de producto: ...?producto=1
+*/
 const obtener_venta_productos = async  (req, res) => {
-    const { id_venta } = req.params; //ID del proveedor
-    const { limite } = req.query; //limite de resultados
+    const { limite, venta:idVenta, producto:idProducto } = req.query;
 
-    //buscar que ese venta exista
-    const existeVenta = await Venta.findByPk(id_venta);
-
-    //validar si existe venta
-    if(!existeVenta) {
-        const error = new Error("venta no existe");
-        res.status(404).json({msg: error.message});
-        return;
-    }
+    const where = {};
+    if(idVenta) where.id_venta = idVenta;
+    if(idProducto) where.id_producto = idProducto;
 
     //consultar los productos en base al venta
-    let consulta = await VentaProducto.findAll({
-        where: {
-          id_venta: id_venta
-        },
-        limit: limite 
+    let consulta = await VentaProducto.findAll({ 
+        where,
+        limit: limite
     });
       
     //muestra error si no hay registros
@@ -73,91 +69,49 @@ const obtener_venta_productos = async  (req, res) => {
     res.json(consulta); //retorna consulta
 }
 
-//retorna un registro en especifico por ID
+// Retorna un registro en especifico por ID de venta_producto 
 const obtener_venta_producto =  async (req, res) => {
-    const { id_venta, id } = req.params; //ID del venta 
+    const { id } = req.params; //ID del venta 
 
-    //buscar que ese venta exista
-    const existeVenta = await Venta.findByPk(id_venta);
+    // Buscar que ese venta exista
+    const consulta = await VentaProducto.findByPk(id);
 
-    //validar si existe venta
-    if(!existeVenta) {
-        const error = new Error("venta no existe");
-        res.status(404).json({msg: error.message});
-    }
-
-    //consultar los productos en base a la venta
-    let consulta = await VentaProducto.findAll({
-        where: {
-          id_venta: id_venta,
-          id: id
-        }
-    });
-      
-    //muestra error si no hay registros
+    // Validar si existe venta_producto
     if(!consulta) {
-        const error = new Error("no hay registros que mostrar");
+        const error = new Error("venta_producto no existe");
         res.status(404).json({msg: error.message});
         return;
     }
 
-    res.json(consulta); //retorna consulta
+    res.json(consulta);
 }
 
-//edita un producto en especifico
+// Edita un producto en especifico
 const editar_venta_producto = async  (req, res) => {
-    const { id_venta:idVenta, id } = req.params;
-    const { id_venta, id_producto, cantidad, subtotal } = req.body;//leer datos
+    //! Falta mejorar
+    const { id } = req.params;
+    const { cantidad, subtotal } = req.body;
 
-    //buscamos que exista el registro venta al que pertenece
-    const venta_url = await Venta.findByPk(idVenta); //al que pertenece
+    // Buscamos el registro venta_producto que contenga el mismo ID y el ID de venta
+    const venta_producto = await VentaProducto.findByPk(id); //el que queremos editar
 
-    //validamos si no existe
-    if(!venta_url) {
-        const error = new Error("esta venta no existe");
-        res.status(404).json({msg: error.message});
-        return;
-    }
-
-    //buscamos el registro venta_producto que contenga el mismo ID y el ID de venta
-    const venta_producto = await VentaProducto.findOne({where: {id: id, id_venta: id_venta}}); //el que queremos editar
-
-    //validamos si no existe
+    // Validamos si no existe
     if(!venta_producto) {
         const error = new Error("registro no encontrado");
         res.status(404).json({msg: error.message});
         return;
     }
 
-    //validar campos que no esten vacios
-    if(!id_venta || !id_producto || !cantidad || !subtotal) {
-        const error = new Error("todos los campos son obligatorios");
-        res.status(400).json({msg: error.message});
-        return;
-    }
-
-    //validamos que el formato sea valido
-    if(!id_venta.match(regexEnteroPositivo)  || !id.match(regexEnteroPositivo) || !id_venta.match(regexEnteroPositivo) || !id_producto.match(regexEnteroPositivo) || !cantidad.match(regexEnteroPositivo) || !subtotal.match(regexEnteroPositivo)) {
+    // Validamos que el formato sea valido
+    if(!cantidad.match(regexEnteroPositivo) || !subtotal.match(regexEnteroPositivo)) {
         const error = new Error("todos los campos deben ser enteros positivos");
         res.status(400).json({ msg: error.message });
         return;
     }
 
-    //buscamos producto
-    const existeProducto = await Producto.findByPk(id_producto); //id que recibe desde req.body
-
-    //validamos si no existe el producto
-    if(!existeProducto) {
-        const error = new Error("producto no encontrado");
-        res.status(400).json({ msg: error.message });
-        return;
-    }
-
     //asignamos valores
-    venta_producto.id_venta = id_venta || venta_producto.id_venta;
-    venta_producto.id_producto = id_producto || venta_producto.id_producto;
-    venta_producto.cantidad = cantidad || venta_producto.cantidad;
-    venta_producto.subtotal = subtotal || venta_producto.subtotal;
+    venta_producto.cantidad ||= cantidad;
+    venta_producto.subtotal ||= subtotal;
 
     try {
         await venta_producto.save(); //guardamos cambios
@@ -168,8 +122,9 @@ const editar_venta_producto = async  (req, res) => {
     }
 }
 
-//elimina un producto en especifico
+// Elimina un producto en especifico
 const eliminar_venta_producto = async (req, res) => {
+    //! Falta mejorar, también cambiar el total en la venta
     const { id_venta, id } = req.params; //leer el id del producto
 
     //validamos que el formato sea valido

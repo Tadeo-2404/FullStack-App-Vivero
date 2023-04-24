@@ -4,12 +4,12 @@ import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../helpers/util
 import ProveedorProducto from "../models/ProveedorProductoModel.js";
 import { crear_proveedor_producto } from "./ProveedorProductoController.js";
 
-//crear una compra
+// Crear una compra
 const crear_compra = async (req, res) => { 
-    const { compra, proveedor_id, productos_proveedor } = req.body;  //leer datos
+    const { compra, proveedor_id, productos_proveedor } = req.body;
 
-    let total = 0; //asignar total
-    let fecha = formatoFechaDB(compra.fecha); //generar fecha
+    let total = 0;
+    let fecha = formatoFechaDB(compra.fecha);
 
     // Validacion campos no vacios
     if(!total || !fecha) {
@@ -32,10 +32,10 @@ const crear_compra = async (req, res) => {
         return;
     }
 
-    //buscar el proveedor
+    // Buscar el proveedor
     const existeProveedor = await Proveedor.findOne({where: {id: proveedor_id}});
 
-    //verificar que existe proveedor
+    // Verificar que existe proveedor
     if(!existeProveedor) {
         const error = new Error("proveedor no existe");
         res.status(404).json({msg: error.message});
@@ -53,9 +53,9 @@ const crear_compra = async (req, res) => {
         if (productosNoValidos === 0) {
             const compra = await Compra.create({ proveedor_id, fecha, total }); //creamos la compra
 
-            //iteramos sobre el arreglo de productos_proveedor
+            // Iteramos sobre el arreglo de productos_proveedor
             productos_proveedor.forEach(async producto => {
-                //con cada proveedor_producto creamos un registro de proveedor_producto
+                // Con cada proveedor_producto creamos un registro de proveedor_producto
                 total += producto.precio //al total a pagar le sumamos el precio de cada producto
                 await crear_proveedor_producto({
                     proveedor_id: proveedor_id,
@@ -66,7 +66,7 @@ const crear_compra = async (req, res) => {
                 });
             });
             compra.total = total;
-            await compra.save(); //guardamos la compra
+            await compra.save();
             res.status(200).json(venta);
         } else {
             res.status(400).json({msg: 'Existen productos no validos'});

@@ -159,10 +159,10 @@ const editar_proveedor_producto = async  (req, res) => {
     }
 
     //asignamos valores
-    existeProducto.proveedor_id = proveedor_id || existeProducto.proveedor_id;
-    existeProducto.nombre = nombre || existeProducto.nombre;
-    existeProducto.precio = precio || existeProducto.precio;
-    existeProducto.cantidad = cantidad || existeProducto.cantidad;
+    existeProducto.proveedor_id ||= proveedor_id;
+    existeProducto.nombre ||= nombre;
+    existeProducto.precio ||= precio;
+    existeProducto.cantidad ||= cantidad;
 
     try {
         await existeProducto.save(); //guardamos cambios
