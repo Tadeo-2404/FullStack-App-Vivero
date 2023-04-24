@@ -19,8 +19,6 @@ function Inicio(){
 
             <div className="contenedor">
                 <h2 className="titulo">Rutas de prueba para ver el funcionamiento</h2>
-                <Link to="/admin/editar-producto/1">Prueba ruta editar producto 1 (admin)</Link>
-                <br />
                 <Link to="/admin/proveedores">Proveedores (admin)</Link>
             </div>
         </main>
