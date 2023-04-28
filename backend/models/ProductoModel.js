@@ -27,15 +27,9 @@ Producto.init({
     },
 }, {
     sequelize,
-    tableName: 'producto', // Nombre de la tabla
+    tableName: 'Producto', // Nombre de la tabla
     modelName: 'Producto', // Nombre del modelo,
     timestamps: false,
 });
-
-/*
-    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
-    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
-*/
-await Producto.sync({ alter: true });
 
 export default Producto;

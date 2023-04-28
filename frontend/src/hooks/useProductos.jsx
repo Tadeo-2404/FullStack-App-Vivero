@@ -9,10 +9,9 @@ function useProductos({ url, limite }){
 
         const obtenerProductos = async () => {
             // Se limita a 5 productos (para mostrar en inicio)
-            let paramLimite = limite && `limite=${limite}`
-            let res = await fetch(`${url}?${paramLimite}`);
+            let res = await fetch(`${url}`);
             let data = await res.json();
-
+            console.log(data);
             setProductos(data);
             setCargando(false);
         }
