@@ -32,8 +32,7 @@ const crear_venta_producto = async (datos) => {
     }
 
     try {
-        const venta_producto = await VentaProducto.create(datos);
-        console.log(venta_producto);
+         await VentaProducto.create(datos);
     } catch (e) {
         const error = new Error(e.name);
         console.log(error.message);
@@ -47,11 +46,14 @@ const crear_venta_producto = async (datos) => {
     Se puede filtrar por id de producto: ...?producto=1
 */
 const obtener_venta_productos = async  (req, res) => {
-    const { limite, venta:idVenta, producto:idProducto } = req.query;
+    const { limite, id, id_venta, id_producto, cantidad, subtotal } = req.query;
 
     const where = {};
-    if(idVenta) where.id_venta = idVenta;
-    if(idProducto) where.id_producto = idProducto;
+    if(id) where.id = id;
+    if(id_venta) where.id_venta = id_venta;
+    if(id_producto) where.id_producto = id_producto;
+    if(cantidad) where.cantidad = cantidad;
+    if(subtotal) where.subtotal = subtotal;
 
     //consultar los productos en base al venta
     let consulta = await VentaProducto.findAll({ 
@@ -69,30 +71,13 @@ const obtener_venta_productos = async  (req, res) => {
     res.json(consulta); //retorna consulta
 }
 
-// Retorna un registro en especifico por ID de venta_producto 
-const obtener_venta_producto =  async (req, res) => {
-    const { id } = req.params; //ID del venta 
-
-    // Buscar que ese venta exista
-    const consulta = await VentaProducto.findByPk(id);
-
-    // Validar si existe venta_producto
-    if(!consulta) {
-        const error = new Error("venta_producto no existe");
-        res.status(404).json({msg: error.message});
-        return;
-    }
-
-    res.json(consulta);
-}
-
 // Edita un producto en especifico
 const editar_venta_producto = async  (req, res) => {
     //! Falta mejorar
-    const { id } = req.params;
-    const { cantidad, subtotal } = req.body;
+    const { id } = req.query;
+    const { cantidad } = req.body;
 
-    // Buscamos el registro venta_producto que contenga el mismo ID y el ID de venta
+    // Buscamos el registro venta_producto que contenga el ID
     const venta_producto = await VentaProducto.findByPk(id); //el que queremos editar
 
     // Validamos si no existe
@@ -102,18 +87,30 @@ const editar_venta_producto = async  (req, res) => {
         return;
     }
 
-    // Validamos que el formato sea valido
-    if(!cantidad.match(regexEnteroPositivo) || !subtotal.match(regexEnteroPositivo)) {
-        const error = new Error("todos los campos deben ser enteros positivos");
-        res.status(400).json({ msg: error.message });
-        return;
+    if(cantidad) {
+        if(!regexEnteroPositivo.test(cantidad)) {
+            const error = new Error("todos los campos deben ser enteros positivos");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
     }
 
+    //obtener venta para modificar su total
+    const obtenerVenta = await Venta.findByPk(venta_producto.id_venta);
+    obtenerVenta.total -= venta_producto.subtotal
+
+    //obtener el producto para obtener su precio y modificar su subtotal
+    const obtenerProducto = await Producto.findByPk(venta_producto.id_producto);
+    venta_producto.subtotal = cantidad*obtenerProducto.precio;
+    
     //asignamos valores
-    venta_producto.cantidad ||= cantidad;
-    venta_producto.subtotal ||= subtotal;
+    venta_producto.cantidad = cantidad;
+
+    //actualizar total venta
+    obtenerVenta.total += venta_producto.subtotal;
 
     try {
+        await obtenerVenta.save(); 
         await venta_producto.save(); //guardamos cambios
         res.json(venta_producto);
     } catch (e) {
@@ -124,39 +121,25 @@ const editar_venta_producto = async  (req, res) => {
 
 // Elimina un producto en especifico
 const eliminar_venta_producto = async (req, res) => {
-    //! Falta mejorar, también cambiar el total en la venta
-    const { id_venta, id } = req.params; //leer el id del producto
+    const { id } = req.query;
 
-    //validamos que el formato sea valido
-    if(!id_venta.match(regexEnteroPositivo), !id.match(regexEnteroPositivo)) {
-        const error = new Error("los ID deben ser enteros positivos");
-        res.status(400).json({ msg: error.message });
-        return;
-    }
+    const venta_producto = await VentaProducto.findByPk(id); //el que queremos eliminar
 
-    //buscamos el registro venta
-    const venta = await Venta.findByPk(id_venta);
-
-    //validamos si no existe
-    if(!venta) {
-        const error = new Error("esta venta no existe");
-        res.status(404).json({msg: error.message});
-        return;
-    }
-
-    //buscamos el registro venta_producto que contenga el mismo ID y el ID de venta
-    const venta_producto = await VentaProducto.findOne({where: {id: id, id_venta: id_venta}});
-
-    //validamos si no existe
+    // Validamos si no existe
     if(!venta_producto) {
         const error = new Error("registro no encontrado");
         res.status(404).json({msg: error.message});
         return;
     }
 
+    //obtener venta para modificar su total
+    const obtenerVenta = await Venta.findByPk(venta_producto.id_venta);
+    obtenerVenta.total -= venta_producto.subtotal
+
     try {
-        await venta_producto.destroy(); //eliminamos el registro
-        res.json("registro eliminado");
+        await obtenerVenta.save(); 
+        await venta_producto.save(); //guardamos cambios
+        res.json("registro elimnado correctamente");
     } catch (e) {
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
@@ -166,7 +149,6 @@ const eliminar_venta_producto = async (req, res) => {
 export {
     crear_venta_producto,
     obtener_venta_productos,
-    obtener_venta_producto,
     editar_venta_producto,
     eliminar_venta_producto,
 }
