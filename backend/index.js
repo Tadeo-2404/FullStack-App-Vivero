@@ -21,6 +21,7 @@ import proveedorProductoRoutes from './routes/proveedorProductoRoutes.js' //ruta
 //conexion base de datos
 try {
     await sequelize.authenticate();
+    await sequelize.sync({alter: true});
     console.log(`Base de datos conectada correctamente`);
 } catch (error) {
     console.log(error);

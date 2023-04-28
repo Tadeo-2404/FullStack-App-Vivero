@@ -56,16 +56,9 @@ CompraProducto.init({
     }
 }, {
     sequelize,
-    tableName: 'compra_producto', // Nombre de la tabla
+    tableName: 'CompraProducto', // Nombre de la tabla
     modelName: 'CompraProducto', // Nombre del modelo,
     timestamps: false
-});
-
-//sincronizar tabla 
-await CompraProducto.sync({ force: true }).then(() => {
-    console.log('Tabla compra_producto creada');
-}).catch(error => {
-    console.error('Error creando la tabla compra_producto:', error);
 });
 
 export default CompraProducto;

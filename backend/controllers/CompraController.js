@@ -1,29 +1,23 @@
 import Compra from "../models/CompraModel.js";
 import Proveedor from "../models/ProveedorModel.js";
-import { regexFecha, regexEnteroPositivo, formatoFechaDB } from "../helpers/utils.js";
+import { regexFecha, regexEnteroPositivo, formatoFechaDB, regexFlotantePositivo } from "../helpers/utils.js";
 import ProveedorProducto from "../models/ProveedorProductoModel.js";
-import { crear_proveedor_producto } from "./ProveedorProductoController.js";
+import { crear_compra_producto } from "./CompraProductoController.js";
+import CompraProducto from "../models/CompraProductoModel.js";
 
 // Crear una compra
 const crear_compra = async (req, res) => { 
     const { compra, proveedor_id, productos_proveedor } = req.body;
 
-    let total = 0;
-    let fecha = formatoFechaDB(compra.fecha);
-
     // Validacion campos no vacios
-    if(!total || !fecha) {
+    if(!productos_proveedor || !proveedor_id || !compra.fecha) {
         const error = new Error("Todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
 
-    // Validamos total
-    if(!total.match(regexEnteroPositivo)) {
-        const error = new Error("Formato de total invalido");
-        res.status(400).json({ msg: error.message });
-        return;
-    }
+    let total = 0; //total de compra
+    let fecha = formatoFechaDB(compra.fecha); //fecha de compra
 
     // Validamos formato de fecha
     if(!fecha.match(regexFecha)) {
@@ -51,18 +45,20 @@ const crear_compra = async (req, res) => {
     
         // Si todos los proveedor_productos son validos, ejecutamos lo siguiente
         if (productosNoValidos === 0) {
+            let subtotal = 0;
             const compra = await Compra.create({ proveedor_id, fecha, total }); //creamos la compra
 
             // Iteramos sobre el arreglo de productos_proveedor
             productos_proveedor.forEach(async producto => {
-                // Con cada proveedor_producto creamos un registro de proveedor_producto
+                // Con cada proveedor_producto creamos un registro de compra_producto
                 total += producto.precio //al total a pagar le sumamos el precio de cada producto
-                await crear_proveedor_producto({
-                    proveedor_id: proveedor_id,
-                    nombre: producto.nombre,
-                    descripcion: producto.descripcion,
-                    precio: producto.precio,
+                subtotal = producto.precio*producto.cantidad; //calcular subtotal de compra_producto
+                await crear_compra_producto({
+                    id_compra: compra.id,
+                    id_proveedor: proveedor_id,
+                    id_proveedorProducto: producto.id,
                     cantidad: producto.cantidad,
+                    subtotal: subtotal
                 });
             });
             compra.total = total;
@@ -79,32 +75,73 @@ const crear_compra = async (req, res) => {
 
 // Retornar todas las ventas
 const obtener_compras = async  (req, res) => {
-    const { limite } = req.query;
-    let consulta = await Compra.findAll({ limit: limite }); // Realiza la consulta
+    const { limite, id, proveedor_id, fecha, total } = req.query;
 
-    // Muestra error si no hay compras
+    //validar que ID es un entero
+    if (id) {
+        if (!regexEnteroPositivo.test(id)) {
+            const error = new Error("El ID debe ser un entero positivo");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
+
+    //validar que proveedor id es un entero
+    if (proveedor_id) {
+        if (!regexEnteroPositivo.test(proveedor_id)) {
+            const error = new Error("El Proveedor ID debe ser un entero positivo");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
+
+    //validar que Limite es un entero
+    if (limite) {
+        if (!regexEnteroPositivo.test(limite)) {
+            const error = new Error("El Limite debe ser un entero positivo");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
+
+    //validar que fecha es un entero
+    if (fecha) {
+        if (!regexFecha.test(fecha)) {
+            const error = new Error("La fecha debe ser YYYY-MM-DD");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
+
+    //validar que total es un entero
+    if (total) {
+        if (!regexFlotantePositivo.test(total) || !regexEnteroPositivo(total)) {
+            const error = new Error("El total debe tener un formato valido");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
+
+    const where = {};
+    if(id) where.id = id;
+    if(proveedor_id) where.proveedor_id = proveedor_id;
+    if(fecha) where.fecha = fecha;
+    if(total) where.total = total;
+    
+    //consultar los productos en base al compra
+    let consulta = await CompraProducto.findAll({ 
+        where,
+        limit: limite
+    });
+      
+    //muestra error si no hay registros
     if(!consulta) {
-        const error = new Error("no hay compras");
+        const error = new Error("no hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }
 
-    res.json(consulta); //retorna compra
-}
-
-//retorna una compra en especifico por ID
-const obtener_compra =  async (req, res) => {
-    const { id } = req.params; //leer el id de la compra
-    const consulta = await Compra.findByPk(id); //realiza la consulta
-
-    //si la compra no se encuentra
-    if(!consulta) {
-        const error = new Error("compra no encontrada");
-        res.status(404).json({msg: error.message});
-        return;
-    }
-
-    res.json(consulta); //retorna compra
+    res.json(consulta); //retorna consulta
 }
 
 //edita una compra en especifico
@@ -113,20 +150,35 @@ const editar_compra = async  (req, res) => {
 
 //elimina una compra en especifico
 const eliminar_compra = async (req, res) => {
-    const { id } = req.params; //leer el id de la compra
+    const { id } = req.query; //leer el id de la compra
+
+    if(!id) {
+        const error = new Error("El ID es obligario");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
     const compra = await Compra.findByPk(id); //buscamos compra por id
 
     //validamos si la compra no se encuentra
     if(!compra) {
-        const error = new Error("compra no encontrado");
+        const error = new Error(`La Compra con el ID ${id} no se encuentra`);
         res.status(404).json({msg: error.message});
         return;
     }
 
     try {
+        // Primero borramos todos los compra_producto que refieren a esta id
+        let comprasProductos = await CompraProducto.findAll({ where: { id_compra: id } });
+        comprasProductos.forEach(async compraProducto => {
+            await compraProducto.destroy();
+        })
+
+        // Ahora sí borramos la compra
         await compra.destroy(); //destuimos el registro de compra
-        res.json("compra eliminada");
+        res.json(compra);
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }
@@ -136,7 +188,6 @@ const eliminar_compra = async (req, res) => {
 export {
     crear_compra,
     obtener_compras,
-    obtener_compra,
     editar_compra,
     eliminar_compra,
 }
