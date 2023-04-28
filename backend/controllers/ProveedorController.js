@@ -1,25 +1,29 @@
-import Proveedor from "../models/ProveedorModel.js";
-import { regexNombreCompleto, regexTelefono } from "../helpers/utils.js";
+import { Op } from "sequelize"; //importamos OP para busqueda en obtener
+import ProveedorProducto from "../models/ProveedorProductoModel.js";
+import Proveedor from "../models/ProveedorModel.js"; //importar modelo Proveedor
+import { regexNombreCompleto, regexTelefono, regexEnteroPositivo } from "../helpers/utils.js"; //importar regex para validacion de formato
 
 //crear un proveedor
 const crear_proveedor = async (req, res) => {
     const { nombre, telefono } = req.body; //leer input usuario
 
-    //validamos los campos
+    //validamos los campos no vacios
     if(!nombre || !telefono) {
         const error = new Error("todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
 
+    //validar formato nombre
     if(!nombre.match(regexNombreCompleto)) {
-        const error = new Error("nombre solo debe contener caracteres");
+        const error = new Error("El nombre del Proveedor solo debe contener caracteres");
         res.status(400).json({ msg: error.message });
         return;
     }
 
-    if(!telefono.match(regexTelefono)) {
-        const error = new Error("telefono debe contener 10 digitos y solo numeros 0-9");
+    //validar formato telefono
+    if(!regexTelefono.test(telefono)) {
+        const error = new Error("El telefono del Proveedor debe contener 10 digitos y solo numeros 0-9");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -36,58 +40,79 @@ const crear_proveedor = async (req, res) => {
 
 //retornar todos los proveedores
 const obtener_proveedores = async  (req, res) => {
-    const { limite } = req.query;
-    let consulta = await Proveedor.findAll({ limit: limite }); // Realiza la consulta
+    const { limite, id, nombre, telefono } = req.query; //leer filtros de busqueda
 
-    //muestra error si no hay proveedores
-    if(!consulta) {
-        const error = new Error("No hay proveedores");
-        res.status(404).json({msg: error.message});
-        return;
+    //validar que ID es un entero
+    if(id) {
+        if(!regexEnteroPositivo.test(id)) {
+            const error = new Error("El ID debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
     }
 
-    res.json(consulta); //retorna consulta
-}
-
-//retorna un proveedor en especifico por ID
-const obtener_proveedor =  async (req, res) => {
-    const { id } = req.params; //leer el id del proveedor
-    const consulta = await Proveedor.findByPk(id); //realiza la consulta
-
-    //si el proveedor no se encuentra
-    if(!consulta) {
-        const error = new Error("proveedor no encontrado");
-        res.status(404).json({msg: error.message});
-        return;
+    //validar que ID es un entero
+    if(limite) {
+        if(!regexEnteroPositivo.test(limite)) {
+            const error = new Error("El Limite debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
     }
 
-    res.json(consulta); //retorna proveedor
+    const where = {};
+    if(id) where.id = id;
+    if(nombre) where.nombre = { [Op.like]: `%${nombre}%` };
+    if(telefono) where.telefono = { [Op.like]: `%${telefono}%` };
+
+    //realizar consulta
+    let consulta = await Proveedor.findAll({ 
+      where,
+      limit: limite
+    });
+    
+    res.json(consulta)
 }
 
 //edita un proveedor en especifico
 const editar_proveedor = async  (req, res) => {
     const { nombre, telefono } = req.body; //leer input usuario
-    const { id } = req.params; //leer el id del proveedor
+    const { id } = req.query; //leer el id del proveedor
+
+    //validar que ID es un entero
+    if(!regexEnteroPositivo.test(id)) {
+        const error = new Error("El ID de Proveedor debe ser un entero positivo");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    //buscar proveedor por DI
     const proveedor = await Proveedor.findByPk(id);
 
+    //validacion si el proveedor no se encuenta
     if(!proveedor) {
-        const error = new Error("proveedor no encontrado");
+        const error = new Error(`El Proveedor con el ID ${id} no encontrado`);
         res.status(404).json({msg: error.message});
         return;
     }
 
-    if(nombre && !nombre.match(regexNombreCompleto)) {
-        const error = new Error("nombre solo debe contener caracteres");
-        res.status(400).json({ msg: error.message });
-        return;
+    //si se edita el nombre, se valida su formato
+    if(nombre) {
+        if(!nombre.match(regexNombreCompleto)) {
+            const error = new Error("El nombre del Proveedor solo debe contener caracteres");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
     }
 
-    if(telefono && !telefono.match(regexTelefono)) {
-        const error = new Error("telefono debe contener 10 digitos y solo numeros 0-9");
-        res.status(400).json({ msg: error.message });
-        return;
+    //si se edita el telefono, se valida su formato
+    if(telefono) {
+        if(!telefono.match(regexTelefono)) {
+            const error = new Error("El telefono del Proveedor debe contener 10 digitos y solo numeros 0-9");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
     }
-
 
     //asignamos valores
     proveedor.nombre = nombre || proveedor.nombre;
@@ -105,9 +130,18 @@ const editar_proveedor = async  (req, res) => {
 //elimina un proveedor en especifico
 const eliminar_proveedor = async (req, res) => {
     const { id } = req.params; //leer el id del proveedor
+
+    //validar que ID es un entero
+    if(!regexEnteroPositivo.test(id)) {
+        const error = new Error("El ID de Proveedor debe ser un entero positivo");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    //buscar proveedor por ID
     const proveedor = await Proveedor.findByPk(id);
 
-    //arrojamos error si no se encuentra
+    //arrojamos error si no se encuentra el proveedor
     if(!proveedor) {
         const error = new Error("proveedor no encontrado");
         res.status(404).json({msg: error.message});
@@ -115,9 +149,17 @@ const eliminar_proveedor = async (req, res) => {
     }
 
     try {
-        await proveedor.destroy(); //eliminamos el proveedor
+        // Primero borramos todos los proveedor_producto que refieren a esta id
+        let proveedorProductos = await ProveedorProducto.findAll({ where: { proveedor_id: id } });
+        proveedorProductos.forEach(async proveedorProducto => {
+            await proveedorProducto.destroy();
+        })
+
+        // Ahora sí borramos el proveedor
+        await proveedor.destroy(); //destuimos el registro de proveedor
         res.json(proveedor);
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }
@@ -127,7 +169,6 @@ const eliminar_proveedor = async (req, res) => {
 export {
     crear_proveedor,
     obtener_proveedores,
-    obtener_proveedor,
     editar_proveedor,
     eliminar_proveedor,
 }
