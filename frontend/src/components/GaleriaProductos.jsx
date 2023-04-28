@@ -1,8 +1,8 @@
 import Card from "./CardProducto";
 import useProductos from "../hooks/useProductos";
 
-function GaleriaProductos({ opciones }){
-    const [ cargando, productos ] = useProductos(opciones);
+function GaleriaProductos({ url }){
+    const [ cargando, productos ] = useProductos(url);
     
     return(
         <div className="contenedor productos">

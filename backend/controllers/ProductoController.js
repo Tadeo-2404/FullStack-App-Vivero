@@ -48,6 +48,38 @@ const crear_producto = async (req, res) => {
 const obtener_productos = async  (req, res) => {
     const { limite, id, nombre, descripcion, precio, cantidad } = req.query;
 
+    if(id) {
+        if(!regexEnteroPositivo.test(id)) {
+            const error = new Error("El ID de Producto debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    if(limite) {
+        if(!regexEnteroPositivo.test(limite)) {
+            const error = new Error("El limite de Productos debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    if(cantidad) {
+        if(!regexEnteroPositivo.test(cantidad)) {
+            const error = new Error("La cantidad de Producto debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    if(precio) {
+        if(!regexEnteroPositivo.test(precio) || !regexFlotantePositivo.test(precio)) {
+            const error = new Error("La precio de Producto debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
     const where = {};
     if(id) where.id = id;
     if(nombre) where.nombre = { [Op.like]: `%${nombre}%` };
@@ -66,6 +98,7 @@ const obtener_productos = async  (req, res) => {
 //edita un producto en especifico
 const editar_producto = async  (req, res) => {
     const { nombre, descripcion, precio, cantidad } = req.body; //leer input usuario
+    const { id } = req.query;
 
     //validar formato nombre
     if(nombre) {
@@ -103,12 +136,16 @@ const editar_producto = async  (req, res) => {
         }
     }
 
-    const { id } = req.query; //leer el id
-
-    //validar formato id
-    if(!regexEnteroPositivo.test(id)) {
-        const error = new Error("id debe ser entero positivo");
+    //validar que el id no este vacio
+    if (!id) {
+        const error = new Error("El ID es obligatorio");
         res.status(400).json({msg: error.message});
+    }
+    
+    //validar formato id
+    if (!regexEnteroPositivo.test(id)) {
+        const error = new Error("El ID debe ser entero positivo");
+        res.status(400).json({ msg: error.message });
         return;
     }
 
@@ -141,9 +178,15 @@ const editar_producto = async  (req, res) => {
 const eliminar_producto = async (req, res) => {
     const { id } = req.query; //leer el id del producto
 
+    //validar que el id no este vacio
+    if (!id) {
+        const error = new Error("El ID es obligatorio");
+        res.status(400).json({msg: error.message});
+    }
+
     //validar formato id
-    if(!id.match(regexEnteroPositivo)) {
-        const error = new Error("id debe ser entero positivo");
+    if(!regexEnteroPositivo.test(id)) {
+        const error = new Error("El ID debe ser entero positivo");
         res.status(400).json({msg: error.message});
         return;
     }
