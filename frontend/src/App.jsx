@@ -18,7 +18,9 @@ import InicioSesionAdmin from "./pages/admin/InicioSesionAdmin";
 import FormPublicarProducto from "./pages/admin/FormPublicarProducto";
 import FormEditarProducto from "./pages/admin/FormEditarProducto";
 import FormAgregarVenta from "./pages/admin/FormAgregarVenta";
+import FormAgregarProveedor from "./pages/admin/FormAgregarProveedor";
 import Proveedores from "./pages/admin/Proveedores";
+import Ventas from "./pages/admin/Ventas";
 
 function App() {
   return (
@@ -28,14 +30,18 @@ function App() {
         <Routes>
 
             <Route path="/" element={<Inicio />} />
-            <Route path="/productos" element={<Productos />} />
 
-            {/* ADMIN */}
             <Route path="/admin/iniciar-sesion" element={<InicioSesionAdmin />} />
-            <Route path="/admin/publicar" element={<FormPublicarProducto />} />
+
+            <Route path="/productos" element={<Productos />} />
+            <Route path="/admin/publicar-producto" element={<FormPublicarProducto />} />
             <Route path="/admin/editar-producto/:id" element={<FormEditarProducto />} />
+
+            <Route path="/admin/ventas" element={<Ventas />} />
             <Route path="/admin/agregar-venta" element={<FormAgregarVenta />} />
+
             <Route path="/admin/proveedores" element={<Proveedores />} />
+            <Route path="/admin/agregar-proveedor" element={<FormAgregarProveedor />} />
 
             <Route path="*" element={<NotFound />} />
             

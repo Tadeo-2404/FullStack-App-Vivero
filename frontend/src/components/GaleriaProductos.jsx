@@ -12,7 +12,7 @@ function GaleriaProductos({ opciones }){
                         <Card key={producto.id} datos={producto} />
                     ))
                 ) : (
-                    <p>No hay artículos para mostrar</p>
+                    <p>No hay productos para mostrar</p>
                 )
             }
         </div>

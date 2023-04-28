@@ -18,8 +18,10 @@ function Inicio(){
             </article>
 
             <div className="contenedor">
-                <h2 className="titulo">Rutas de prueba para ver el funcionamiento</h2>
-                <Link to="/admin/proveedores">Proveedores (admin)</Link>
+                <h2 className="titulo">Proveedores</h2>
+                <Link to="/admin/proveedores">Lista de proveedores</Link>
+                <h2 className="titulo">Ventas</h2>
+                <Link to="/admin/ventas">Lista de ventas</Link>
             </div>
         </main>
     )

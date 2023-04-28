@@ -21,7 +21,7 @@ function FormAgregarVenta(){
         let productosFiltrados = [];
         for(let [id, cantidad] of Object.entries(infoProductos)){
             // Si la cantidad es inválida, no va a agregar la venta
-            if(cantidad <= 0) return;
+            if(cantidad <= 0) continue;
             // Filtramos solo los productos seleccionados
             let producto = productos.find(producto => producto.id == id);
             if(producto){
