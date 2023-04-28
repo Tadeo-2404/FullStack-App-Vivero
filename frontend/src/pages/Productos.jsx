@@ -9,9 +9,7 @@ function Productos(){
         <main className="contenedor main">
             <h1 className="titulo">Productos</h1>
 
-            <GaleriaProductos opciones={{
-                url: `${urlBackend}${query}`
-            }} />
+            <GaleriaProductos url={`${urlBackend}${query}`} />
         </main>
     )
 }

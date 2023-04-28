@@ -7,10 +7,7 @@ function Inicio(){
             <article className="galeria">
                 <h2 className="titulo galeria__titulo">Productos</h2>
 
-                <GaleriaProductos opciones={{
-                    url: "http://localhost:3000/api/productos",
-                    limite: 5
-                }} />
+                <GaleriaProductos url={`http://localhost:3000/api/productos?limite=5`} />
 
                 <div className="contenedor galeria__botones">
                     <Link to={"/productos"}>Ver más</Link>
