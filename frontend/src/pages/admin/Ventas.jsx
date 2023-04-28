@@ -8,7 +8,7 @@ function Ventas(){
             // Se obtienen las ventas
             let res = await fetch("http://localhost:3000/api/ventas");
             let datos = await res.json();
-
+            
             datos = datos.map(async venta => {
                 // Por cada venta, obtenemos los datos de venta-producto
                 let res = await fetch(`http://localhost:3000/api/venta-producto?venta=${venta.id}`);
@@ -16,8 +16,11 @@ function Ventas(){
 
                 datos = datos.map(async datoVP => {
                     // Por cada venta-producto se obtiene la información del producto y se agrega
-                    let resProducto = await fetch(`http://localhost:3000/api/productos/${datoVP.id_producto}`);
-                    let { nombre, descripcion, precio } = await resProducto.json();
+                    let resProducto = await fetch(`http://localhost:3000/api/productos/?id=${datoVP.id_producto}`).then(response => response.json());
+
+                    let nombre = resProducto[0].nombre;
+                    let descripcion = resProducto[0]["descripcion"];
+                    let precio = resProducto[0].precio;
 
                     return {
                         ...datoVP,
