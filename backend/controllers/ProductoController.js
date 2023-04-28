@@ -1,10 +1,36 @@
+import { regexCadena, regexEnteroPositivo, regexFlotantePositivo } from "../helpers/utils.js";
 import Producto from "../models/ProductoModel.js";
+import { Op } from "sequelize";
 
 const crear_producto = async (req, res) => {
     const { nombre, descripcion, precio, cantidad} = req.body; //leer input usuario
     
     if(!nombre || !descripcion || !precio || !cantidad) {
         const error = new Error("todos los campos son obligatorios");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!nombre.match(regexCadena)) {
+        const error = new Error("nombre de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!descripcion.match(regexCadena)) {
+        const error = new Error("descripcion de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!regexFlotantePositivo.test(precio)) {
+        const error = new Error("precio de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!regexEnteroPositivo.test(cantidad)) {
+        const error = new Error("cantidad de producto invalida");
         res.status(400).json({msg: error.message});
         return;
     }
@@ -20,40 +46,76 @@ const crear_producto = async (req, res) => {
 
 //retornar todos los productos
 const obtener_productos = async  (req, res) => {
-    const { limite } = req.query;
-    let consulta = await Producto.findAll({ limit: limite }); // Realiza la consulta
+    const { limite, id, nombre, descripcion, precio, cantidad } = req.query;
 
-    //muestra error si no hay productos
-    if(!consulta) {
-        const error = new Error("No hay productos");
-        res.status(404).json({msg: error.message});
-        return;
-    }
+    const where = {};
+    if(id) where.id = id;
+    if(nombre) where.nombre = { [Op.like]: `%${nombre}%` };
+    if(descripcion) where.descripcion = { [Op.like]: `%${descripcion}%` };
+    if(precio) where.precio = precio;
+    if(cantidad) where.cantidad = cantidad;
 
-    res.json(consulta); //retorna producto
-}
-
-//retorna un producto en especifico por ID
-const obtener_producto =  async (req, res) => {
-    const { id } = req.params; //leer el id del producto
-    const consulta = await Producto.findByPk(id); //realiza la consulta
-
-    //si el producto no se encuentra
-    if(!consulta) {
-        const error = new Error("Producto no encontrado");
-        res.status(404).json({msg: error.message});
-        return;
-    }
-
-    res.json(consulta); //retorna producto
+    let consulta = await Producto.findAll({ 
+      where,
+      limit: limite
+    });
+    
+    res.json(consulta)
 }
 
 //edita un producto en especifico
 const editar_producto = async  (req, res) => {
     const { nombre, descripcion, precio, cantidad } = req.body; //leer input usuario
-    const { id } = req.params; //leer el id del producto
+
+    //validar formato nombre
+    if(nombre) {
+        if(!regexCadena.test(nombre)) {
+            const error = new Error("nombre de producto invalido");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    //validar formato descripcion
+    if(descripcion) {
+        if(!regexCadena.test(descripcion)) {
+            const error = new Error("descripcion de producto invalida");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    //validar formato precio
+    if(precio) {
+        if(!regexFlotantePositivo.test(precio)) {
+            const error = new Error("precio de producto invalido");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    //validar formato cantidad
+    if(cantidad) {
+        if(!regexEnteroPositivo.test(cantidad)) {
+            const error = new Error("cantidad de producto invalida");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    const { id } = req.query; //leer el id
+
+    //validar formato id
+    if(!regexEnteroPositivo.test(id)) {
+        const error = new Error("id debe ser entero positivo");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    //buscar producto
     const producto = await Producto.findByPk(id);
 
+    //validar si producto no se encuentra
     if(!producto) {
         const error = new Error("Producto no encontrado");
         res.status(404).json({msg: error.message});
@@ -67,7 +129,7 @@ const editar_producto = async  (req, res) => {
     producto.cantidad = cantidad || producto.cantidad;
 
     try {
-        await producto.save();
+        await producto.save(); //guardar registro
         res.json(producto);
     } catch (e) {
         const error = new Error(e.name);
@@ -77,9 +139,19 @@ const editar_producto = async  (req, res) => {
 
 //elimina un producto en especifico
 const eliminar_producto = async (req, res) => {
-    const { id } = req.params; //leer el id del producto
+    const { id } = req.query; //leer el id del producto
+
+    //validar formato id
+    if(!id.match(regexEnteroPositivo)) {
+        const error = new Error("id debe ser entero positivo");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    //buscar producto
     const producto = await Producto.findByPk(id);
 
+    //validar si producto no fue encontrado
     if(!producto) {
         const error = new Error("Producto no encontrado");
         res.status(404).json({msg: error.message});
@@ -87,7 +159,7 @@ const eliminar_producto = async (req, res) => {
     }
 
     try {
-        await producto.destroy();
+        await producto.destroy(); //eliminar registro
         res.json(producto);
     } catch (e) {
         const error = new Error(e.name);
@@ -95,11 +167,9 @@ const eliminar_producto = async (req, res) => {
     }
 }
 
-
 export {
     crear_producto,
     obtener_productos,
-    obtener_producto,
     editar_producto,
     eliminar_producto,
 }
