@@ -7,17 +7,24 @@ import CompraProducto from "../models/CompraProductoModel.js";
 
 // Crear una compra
 const crear_compra = async (req, res) => { 
-    const { compra, proveedor_id, productos_proveedor } = req.body;
+    const { id_proveedor, productos:productos_proveedor } = req.body;
 
     // Validacion campos no vacios
-    if(!productos_proveedor || !proveedor_id || !compra.fecha) {
+    if(!productos_proveedor || !id_proveedor) {
         const error = new Error("Todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
 
     let total = 0; //total de compra
-    let fecha = formatoFechaDB(compra.fecha); //fecha de compra
+
+    // Se crea la fecha
+    let date = new Date();
+    let dia = date.getDate().toString().padStart(2, "0");
+    let mes = (date.getMonth() + 1).toString().padStart(2, 0);
+    let anio = date.getFullYear();
+
+    let fecha = formatoFechaDB(`${dia}-${mes}-${anio}`); //fecha de compra DD-MM-YYYY
 
     // Validamos formato de fecha
     if(!fecha.match(regexFecha)) {
@@ -27,7 +34,7 @@ const crear_compra = async (req, res) => {
     }
 
     // Buscar el proveedor
-    const existeProveedor = await Proveedor.findOne({where: {id: proveedor_id}});
+    const existeProveedor = await Proveedor.findOne({where: {id: id_proveedor}});
 
     // Verificar que existe proveedor
     if(!existeProveedor) {
@@ -37,7 +44,7 @@ const crear_compra = async (req, res) => {
 
     try {        
         // Verificar si cada provedor_producto existe en la base de datos
-        const productosNoValidos = 0;
+        let productosNoValidos = 0;
         productos_proveedor.forEach(async producto => {
             const existe = await ProveedorProducto.findOne({ where: { id: producto.id } });
             if (!existe) productosNoValidos++;
@@ -45,24 +52,26 @@ const crear_compra = async (req, res) => {
     
         // Si todos los proveedor_productos son validos, ejecutamos lo siguiente
         if (productosNoValidos === 0) {
-            let subtotal = 0;
-            const compra = await Compra.create({ proveedor_id, fecha, total }); //creamos la compra
+            const compra = await Compra.create({ id_proveedor, fecha, total }); //creamos la compra
 
             // Iteramos sobre el arreglo de productos_proveedor
             productos_proveedor.forEach(async producto => {
                 // Con cada proveedor_producto creamos un registro de compra_producto
-                total += producto.precio //al total a pagar le sumamos el precio de cada producto
-                subtotal = producto.precio*producto.cantidad; //calcular subtotal de compra_producto
+                let subtotal = producto.precio * producto.cantidad;
+                total += subtotal // Al total a pagar le sumamos el precio de cada producto
                 await crear_compra_producto({
                     id_compra: compra.id,
-                    id_proveedor: proveedor_id,
+                    id_proveedor,
                     id_proveedorProducto: producto.id,
                     cantidad: producto.cantidad,
-                    subtotal: subtotal
+                    subtotal
                 });
             });
             compra.total = total;
             await compra.save();
+
+            //! Aquí debemos sumarle la cantidad al Producto?
+
             res.status(200).json(venta);
         } else {
             res.status(400).json({msg: 'Existen productos no validos'});
@@ -75,7 +84,7 @@ const crear_compra = async (req, res) => {
 
 // Retornar todas las ventas
 const obtener_compras = async  (req, res) => {
-    const { limite, id, proveedor_id, fecha, total } = req.query;
+    const { limite, id, id_proveedor, fecha, total } = req.query;
 
     //validar que ID es un entero
     if (id) {
@@ -87,8 +96,8 @@ const obtener_compras = async  (req, res) => {
     }
 
     //validar que proveedor id es un entero
-    if (proveedor_id) {
-        if (!regexEnteroPositivo.test(proveedor_id)) {
+    if (id_proveedor) {
+        if (!regexEnteroPositivo.test(id_proveedor)) {
             const error = new Error("El Proveedor ID debe ser un entero positivo");
             res.status(400).json({ msg: error.message });
             return;
@@ -124,7 +133,7 @@ const obtener_compras = async  (req, res) => {
 
     const where = {};
     if(id) where.id = id;
-    if(proveedor_id) where.proveedor_id = proveedor_id;
+    if(id_proveedor) where.id_proveedor = id_proveedor;
     if(fecha) where.fecha = fecha;
     if(total) where.total = total;
     

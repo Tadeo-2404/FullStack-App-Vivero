@@ -33,7 +33,7 @@ const crear_venta = async (req, res) => {
 
     try {        
         // Verificar si cada producto existe en la base de datos
-        const productosNoValidos = 0;
+        let productosNoValidos = 0;
         productos.forEach(async producto => {
             const existe = await Producto.findOne({ where: { id: producto.id } });
             if (!existe) productosNoValidos++;
@@ -45,15 +45,15 @@ const crear_venta = async (req, res) => {
 
             //iteramos sobre el arreglo de productos
             productos.forEach(async producto => {
-                let calculo = producto.precio*producto.cantidad;
-                total = total + calculo;
+                let subtotal = producto.precio * producto.cantidad;
+                total = total + subtotal;
 
                 //con cada producto creamos un registro de venta_producto
                 await crear_venta_producto({
                     id_venta: venta.id,
                     id_producto: producto.id,
                     cantidad: producto.cantidad,
-                    subtotal: producto.precio * producto.cantidad
+                    subtotal
                 });
             });
             venta.total = total;
