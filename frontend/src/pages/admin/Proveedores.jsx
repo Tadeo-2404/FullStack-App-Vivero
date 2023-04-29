@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Proveedores(){
     const [proveedores, setProveedores] = useState([]);
@@ -20,6 +21,7 @@ function Proveedores(){
                 {
                     proveedores.map(proveedor => (
                         <div className="proveedor" key={proveedor.id}>
+                            <Link to={`/admin/editar-proveedor/${proveedor.id}`}>Editar</Link>
                             <h2>{proveedor.nombre}</h2>
                             <p>{proveedor.telefono}</p>
                         </div>

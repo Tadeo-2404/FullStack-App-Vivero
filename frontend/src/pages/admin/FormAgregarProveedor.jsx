@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function FormAgregarProveedor(){
+    const navigate = useNavigate();
     const [datos, setDatos] = useState({
         nombre: "",
         telefono: ""
@@ -19,6 +21,8 @@ function FormAgregarProveedor(){
         })
         let data = await res.json();
         console.log("Proveedor agregado", data);
+
+        navigate("/");
     }
 
     const handleInput = e => {

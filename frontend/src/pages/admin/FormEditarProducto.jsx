@@ -8,22 +8,20 @@ function FormEditarProducto(){
     const { id } = useParams();
     const [producto, setProducto] = useState(null);
 
-    const opciones = {
-        url: `http://localhost:3000/api/productos/${id}`,
-        limite: 1
-    }
-    const [ cargando, datos ] = useProductos(opciones);
+    // URL para obtener el producto
+    const url = `http://localhost:3000/api/productos?id=${id}`;
+    const [ cargando, datos ] = useProductos(url);
 
     // Si llegan datos, se pasa a producto
     useEffect(() => {
-        if(datos) setProducto(datos);
+        if(datos) setProducto(datos[0]);
     }, [datos])
 
     const handleSubmit = e => {
         e.preventDefault();
 
         // Hacer fetch con method put para actualizar los datos
-        fetch(`http://localhost:3000/api/productos/${id}`, {
+        fetch(`http://localhost:3000/api/productos?id=${id}`, {
             method: "PUT",
             headers: {
                 'Content-type': 'application/json'

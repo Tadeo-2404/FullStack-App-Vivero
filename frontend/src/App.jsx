@@ -21,6 +21,7 @@ import FormAgregarVenta from "./pages/admin/FormAgregarVenta";
 import FormAgregarProveedor from "./pages/admin/FormAgregarProveedor";
 import Proveedores from "./pages/admin/Proveedores";
 import Ventas from "./pages/admin/Ventas";
+import FormEditarProveedor from "./pages/admin/FormEditarProveedor";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
 
             <Route path="/admin/proveedores" element={<Proveedores />} />
             <Route path="/admin/agregar-proveedor" element={<FormAgregarProveedor />} />
+            <Route path="/admin/editar-proveedor/:id" element={<FormEditarProveedor />} />
 
             <Route path="*" element={<NotFound />} />
             
