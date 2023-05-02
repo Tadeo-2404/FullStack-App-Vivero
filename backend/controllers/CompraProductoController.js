@@ -5,35 +5,31 @@ import { regexEnteroPositivo } from "../helpers/utils.js"; //importar regex para
 
 //crear un registro compra_producto
 const crear_compra_producto = async (datos) => {
-    const {id_compra, id_proveedor, cantidad, subtotal} = datos; //leer datos
-
+    const {id_compra, id_producto, cantidad, subtotal} = datos; //leer datos
+    
     //VALIDACIONES DATOS
     // Validamos que el formato de id_compra sea valido
-    if(!id_compra.match(regexEnteroPositivo)) {
+    if(!regexEnteroPositivo.test(id_compra)) {
         const error = new Error("El id_compra debe ser un entero positivo");
-        res.status(400).json({ msg: error.message });
-        return;
+        return { msg: error.message };
     }
 
     // Validamos que el formato de id_proveedor sea valido
-    if(!id_proveedor.match(regexEnteroPositivo)) {
-        const error = new Error("El id_proveedor debe ser un entero positivo");
-        res.status(400).json({ msg: error.message });
-        return;
+    if(!regexEnteroPositivo.test(id_producto)) {
+        const error = new Error("El id_producto debe ser un entero positivo");
+        return { msg: error.message };
     }
 
     // Validamos que el formato de cantidad sea valido
-    if(!cantidad.match(regexEnteroPositivo)) {
+    if(!regexEnteroPositivo.test(cantidad)) {
         const error = new Error("La cantidad debe ser un entero positivo");
-        res.status(400).json({ msg: error.message });
-        return;
+        return { msg: error.message };
     }
 
     // Validamos que el formato de subtotal sea valido
-    if(!subtotal.match(regexEnteroPositivo)) {
+    if(!regexEnteroPositivo.test(subtotal)) {
         const error = new Error("El subtotal debe ser un entero positivo");
-        res.status(400).json({ msg: error.message });
-        return;
+        return { msg: error.message };
     }
 
     //buscar Compra por ID
@@ -42,24 +38,17 @@ const crear_compra_producto = async (datos) => {
     //validacion existeCompra
     if(!existeCompra) {
         const error = new Error(`La Compra con el ID ${id_compra} no existe`);
-        res.status(400).json({msg: error.message});
-    }
-
-    //buscar Proveedor por ID
-    const existeProveedor = await Proveedor.findByPk(id_proveedor);
-
-    //validacion existeProveedor
-    if(!existeProveedor) {
-        const error = new Error(`El Proveedor con el ID ${id_proveedor} no existe`);
-        res.status(400).json({msg: error.message});
+        return { msg: error.message };
     }
 
     try {
         const compra_producto = await CompraProducto.create(datos);
-        res.status(200).json(compra_producto);
+        console.log("compraproducto", compra_producto);
+        return compra_producto;
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
-        res.status(400).json({msg: error.message});
+        return {msg: error.message};
     }
 }
 

@@ -4,7 +4,6 @@ import { Op } from "sequelize";
 
 const crear_producto = async (req, res) => {
     const { id_proveedor, nombre, descripcion, precio} = req.body; //leer input usuario
-    console.log({ id_proveedor, nombre, descripcion, precio});
     
     if(!id_proveedor || !nombre || !descripcion || !precio) {
         const error = new Error("todos los campos son obligatorios");
@@ -50,11 +49,19 @@ const crear_producto = async (req, res) => {
 
 //retornar todos los productos
 const obtener_productos = async  (req, res) => {
-    const { limite, id, nombre, descripcion, precio, cantidad } = req.query;
+    const { limite, id, id_proveedor, nombre, descripcion, precio, cantidad } = req.query;
 
     if(id) {
         if(!regexEnteroPositivo.test(id)) {
             const error = new Error("El ID de Producto debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    if(id_proveedor) {
+        if(!regexEnteroPositivo.test(id_proveedor)) {
+            const error = new Error("El ID de Proveedor debe ser un entero positivo");
             res.status(400).json({msg: error.message});
             return;
         }
@@ -86,6 +93,7 @@ const obtener_productos = async  (req, res) => {
 
     const where = {};
     if(id) where.id = id;
+    if(id_proveedor) where.id_proveedor = id_proveedor;
     if(nombre) where.nombre = { [Op.like]: `%${nombre}%` };
     if(descripcion) where.descripcion = { [Op.like]: `%${descripcion}%` };
     if(precio) where.precio = precio;
