@@ -1,8 +1,8 @@
 import Card from "./CardProducto";
 import useProductos from "../hooks/useProductos";
 
-function GaleriaProductos({ opciones }){
-    const [ cargando, productos ] = useProductos(opciones);
+function GaleriaProductos({ url }){
+    const [ cargando, productos ] = useProductos(url);
     
     return(
         <div className="contenedor productos">
@@ -12,7 +12,7 @@ function GaleriaProductos({ opciones }){
                         <Card key={producto.id} datos={producto} />
                     ))
                 ) : (
-                    <p>No hay artículos para mostrar</p>
+                    <p>No hay productos para mostrar</p>
                 )
             }
         </div>

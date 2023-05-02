@@ -11,6 +11,10 @@ const regexTelefono = /^\d{10}$/;
 const regexFecha = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
 // Expresion regular para validar enteros positivos
 const regexEnteroPositivo = /^[1-9][0-9]*$/;
+// Expresion regular para validar cadenas de caracteres
+const regexCadena = /^.*$/;
+// Expresion regular para validar flotante positivo
+const regexFlotantePositivo = /^\d+(\.\d+)?$/;
 
 //! Funciones de formato
 function formatoFechaDB(fecha){
@@ -25,5 +29,7 @@ export {
     regexTelefono,
     regexFecha,
     regexEnteroPositivo,
+    regexCadena,
+    regexFlotantePositivo,
     formatoFechaDB
 }

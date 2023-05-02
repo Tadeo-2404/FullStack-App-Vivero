@@ -19,15 +19,9 @@ Proveedor.init({
     },
 }, {
     sequelize,
-    tableName: 'proveedor', //nombre de la tabla
+    tableName: 'Proveedor', //nombre de la tabla
     modelName: 'Proveedor', //nombre del modelo,
     timestamps: false,
 });
-
-/*
-    Si la tabla en postgres no existe, la crea, y si existe, no hace nada
-    alter: true -> Si la tabla en postgres es diferente a este modelo, se sincroniza cambiando las columnas, tipos de datos, etc
-*/
-await Proveedor.sync({ alter: true });
 
 export default Proveedor;

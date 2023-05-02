@@ -13,7 +13,7 @@ Compra.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'proveedor',
+          model: 'Proveedor',
           key: 'id'
         }
       },
@@ -27,17 +27,9 @@ Compra.init({
     },
 }, {
     sequelize,
-    tableName: 'compra',
+    tableName: 'Compra',
     modelName: 'Compra',
     timestamps: false,
 });
-
-//sincronizar tabla
-// primero la borra para introducir los datos desde cero 
-await Compra.sync({force: true}).then(() => {
-    console.log('Tabla compra creada');
-  }).catch(error => {
-    console.error('Error creando la tabla compra:', error);
-  });
 
 export default Compra;

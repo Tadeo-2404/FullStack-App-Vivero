@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useProductos({ url, limite }){
+function useProductos(url){
     const [cargando, setCargando] = useState(true);
     const [productos, setProductos] = useState(null);
 
@@ -8,16 +8,14 @@ function useProductos({ url, limite }){
         setCargando(true);
 
         const obtenerProductos = async () => {
-            // Se limita a 5 productos (para mostrar en inicio)
-            let paramLimite = limite && `limite=${limite}`
-            let res = await fetch(`${url}?${paramLimite}`);
+            let res = await fetch(url);
             let data = await res.json();
 
             setProductos(data);
             setCargando(false);
         }
         obtenerProductos();
-    }, [url, limite])
+    }, [url])
 
     return [ cargando, productos ];
 }

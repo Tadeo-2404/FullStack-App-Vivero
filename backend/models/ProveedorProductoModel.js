@@ -13,7 +13,7 @@ ProveedorProducto.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'venta',
+      model: 'Venta',
       key: 'id'
     }
   },
@@ -35,16 +35,9 @@ ProveedorProducto.init({
   },
 }, {
   sequelize,
-  tableName: 'proveedor_producto', // Nombre de la tabla
+  tableName: 'ProveedorProducto', // Nombre de la tabla
   modelName: 'ProveedorProducto', // Nombre del modelo,
   timestamps: false
-});
-
-//sincronizar tabla 
-await ProveedorProducto.sync({ force: true }).then(() => {
-  console.log('Tabla proveedor_producto creada');
-}).catch(error => {
-  console.error('Error creando la tabla proveedor_producto:', error);
 });
 
 export default ProveedorProducto;
