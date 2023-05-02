@@ -1,12 +1,11 @@
 import CompraProducto from "../models/CompraProductoModel.js"; //importar modelo Compra_Producto
 import Compra from "../models/CompraModel.js"; //importar modelo Compra
 import Proveedor from "../models/ProveedorModel.js"; //importar modelo Provedor
-import ProveedorProducto from "../models/ProveedorProductoModel.js"; //importar modelo ProveedorProducto
 import { regexEnteroPositivo } from "../helpers/utils.js"; //importar regex para entero positivo
 
 //crear un registro compra_producto
 const crear_compra_producto = async (datos) => {
-    const {id_compra, id_proveedor, id_proveedor_producto, cantidad, subtotal} = datos; //leer datos
+    const {id_compra, id_proveedor, cantidad, subtotal} = datos; //leer datos
 
     //VALIDACIONES DATOS
     // Validamos que el formato de id_compra sea valido
@@ -19,13 +18,6 @@ const crear_compra_producto = async (datos) => {
     // Validamos que el formato de id_proveedor sea valido
     if(!id_proveedor.match(regexEnteroPositivo)) {
         const error = new Error("El id_proveedor debe ser un entero positivo");
-        res.status(400).json({ msg: error.message });
-        return;
-    }
-
-    // Validamos que el formato de id_proveedor_producto sea valido
-    if(!id_proveedor_producto.match(regexEnteroPositivo)) {
-        const error = new Error("El id_proveedor_producto debe ser un entero positivo");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -62,15 +54,6 @@ const crear_compra_producto = async (datos) => {
         res.status(400).json({msg: error.message});
     }
 
-    //buscar Producto_Proveedor por ID
-    const existeProductoProveedor = await ProveedorProducto.findByPk(id_proveedor_producto);
-
-    //validacion existeProductoProveedor
-    if(!existeProductoProveedor) {
-        const error = new Error(`El Producto_Proveedor con el ID ${id_proveedor_producto} no existe`);
-        res.status(400).json({msg: error.message});
-    }
-
     try {
         const compra_producto = await CompraProducto.create(datos);
         res.status(200).json(compra_producto);
@@ -82,7 +65,7 @@ const crear_compra_producto = async (datos) => {
 
 //obtener todos los registros de compra_producto
 const obtener_compra_productos = async (req, res) => {
-    const { limite, id_compra, id_proveedor, id_proveedorProducto, cantidad, id } = req.query;
+    const { limite, id_compra, id_proveedor, cantidad, id } = req.query;
 
     //validar que ID es un entero
     if (id) {
@@ -111,15 +94,6 @@ const obtener_compra_productos = async (req, res) => {
         }
     }
 
-    //validar que id proveedor producto es un entero
-    if (id_proveedorProducto) {
-        if (!regexEnteroPositivo.test(id_proveedorProducto)) {
-            const error = new Error("El ID Proveedor Producto debe ser un entero positivo");
-            res.status(400).json({ msg: error.message });
-            return;
-        }
-    }
-
     //validar que limite es un entero
     if (limite) {
         if (!regexEnteroPositivo.test(limite)) {
@@ -132,7 +106,6 @@ const obtener_compra_productos = async (req, res) => {
     const where = {};
     if(id_compra) where.id_compra = id_compra;
     if(id_proveedor) where.id_proveedor = id_proveedor;
-    if(id_proveedorProducto) where.id_proveedorProducto = id_proveedorProducto;
     if(cantidad) where.cantidad = cantidad;
     if(id) where.id = id;
 
@@ -195,12 +168,6 @@ const editar_compra_producto = async (req, res) => {
 
     //asignamos la cantidad actualiza a la compra
     compra_producto.cantidad ||= cantidad;
-
-    //una vez modificada la cantidad adquirida se requiere el precio para actualizar el subtotal
-    const obtenerProveedorProducto = await ProveedorProducto.findByPk(compra_producto.id_proveedorProducto);
-
-    //actualizamos el nuevo valor de subtotal
-    let subtotal = obtenerProveedorProducto.precio * cantidad;
 
     //asignamos el nuevo valor de subtotal al registro de compra_producto
     compra_producto.subtotal = subtotal;

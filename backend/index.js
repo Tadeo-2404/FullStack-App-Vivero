@@ -17,12 +17,11 @@ import ventasRoutes from './routes/ventaRoutes.js' //rutas para ventas
 import ventaProductosRoutes from './routes/ventaProductosRoutes.js' //rutas para venta_producto
 import compraRoutes from './routes/compraRoutes.js' //rutas para compras
 import compraProductoRoutes from './routes/compraProductoRoutes.js';
-import proveedorProductoRoutes from './routes/proveedorProductoRoutes.js' //rutas para proveedor producto
 
 //conexion base de datos
 try {
     await sequelize.authenticate();
-    await sequelize.sync({alter: true});
+    await sequelize.sync({ alter: true });
     console.log(`Base de datos conectada correctamente`);
 } catch (error) {
     console.log(error);
@@ -47,7 +46,6 @@ app.use('/api/ventas', ventasRoutes);
 app.use('/api/venta-producto', ventaProductosRoutes);
 app.use('/api/compras', compraRoutes);
 app.use('/api/compra-producto', compraProductoRoutes);
-app.use('/api/proveedor-producto', proveedorProductoRoutes);
 
 app.listen(port, () => {
     console.log(`APP WORKING ON PORT ${port}`)

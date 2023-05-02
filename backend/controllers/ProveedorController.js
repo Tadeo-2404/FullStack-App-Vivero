@@ -1,5 +1,4 @@
 import { Op } from "sequelize"; //importamos OP para busqueda en obtener
-import ProveedorProducto from "../models/ProveedorProductoModel.js";
 import Proveedor from "../models/ProveedorModel.js"; //importar modelo Proveedor
 import { regexNombreCompleto, regexTelefono, regexEnteroPositivo } from "../helpers/utils.js"; //importar regex para validacion de formato
 
@@ -149,12 +148,7 @@ const eliminar_proveedor = async (req, res) => {
     }
 
     try {
-        // Primero borramos todos los proveedor_producto que refieren a esta id
-        let proveedorProductos = await ProveedorProducto.findAll({ where: { proveedor_id: id } });
-        proveedorProductos.forEach(async proveedorProducto => {
-            await proveedorProducto.destroy();
-        })
-
+        //! Borrar todos los productos relacionados con el proveedor
         // Ahora sí borramos el proveedor
         await proveedor.destroy(); //destuimos el registro de proveedor
         res.json(proveedor);

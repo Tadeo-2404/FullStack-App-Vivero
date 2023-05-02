@@ -9,6 +9,14 @@ Producto.init({
         primaryKey: true,
         autoIncrement: true
     },
+    id_proveedor: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+        model: 'Proveedor',
+        key: 'id'
+        }
+    },
     nombre: {
         type: DataTypes.STRING,
         allowNull: false
