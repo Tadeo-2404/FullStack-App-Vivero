@@ -56,11 +56,10 @@ const crear_compra = async (req, res) => {
                 subtotal
             });
             // console.log({res});
+            //! Aquí debemos sumarle la cantidad al Producto?
         });
         compra.total = total;
         await compra.save();
-
-        //! Aquí debemos sumarle la cantidad al Producto?
 
         res.status(200).json(compra);
     } catch (e) {
