@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function FormPublicarProducto(){
     const navigate = useNavigate(); //navigate para redireccionar al usuario
-    const [producto, setProducto] = useState({nombre: "", descripcion: "", precio: 0, cantidad: 0}); //inicializar producto
+    const [producto, setProducto] = useState({nombre: "", descripcion: "", precio: 0}); //inicializar producto
     const [cargando, setCargando] = useState(true);
     const [proveedores, setProveedores] = useState(null);
 
@@ -26,7 +27,8 @@ function FormPublicarProducto(){
         // Al objeto que se pasará al body se le agrega el id del proveedor
         let body = {
             ...producto,
-            id_proveedor: selectProveedor.current.value
+            precio: parseInt(producto.precio),
+            id_proveedor: parseInt(selectProveedor.current.value)
         }
 
         // Hacer fetch con metodo post para agregar producto
@@ -39,8 +41,15 @@ function FormPublicarProducto(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("Producto Agregado", res);
-            navigate("/");
+            // Verificar si hay un error
+            if(!res.msg){
+                console.log("Producto Agregado", res);
+                toast.success("Proveedor agregado");
+                navigate("/");
+            } else {
+                // console.log(res.msg);
+                toast.error(res.msg);
+            }
         })
     }
 
@@ -106,19 +115,6 @@ function FormPublicarProducto(){
                         type="number"
                         onInput={handleInput}
                         value={producto.precio}
-                        required
-                    />
-                </div>
-
-                <div className="form__apartado">
-                    <label htmlFor="cantidad">Cantidad</label>
-                    <input
-                        name="cantidad"
-                        id="cantidad"
-                        className="form__input"
-                        type="number"
-                        onInput={handleInput}
-                        value={producto.cantidad}
                         required
                     />
                 </div>

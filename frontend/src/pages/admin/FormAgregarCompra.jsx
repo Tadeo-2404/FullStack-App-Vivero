@@ -7,6 +7,8 @@ function FormAgregarCompra(){
     const [proveedores, setProveedores] = useState(null);
     const selectProveedor = useRef();
 
+    //! ONINPUT SELECTPROVEEDOR, HACER PETICION A PROVEECORES?ID=ID Y MOSTRAR LOS PRODUCTOS QUE VENDE
+
     useEffect(() => {
         // Obtener todos los productos para mostrar en el formulario
         fetch("http://localhost:3000/api/productos")

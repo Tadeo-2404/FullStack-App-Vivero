@@ -39,11 +39,11 @@ function FormEditarProveedor(){
             if(!res.msg){
                 console.log("Proveedor actualizado", res);
                 toast.success("Proveedor actualizado");
+                navigate("/");
             } else {
                 // console.log(res.msg);
                 toast.error(res.msg);
             }
-            navigate("/");
         })
     }
 

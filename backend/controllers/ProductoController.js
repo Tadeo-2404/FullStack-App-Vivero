@@ -3,10 +3,17 @@ import Producto from "../models/ProductoModel.js";
 import { Op } from "sequelize";
 
 const crear_producto = async (req, res) => {
-    const { nombre, descripcion, precio, cantidad} = req.body; //leer input usuario
+    const { id_proveedor, nombre, descripcion, precio} = req.body; //leer input usuario
+    console.log({ id_proveedor, nombre, descripcion, precio});
     
-    if(!nombre || !descripcion || !precio || !cantidad) {
+    if(!id_proveedor || !nombre || !descripcion || !precio) {
         const error = new Error("todos los campos son obligatorios");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!regexEnteroPositivo.test(id_proveedor)){
+        const error = new Error("id del proveedor invalido");
         res.status(400).json({msg: error.message});
         return;
     }
@@ -29,14 +36,11 @@ const crear_producto = async (req, res) => {
         return;
     }
 
-    if(!regexEnteroPositivo.test(cantidad)) {
-        const error = new Error("cantidad de producto invalida");
-        res.status(400).json({msg: error.message});
-        return;
-    }
-
     try {
-        const producto = await Producto.create(req.body);
+        const producto = await Producto.create({
+            ...req.body,
+            cantidad: 0
+        });
         res.json(producto);
     } catch (e) {
         const error = new Error(e.name);

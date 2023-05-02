@@ -26,12 +26,11 @@ function FormAgregarProveedor(){
         if(!data.msg){
             console.log("Proveedor agregado", data);
             toast.success("Proveedor agregado");
+            navigate("/");
         } else {
             // console.log(data.msg);
             toast.error(data.msg);
         }
-
-        navigate("/");
     }
 
     const handleInput = e => {
