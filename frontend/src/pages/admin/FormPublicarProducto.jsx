@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function FormPublicarProducto(){
     const navigate = useNavigate(); //navigate para redireccionar al usuario
     const [producto, setProducto] = useState({nombre: "", descripcion: "", precio: 0, cantidad: 0}); //inicializar producto
+    const [cargando, setCargando] = useState(true);
+    const [proveedores, setProveedores] = useState(null);
+
+    useEffect(() => {
+        setCargando(true);
+        fetch("http://localhost:3000/api/proveedores")
+        .then(res => res.json())
+        .then(res => {
+            setProveedores(res);
+            setCargando(false);
+        })
+    }, [])
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -30,10 +42,24 @@ function FormPublicarProducto(){
         });
     }
 
+    if(cargando) return <h2 className="contenedor titulo">Cargando...</h2>
+
     return(
         <main className="main">
-            <h1 className="titulo">Formulario agregar producto</h1>
+            <h1 className="titulo">Registrar producto</h1>
             <form action="" className="form contenedor" onSubmit={handleSubmit}>
+
+                <div className="form__apartado">
+                    <label htmlFor="proveedor">Proveedor</label>
+                    <select name="proveedores" id="proveedores" required>
+                        <option value="">Elige un proveedor</option>
+                        {
+                            proveedores.map(p => (
+                                <option value={p.id} key={p.id}>{p.nombre}</option>
+                            ))
+                        }
+                    </select>
+                </div>
 
                 <div className="form__apartado">
                     <label htmlFor="nombre">Nombre</label>

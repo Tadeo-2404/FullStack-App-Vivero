@@ -20,8 +20,8 @@ function Navbar(){
                     {/* Hacer un componente especial al que le pasemos la ruta y el texto como children 
                     y automáticamente le ponga la clase navbar__link y los onClick*/}
                     <NavLink className="navbar__link" to="/" onClick={closeMenu}>Inicio</NavLink>
-                    <NavLink className="navbar__link" to="/admin/publicar-producto" onClick={closeMenu}>Publicar producto</NavLink>
                     <NavLink className="navbar__link" to="/admin/agregar-proveedor" onClick={closeMenu}>Agregar proveedor</NavLink>
+                    <NavLink className="navbar__link" to="/admin/publicar-producto" onClick={closeMenu}>Registrar producto</NavLink>
                     <NavLink className="navbar__link" to="/admin/agregar-venta" onClick={closeMenu}>Agregar venta</NavLink>
                     <NavLink className="navbar__link" to="/admin/agregar-compra" onClick={closeMenu}>Agregar compra</NavLink>
                 </div>

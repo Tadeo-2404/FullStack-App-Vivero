@@ -24,7 +24,7 @@ function FormAgregarCompra(){
         let idProveedor = selectProveedor.current.value;
 
         let formData = new FormData(e.target);
-        // // Se obtiene un arreglo con los id de los productos seleccionados
+        // Se obtiene un arreglo con los id de los productos seleccionados
         let infoProductos = Object.fromEntries(formData.entries());
         
         let productosFiltrados = [];
