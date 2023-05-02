@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import "./App.css";
 
@@ -29,6 +30,8 @@ import FormAgregarCompra from "./pages/admin/FormAgregarCompra";
 function App() {
   return (
     <Router>
+        <Toaster />
+
         <Navbar />
           
         <ScrollToTop>

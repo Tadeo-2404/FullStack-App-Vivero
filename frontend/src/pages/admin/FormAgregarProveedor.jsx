@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function FormAgregarProveedor(){
@@ -20,7 +21,15 @@ function FormAgregarProveedor(){
             body: JSON.stringify(datos)
         })
         let data = await res.json();
-        console.log("Proveedor agregado", data);
+        
+        // Verificar si hay un error
+        if(!data.msg){
+            console.log("Proveedor agregado", data);
+            toast.success("Proveedor agregado");
+        } else {
+            // console.log(data.msg);
+            toast.error(data.msg);
+        }
 
         navigate("/");
     }

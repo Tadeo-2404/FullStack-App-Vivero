@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
 function FormEditarProveedor(){
@@ -34,7 +35,14 @@ function FormEditarProveedor(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("Proveedor actualizado", res);
+            // Verificar si hay un error
+            if(!res.msg){
+                console.log("Proveedor actualizado", res);
+                toast.success("Proveedor actualizado");
+            } else {
+                // console.log(res.msg);
+                toast.error(res.msg);
+            }
             navigate("/");
         })
     }

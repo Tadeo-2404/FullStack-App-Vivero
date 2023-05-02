@@ -5,7 +5,7 @@ function FormAgregarCompra(){
     let navigate = useNavigate();
     const [productos, setProductos] = useState(null);
     const [proveedores, setProveedores] = useState(null);
-    let selectProveedor = useRef();
+    const selectProveedor = useRef();
 
     useEffect(() => {
         // Obtener todos los productos para mostrar en el formulario

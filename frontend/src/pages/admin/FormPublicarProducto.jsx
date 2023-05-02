@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function FormPublicarProducto(){
@@ -7,6 +7,9 @@ function FormPublicarProducto(){
     const [cargando, setCargando] = useState(true);
     const [proveedores, setProveedores] = useState(null);
 
+    const selectProveedor = useRef();
+
+    // Carga los proveedores para el select
     useEffect(() => {
         setCargando(true);
         fetch("http://localhost:3000/api/proveedores")
@@ -20,13 +23,19 @@ function FormPublicarProducto(){
     const handleSubmit = e => {
         e.preventDefault();
 
+        // Al objeto que se pasará al body se le agrega el id del proveedor
+        let body = {
+            ...producto,
+            id_proveedor: selectProveedor.current.value
+        }
+
         // Hacer fetch con metodo post para agregar producto
         fetch(`http://localhost:3000/api/productos`, {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(producto)
+            body: JSON.stringify(body)
         })
         .then(res => res.json())
         .then(res => {
@@ -51,7 +60,7 @@ function FormPublicarProducto(){
 
                 <div className="form__apartado">
                     <label htmlFor="proveedor">Proveedor</label>
-                    <select name="proveedores" id="proveedores" required>
+                    <select name="proveedores" id="proveedores" ref={selectProveedor} required>
                         <option value="">Elige un proveedor</option>
                         {
                             proveedores.map(p => (
