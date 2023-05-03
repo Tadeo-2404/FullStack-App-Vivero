@@ -43,18 +43,39 @@ const crear_venta = async (req, res) => {
         if (productosNoValidos === 0) {
             const venta = await Venta.create({ fecha, total }); //creamos la venta
 
+            // Ver si hay algún producto que no tenga cantidad suficiente
+            let cantidadSuficiente = true;
+            for(let producto of productos){
+                let prod = await Producto.findByPk(producto.id);
+                if(prod.cantidad < producto.cantidad){
+                    cantidadSuficiente = false;
+                    break;
+                }
+            }
+            if(!cantidadSuficiente){
+                res.status(400).json({msg: "No hay cantidad suficiente de algún Producto"});
+                return;
+            }
+
             //iteramos sobre el arreglo de productos
             productos.forEach(async producto => {
                 let subtotal = producto.precio * producto.cantidad;
                 total = total + subtotal;
 
                 //con cada producto creamos un registro de venta_producto
-                await crear_venta_producto({
+                let respuesta = await crear_venta_producto({
                     id_venta: venta.id,
                     id_producto: producto.id,
                     cantidad: producto.cantidad,
                     subtotal
                 });
+                // console.log({respuesta});
+
+                // Restamos la cantidad al Producto
+                let prod = await Producto.findByPk(producto.id);
+                // Si no alcanza el stock, lanza un error
+                prod.cantidad -= producto.cantidad;
+                await prod.save();
             });
             venta.total = total;
             await venta.save(); //guardamos la venta

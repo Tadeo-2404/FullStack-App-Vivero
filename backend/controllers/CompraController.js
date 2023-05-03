@@ -1,5 +1,6 @@
 import { regexFecha, regexEnteroPositivo, formatoFechaDB, regexFlotantePositivo } from "../helpers/utils.js";
 import { crear_compra_producto } from "./CompraProductoController.js";
+import Producto from "../models/ProductoModel.js";
 import Compra from "../models/CompraModel.js";
 import Proveedor from "../models/ProveedorModel.js";
 import CompraProducto from "../models/CompraProductoModel.js";
@@ -49,14 +50,18 @@ const crear_compra = async (req, res) => {
             // Con cada proveedor_producto creamos un registro de compra_producto
             let subtotal = producto.precio * producto.cantidad;
             total += subtotal // Al total a pagar le sumamos el precio de cada producto
-            let res = await crear_compra_producto({
+            let respuesta = await crear_compra_producto({
                 id_compra: compra.id,
                 id_producto: producto.id,
                 cantidad: producto.cantidad,
                 subtotal
             });
-            // console.log({res});
-            //! Aquí debemos sumarle la cantidad al Producto?
+            // console.log({respuesta});
+            
+            // Sumamos la cantidad al Producto
+            let prod = await Producto.findByPk(producto.id);
+            prod.cantidad += producto.cantidad;
+            await prod.save();
         });
         compra.total = total;
         await compra.save();

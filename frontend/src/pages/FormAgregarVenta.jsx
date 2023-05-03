@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function FormAgregarVenta(){
@@ -29,9 +30,11 @@ function FormAgregarVenta(){
             // Filtramos solo los productos seleccionados
             let producto = productos.find(producto => producto.id == id);
             if(producto){
+                // Se crea este objeto para no modificar la cantidad del producto original
+                let prod = { ...producto }
                 // Les ponemos la cantidad vendida
-                producto.cantidad = parseInt(cantidad);
-                filtrados.push(producto);
+                prod.cantidad = parseInt(cantidad);
+                filtrados.push(prod);
             }
         }
         
@@ -73,8 +76,12 @@ function FormAgregarVenta(){
             })
         })
         let data = await res.json();
-        console.log("Venta agregada", data);
-        navigate("/");
+        if(!data.msg){
+            console.log("Venta agregada", data);
+            navigate("/");
+        } else {
+            toast.error(data.msg);
+        }
     }
 
     const handleInput = e => {
@@ -92,14 +99,15 @@ function FormAgregarVenta(){
                 {
                     productos.map(producto => (
                         <div className="form__apartado" key={producto.id}>
-                            <label htmlFor={`producto-${producto.id}`}>{producto.nombre} (${producto.precio})</label>
+                            <label htmlFor={`producto-${producto.id}`}>{producto.nombre} (${producto.precio}) - Cantidad: {producto.cantidad}</label>
                             <input
                                 name={producto.id}
                                 id={`producto-${producto.id}`}
                                 className="form__input"
                                 type="number"
-                                min={0}
                                 defaultValue={0}
+                                min={0}
+                                max={producto.cantidad}
                                 onInput={handleInput}
                                 // value={producto.id}
                             />

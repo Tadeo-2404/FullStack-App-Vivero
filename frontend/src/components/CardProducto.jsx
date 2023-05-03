@@ -25,7 +25,7 @@ function CardProducto({ datos }){
                 <p><b>Proveedor: </b>{datos.id_proveedor}</p>
                 <p className="producto__descripcion">{datos.descripcion}</p>
                 <p className="producto__precio"><b>Precio:</b> ${datos.precio}</p>
-                <p className="producto__cantidad"><b>Cantidad:</b> {datos.cantidad} piezas</p>
+                <p className="producto__cantidad"><b>Cantidad:</b> {datos.cantidad} unidades</p>
             </div>
         )
     )

@@ -7,7 +7,7 @@ function GaleriaProductos({ url }){
     return(
         <div className="contenedor productos">
             {
-                productos.length > 0 ? (
+                productos && productos.length > 0 ? (
                     productos.map(producto => (
                         <Card key={producto.id} datos={producto} />
                     ))
