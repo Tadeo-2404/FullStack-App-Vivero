@@ -44,7 +44,7 @@ function FormPublicarProducto(){
             // Verificar si hay un error
             if(!res.msg){
                 console.log("Producto Agregado", res);
-                toast.success("Proveedor agregado");
+                toast.success("Producto agregado");
                 navigate("/");
             } else {
                 // console.log(res.msg);

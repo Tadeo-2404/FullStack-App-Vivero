@@ -1,6 +1,8 @@
 import { regexCadena, regexEnteroPositivo, regexFlotantePositivo } from "../helpers/utils.js";
 import Producto from "../models/ProductoModel.js";
 import { Op } from "sequelize";
+import fetch from 'node-fetch';
+import VentaProducto from "../models/VentaProductoModel.js";
 
 const crear_producto = async (req, res) => {
     const { id_proveedor, nombre, descripcion, precio} = req.body; //leer input usuario
@@ -214,9 +216,22 @@ const eliminar_producto = async (req, res) => {
     }
 
     try {
-        await producto.destroy(); //eliminar registro
+        // Borrar en cascada los elementos que tengan referencias a este producto
+        // CompraProducto y VentaProducto
+        await fetch(`http://localhost:3000/api/compra-producto?id_producto=${id}`, {
+            method: "DELETE"
+        })
+        // console.log("Productos de compras eliminadas");
+
+        await fetch(`http://localhost:3000/api/venta-producto?id_producto=${id}`, {
+            method: "DELETE"
+        })
+        // console.log("Productos de ventas eliminadas");
+
+        await producto.destroy();
         res.json(producto);
     } catch (e) {
+        console.log("error", {e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }
