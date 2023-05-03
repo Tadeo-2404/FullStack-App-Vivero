@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 
 import "./App.css";
 
-// Componentes compartidos
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Inicio from "./pages/Inicio";
