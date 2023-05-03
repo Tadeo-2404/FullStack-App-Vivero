@@ -15,7 +15,6 @@ import NotFound from "./pages/NotFound";
 import Productos from "./pages/Productos";
 import ScrollToTop from "./components/ScrollToTop";
 
-// Componentes de administrador
 import InicioSesionAdmin from "./pages/InicioSesionAdmin";
 import FormPublicarProducto from "./pages/FormPublicarProducto";
 import FormEditarProducto from "./pages/FormEditarProducto";
