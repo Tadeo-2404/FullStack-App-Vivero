@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function CardProducto({ datos }){
     return(
         <div className="producto">
-            <Link to={`/admin/editar-producto/${datos.id}`}>Editar</Link>
+            <Link to={`/editar-producto/${datos.id}`}>Editar</Link>
             <h2 className="producto__nombre">{datos.nombre}</h2>
             <p><b>Proveedor: </b>{datos.id_proveedor}</p>
             <p className="producto__descripcion">{datos.descripcion}</p>
