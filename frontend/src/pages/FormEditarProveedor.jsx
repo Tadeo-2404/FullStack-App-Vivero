@@ -58,7 +58,7 @@ function FormEditarProveedor(){
 
     return(
         <main className="main">
-            <h1 className="titulo">Editar proveedor</h1>
+            <h1 className="titulo">Editar proveedor #{id}</h1>
             <form action="" className="form contenedor" onSubmit={handleSubmit}>
 
                 <div className="form__apartado">
