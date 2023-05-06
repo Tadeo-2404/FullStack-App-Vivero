@@ -22,6 +22,55 @@ import compraProductoRoutes from './routes/compraProductoRoutes.js';
 try {
     await sequelize.authenticate();
     await sequelize.sync({ alter: true });
+    //? Trigger que actualiza el total de una venta
+    sequelize.query(`
+        -- FUNCION
+        CREATE OR REPLACE FUNCTION actualizarTotal() RETURNS TRIGGER AS $$
+        DECLARE
+            dinero_total NUMERIC(10, 2);
+        BEGIN
+            -- Calcula el total
+            dinero_total := (
+                SELECT sum(subtotal)
+                FROM "VentaProducto"
+                GROUP BY id_venta
+                HAVING id_venta=NEW.id_venta
+            );
+            
+            -- Actualiza el total de la venta
+            UPDATE "Venta"
+            SET total=dinero_total
+            WHERE id=NEW.id_venta;
+            
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+
+        DROP TRIGGER IF EXISTS calculoTotal ON "VentaProducto";
+
+        -- TRIGGER
+        CREATE TRIGGER calculoTotal
+        AFTER INSERT OR UPDATE
+        ON "VentaProducto"
+        FOR EACH ROW EXECUTE PROCEDURE actualizarTotal();
+    `);
+    //? Trigger que le agrega la fecha actual a una venta
+    sequelize.query(`
+        CREATE OR REPLACE FUNCTION agregarFecha() RETURNS TRIGGER AS $$
+        BEGIN
+            NEW.fecha := current_date;
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+        
+        DROP TRIGGER IF EXISTS fechaVenta ON "Venta";
+        
+        -- TRIGGER 2
+        CREATE TRIGGER fechaVenta
+        BEFORE INSERT
+        ON "Venta"
+        FOR EACH ROW EXECUTE PROCEDURE agregarFecha();
+    `);
     console.log(`Base de datos conectada correctamente`);
 } catch (error) {
     console.log(error);

@@ -55,11 +55,6 @@ function FormAgregarVenta(){
 
         // Si no se selecciono ningún producto, no se agrega la venta
         if(productosFiltrados.length <= 0) return;
-        
-        // Calculamos los datos para la llave "venta"
-        let fecha = new Date();
-        let dia = fecha.getDate().toString().padStart(2, "0");
-        let mes = (fecha.getMonth() + 1).toString().padStart(2, 0);
 
         // Se hace una petición para subir la venta
         let res = await fetch(`http://localhost:3000/api/ventas`, {
@@ -68,10 +63,6 @@ function FormAgregarVenta(){
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                "venta": {
-                    total, // Desde useState
-                    fecha: `${dia}-${mes}-${fecha.getFullYear()}` // DD-MM-YYYY
-                },
                 "productos": productosFiltrados                
             })
         })

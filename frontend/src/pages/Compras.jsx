@@ -35,6 +35,7 @@ function Compras(){
                 return { ...compra, productos: datos }
             })
             datos = await Promise.all(datos);
+            datos.sort((a, b) => a.id - b.id);
 
             setCompras(datos);
         }
