@@ -8,31 +8,57 @@ CREATE DATABASE vivero
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
 	
-CREATE TABLE producto (
-	id SERIAL PRIMARY KEY,
-	nombre VARCHAR(50) NOT NULL,
-	descripcion TEXT NOT NULL,
-	precio float NOT NULL,
-	cantidad int NOT NULL
+CREATE TABLE IF NOT EXISTS "Proveedor" (
+    "id" SERIAL,
+    "nombre" VARCHAR(255) NOT NULL,
+    "telefono" VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY ("id")
 );
 
-CREATE TABLE proveedor (
-    id SERIAL PRIMARY KEY, 
-    nombre VARCHAR(50) NOT NULL,
-    telefono VARCHAR(10) NOT NULL
+CREATE TABLE IF NOT EXISTS "Producto" (
+    "id" SERIAL,
+    "id_proveedor" INTEGER NOT NULL REFERENCES "Proveedor" ("id"),
+    "nombre" VARCHAR(255) NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "precio" FLOAT NOT NULL,
+    "cantidad" INTEGER NOT NULL,
+    
+    PRIMARY KEY ("id")
 );
 
-CREATE TABLE administrador (
-	id SERIAL PRIMARY KEY,
-	nombre VARCHAR(30) NOT NULL,
-	apellido VARCHAR(30) NOT NULL,
-	correo VARCHAR(30) NOT NULL,
-	contrasena VARCHAR(50) NOT NULL,
-	token TEXT DEFAULT NULL
+CREATE TABLE IF NOT EXISTS "Compra" (
+    "id" SERIAL,
+    "id_proveedor" INTEGER NOT NULL REFERENCES "Proveedor" ("id"),
+    "fecha" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "total" FLOAT NOT NULL,
+    
+    PRIMARY KEY ("id")
 );
 
-CREATE TABLE venta (
-    id SERIAL PRIMARY KEY,
-    fecha DATE NOT NULL,
-    total INT NOT NULL
+CREATE TABLE IF NOT EXISTS "CompraProducto" (
+    "id" SERIAL,
+    "id_compra" INTEGER NOT NULL REFERENCES "Compra" ("id"),
+    "id_producto" INTEGER NOT NULL REFERENCES "Producto" ("id"),
+    "cantidad" INTEGER NOT NULL,
+    "subtotal" INTEGER NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "Venta" (
+    "id" SERIAL,
+    "fecha" TIMESTAMP WITH TIME ZONE,
+    "total" FLOAT NOT NULL,
+    
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "VentaProducto" (
+    "id" SERIAL,
+    "id_venta" INTEGER NOT NULL REFERENCES "Venta" ("id"),
+    "id_producto" INTEGER NOT NULL REFERENCES "Producto" ("id"),
+    "cantidad" INTEGER NOT NULL,
+    "subtotal" INTEGER NOT NULL,
+    
+    PRIMARY KEY ("id")
 );
