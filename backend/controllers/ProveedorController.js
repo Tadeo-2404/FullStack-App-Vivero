@@ -1,7 +1,8 @@
 import { Op } from "sequelize"; //importamos OP para busqueda en obtener
-import ProveedorProducto from "../models/ProveedorProductoModel.js";
 import Proveedor from "../models/ProveedorModel.js"; //importar modelo Proveedor
 import { regexNombreCompleto, regexTelefono, regexEnteroPositivo } from "../helpers/utils.js"; //importar regex para validacion de formato
+import Producto from "../models/ProductoModel.js";
+import fetch from "node-fetch";
 
 //crear un proveedor
 const crear_proveedor = async (req, res) => {
@@ -129,7 +130,7 @@ const editar_proveedor = async  (req, res) => {
 
 //elimina un proveedor en especifico
 const eliminar_proveedor = async (req, res) => {
-    const { id } = req.params; //leer el id del proveedor
+    const { id } = req.query; //leer el id del proveedor
 
     //validar que ID es un entero
     if(!regexEnteroPositivo.test(id)) {
@@ -149,11 +150,19 @@ const eliminar_proveedor = async (req, res) => {
     }
 
     try {
-        // Primero borramos todos los proveedor_producto que refieren a esta id
-        let proveedorProductos = await ProveedorProducto.findAll({ where: { proveedor_id: id } });
-        proveedorProductos.forEach(async proveedorProducto => {
-            await proveedorProducto.destroy();
+        // Borrar todos los productos relacionados con el proveedor
+        let productos = await Producto.findAll({ where: {
+            id_proveedor: id
+        } })
+
+        // Por cada producto borramos en cascada con una petición a borrar un producto (al borrar el producto ya está programado que borre sus compra-producto y venta-producto)
+        let promesas = productos.map(async producto => {
+            await fetch(`http://localhost:3000/api/productos?id=${producto.id}`, {
+                method: "DELETE"
+            });
         })
+        // Tenemos que usar promise all para que no se ejecute primero el destroy
+        await Promise.all(promesas);
 
         // Ahora sí borramos el proveedor
         await proveedor.destroy(); //destuimos el registro de proveedor

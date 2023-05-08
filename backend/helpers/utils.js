@@ -2,7 +2,7 @@
 // Expresion regular para validar correo
 const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Expresion regular para validar nombre, apellido
-const regexNombreCompleto = /^[a-zA-ZÀ-ÿ'-]{1,30}\s?[a-zA-ZÀ-ÿ'-]{0,30}$/;
+const regexNombreCompleto = /^[a-zA-ZÀ-ÿ'-]{1,30}(\s?[a-zA-ZÀ-ÿ'-]{0,30})+$/;
 // Expresion regular para validar contraseña
 const regexPasswd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])(?!.*\s).{8,30}$/;
 // Expresion regular para validar telefonos

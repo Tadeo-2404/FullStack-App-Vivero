@@ -32,8 +32,9 @@ const crear_venta_producto = async (datos) => {
     }
 
     try {
-         await VentaProducto.create(datos);
+        await VentaProducto.create(datos);
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
         console.log(error.message);
     }
@@ -121,25 +122,57 @@ const editar_venta_producto = async  (req, res) => {
 
 // Elimina un producto en especifico
 const eliminar_venta_producto = async (req, res) => {
-    const { id } = req.query;
+    const { id, id_producto } = req.query;
 
-    const venta_producto = await VentaProducto.findByPk(id); //el que queremos eliminar
+    // Validar que id es un entero
+    if(id) {
+        if(id.match(regexEnteroPositivo)) {
+            const error = new Error("El ID debe ser entero positivo");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
 
-    // Validamos si no existe
+    // Validar que id_producto es un entero
+    if(id_producto){
+        if (!regexEnteroPositivo.test(id_producto)) {
+            const error = new Error("El id_producto debe ser un entero positivo");
+            res.status(400).json({ msg: error.message });
+            return;
+        }
+    }
+
+    const where = {};
+    if(id) where.id = id;
+    if(id_producto) where.id_producto = id_producto;
+
+    const venta_producto = await VentaProducto.findAll({where});
+
+    //validamos si no existe
     if(!venta_producto) {
-        const error = new Error("registro no encontrado");
+        const error = new Error(`No existen registros venta_producto`);
         res.status(404).json({msg: error.message});
         return;
     }
 
-    //obtener venta para modificar su total
-    const obtenerVenta = await Venta.findByPk(venta_producto.id_venta);
-    obtenerVenta.total -= venta_producto.subtotal
-
     try {
-        await obtenerVenta.save(); 
-        await venta_producto.save(); //guardamos cambios
-        res.json("registro elimnado correctamente");
+        // Se borran los elementos venta_producto
+        let promesas = venta_producto.map(async vp => {
+            //obtener la venta a la que pertenece para restarle el subtotal al total
+            const venta = await Venta.findByPk(vp.id_venta);
+
+            //restar subtotal al total
+            venta.total -= vp.subtotal;
+
+            await vp.destroy();
+            
+            if(venta.total <= 0) await venta.destroy();
+            else await venta.save();
+        })
+        // Tenemos que usar promise all para que no se ejecute primero el res.json
+        await Promise.all(promesas);
+
+        res.json("Registros eliminados");
     } catch (e) {
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});

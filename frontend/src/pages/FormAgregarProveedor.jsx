@@ -1,56 +1,48 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-function FormEditarProveedor(){
+function FormAgregarProveedor(){
     const navigate = useNavigate();
+    const [datos, setDatos] = useState({
+        nombre: "",
+        telefono: ""
+    });
 
-    const { id } = useParams();
-    const [proveedor, setProveedor] = useState(null);
-
-    // URL para obtener el proveedor
-    const url = `http://localhost:3000/api/proveedores?id=${id}`;
-
-    // Se obtiene el proveedor
-    useEffect(() => {
-        const obtenerProveedor = async () => {
-            let res = await fetch(url);
-            let datos = await res.json();
-
-            setProveedor(datos[0]);
-        }
-        obtenerProveedor();
-    }, [])
-
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
-        // Hacer fetch con method put para actualizar los datos
-        fetch(`http://localhost:3000/api/proveedores?id=${id}`, {
-            method: "PUT",
+        // Se hace una petición para agregar el proveedor
+        let res = await fetch(`http://localhost:3000/api/proveedores`, {
+            method: "POST",
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(proveedor)
+            body: JSON.stringify(datos)
         })
-        .then(res => res.json())
-        .then(res => {
-            console.log("Proveedor actualizado", res);
+        let data = await res.json();
+        
+        // Verificar si hay un error
+        if(!data.msg){
+            console.log("Proveedor agregado", data);
+            toast.success("Proveedor agregado");
             navigate("/");
-        })
+        } else {
+            // console.log(data.msg);
+            toast.error(data.msg);
+        }
     }
 
     const handleInput = e => {
-        setProveedor({
-            ...proveedor,
+        setDatos({
+            ...datos,
             [e.target.name]: e.target.value
-        });
+        })
     }
-
-    if(!proveedor) return <h1 className="titulo">No existe el proveedor</h1>
 
     return(
         <main className="main">
-            <h1 className="titulo">Editar proveedor</h1>
+            <h1 className="titulo">Agregar proveedor</h1>
             <form action="" className="form contenedor" onSubmit={handleSubmit}>
 
                 <div className="form__apartado">
@@ -61,7 +53,7 @@ function FormEditarProveedor(){
                         className="form__input"
                         type="text"
                         onInput={handleInput}
-                        value={proveedor.nombre}
+                        value={datos.nombre}
                     />
                 </div>
                 
@@ -76,15 +68,15 @@ function FormEditarProveedor(){
                         maxLength={10}
                         pattern="\d{10}"
                         onInput={handleInput}
-                        value={proveedor.telefono}
+                        value={datos.telefono}
                     />
                 </div>
 
-                <input type="submit" className="form__input form__input--boton boton" value="Editar" />
+                <input type="submit" className="form__input form__input--boton boton" value="Agregar" />
 
             </form>
         </main>
     )
 }
 
-export default FormEditarProveedor;
+export default FormAgregarProveedor;

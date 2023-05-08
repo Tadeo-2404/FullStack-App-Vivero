@@ -10,8 +10,7 @@ Venta.init({
         autoIncrement: true
     },
     fecha: {
-        type: DataTypes.DATE,
-        allowNull: false
+        type: DataTypes.DATE
     },
     total: {
         type: DataTypes.FLOAT,

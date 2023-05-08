@@ -15,9 +15,9 @@ function Inicio(){
             </article>
 
             <div className="contenedor">
-                <Link to="/admin/proveedores">Lista de proveedores</Link><br />
-                <Link to="/admin/ventas">Lista de ventas</Link><br />
-                <Link to="/admin/compras">Lista de compras</Link>
+                <Link to="/proveedores">Lista de proveedores</Link><br />
+                <Link to="/ventas">Lista de ventas</Link><br />
+                <Link to="/compras">Lista de compras</Link>
             </div>
         </main>
     )

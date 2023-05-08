@@ -1,35 +1,11 @@
 import Venta from "../models/VentaModel.js";
 import { crear_venta_producto } from "./VentaProductoController.js";
-import { regexFecha, regexEnteroPositivo, formatoFechaDB, regexFlotantePositivo } from "../helpers/utils.js";
+import { regexEnteroPositivo } from "../helpers/utils.js";
 import Producto from "../models/ProductoModel.js";
 import VentaProducto from "../models/VentaProductoModel.js";
 
 const crear_venta = async (req, res) => {
-    const { venta, productos } = req.body;
-    let total = 0
-    // La fecha viene como DD-MM-YYYY, la cambiamos a un formato apto para la base de datos
-    let fecha = formatoFechaDB(venta.fecha);
-
-    // Validacion campos no vacios
-    if(!fecha) {
-        const error = new Error("Todos los campos son obligatorios");
-        res.status(400).json({msg: error.message});
-        return;
-    }
-
-    // Validamos total
-    if(!regexFlotantePositivo.test(total)) {
-        const error = new Error("Formato de total invalido");
-        res.status(400).json({ msg: error.message });
-        return;
-    }
-
-    // Validamos formato de fecha
-    if(!fecha.match(regexFecha)) {
-        const error = new Error("Formato de fecha invalido");
-        res.status(400).json({ msg: error.message });
-        return;
-    }
+    const { productos } = req.body;
 
     try {        
         // Verificar si cada producto existe en la base de datos
@@ -41,28 +17,48 @@ const crear_venta = async (req, res) => {
     
         // Si todos los productos son validos, ejecutamos lo siguiente
         if (productosNoValidos === 0) {
-            const venta = await Venta.create({ fecha, total }); //creamos la venta
+            const venta = await Venta.create({ total: 0 }); //creamos la venta
+
+            // Ver si hay algún producto que no tenga cantidad suficiente
+            let cantidadSuficiente = true;
+            for(let producto of productos){
+                let prod = await Producto.findByPk(producto.id);
+                if(prod.cantidad < producto.cantidad){
+                    cantidadSuficiente = false;
+                    break;
+                }
+            }
+            if(!cantidadSuficiente){
+                res.status(400).json({msg: "No hay cantidad suficiente de algún Producto"});
+                return;
+            }
 
             //iteramos sobre el arreglo de productos
             productos.forEach(async producto => {
                 let subtotal = producto.precio * producto.cantidad;
-                total = total + subtotal;
 
                 //con cada producto creamos un registro de venta_producto
-                await crear_venta_producto({
+                //? Con el trigger, al crear una venta_producto, el total se recalcula
+                let respuesta = await crear_venta_producto({
                     id_venta: venta.id,
                     id_producto: producto.id,
                     cantidad: producto.cantidad,
                     subtotal
                 });
+                // console.log({respuesta});
+
+                // Restamos la cantidad al Producto
+                let prod = await Producto.findByPk(producto.id);
+                // Si no alcanza el stock, lanza un error
+                prod.cantidad -= producto.cantidad;
+                await prod.save();
             });
-            venta.total = total;
-            await venta.save(); //guardamos la venta
             res.status(200).json(venta);
         } else {
             res.status(400).json({msg: 'Existen productos no validos'});
         }
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }    

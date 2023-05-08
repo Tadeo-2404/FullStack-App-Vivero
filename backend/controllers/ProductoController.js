@@ -1,12 +1,20 @@
 import { regexCadena, regexEnteroPositivo, regexFlotantePositivo } from "../helpers/utils.js";
 import Producto from "../models/ProductoModel.js";
 import { Op } from "sequelize";
+import fetch from 'node-fetch';
+import VentaProducto from "../models/VentaProductoModel.js";
 
 const crear_producto = async (req, res) => {
-    const { nombre, descripcion, precio, cantidad} = req.body; //leer input usuario
+    const { id_proveedor, nombre, descripcion, precio} = req.body; //leer input usuario
     
-    if(!nombre || !descripcion || !precio || !cantidad) {
+    if(!id_proveedor || !nombre || !descripcion || !precio) {
         const error = new Error("todos los campos son obligatorios");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!regexEnteroPositivo.test(id_proveedor)){
+        const error = new Error("id del proveedor invalido");
         res.status(400).json({msg: error.message});
         return;
     }
@@ -29,14 +37,11 @@ const crear_producto = async (req, res) => {
         return;
     }
 
-    if(!regexEnteroPositivo.test(cantidad)) {
-        const error = new Error("cantidad de producto invalida");
-        res.status(400).json({msg: error.message});
-        return;
-    }
-
     try {
-        const producto = await Producto.create(req.body);
+        const producto = await Producto.create({
+            ...req.body,
+            cantidad: 0
+        });
         res.json(producto);
     } catch (e) {
         const error = new Error(e.name);
@@ -46,11 +51,19 @@ const crear_producto = async (req, res) => {
 
 //retornar todos los productos
 const obtener_productos = async  (req, res) => {
-    const { limite, id, nombre, descripcion, precio, cantidad } = req.query;
+    const { limite, id, id_proveedor, nombre, descripcion, precio, cantidad } = req.query;
 
     if(id) {
         if(!regexEnteroPositivo.test(id)) {
             const error = new Error("El ID de Producto debe ser un entero positivo");
+            res.status(400).json({msg: error.message});
+            return;
+        }
+    }
+
+    if(id_proveedor) {
+        if(!regexEnteroPositivo.test(id_proveedor)) {
+            const error = new Error("El ID de Proveedor debe ser un entero positivo");
             res.status(400).json({msg: error.message});
             return;
         }
@@ -82,6 +95,7 @@ const obtener_productos = async  (req, res) => {
 
     const where = {};
     if(id) where.id = id;
+    if(id_proveedor) where.id_proveedor = id_proveedor;
     if(nombre) where.nombre = { [Op.like]: `%${nombre}%` };
     if(descripcion) where.descripcion = { [Op.like]: `%${descripcion}%` };
     if(precio) where.precio = precio;
@@ -202,9 +216,22 @@ const eliminar_producto = async (req, res) => {
     }
 
     try {
-        await producto.destroy(); //eliminar registro
+        // Borrar en cascada los elementos que tengan referencias a este producto
+        // CompraProducto y VentaProducto
+        await fetch(`http://localhost:3000/api/compra-producto?id_producto=${id}`, {
+            method: "DELETE"
+        })
+        // console.log("Productos de compras eliminadas");
+
+        await fetch(`http://localhost:3000/api/venta-producto?id_producto=${id}`, {
+            method: "DELETE"
+        })
+        // console.log("Productos de ventas eliminadas");
+
+        await producto.destroy();
         res.json(producto);
     } catch (e) {
+        console.log("error", {e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }

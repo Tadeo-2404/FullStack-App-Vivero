@@ -9,7 +9,7 @@ Compra.init({
         primaryKey: true,
         autoIncrement: true
     },
-    proveedor_id: {
+    id_proveedor: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

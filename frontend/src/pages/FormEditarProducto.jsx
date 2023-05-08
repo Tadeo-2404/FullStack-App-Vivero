@@ -1,16 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useProductos from "../hooks/useProductos";
 
-function FormPublicarProducto(){
-    const navigate = useNavigate(); //navigate para redireccionar al usuario
-    const [producto, setProducto] = useState({nombre: "", descripcion: "", precio: 0, cantidad: 0}); //inicializar producto
+function FormEditarProducto(){
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+    const [producto, setProducto] = useState(null);
+
+    // URL para obtener el producto
+    const url = `http://localhost:3000/api/productos?id=${id}`;
+    const [ cargando, datos ] = useProductos(url);
+
+    // Si llegan datos, se pasa a producto
+    useEffect(() => {
+        if(datos) setProducto(datos[0]);
+    }, [datos])
 
     const handleSubmit = e => {
         e.preventDefault();
 
-        // Hacer fetch con metodo post para agregar producto
-        fetch(`http://localhost:3000/api/productos`, {
-            method: "POST",
+        // Hacer fetch con method put para actualizar los datos
+        fetch(`http://localhost:3000/api/productos?id=${id}`, {
+            method: "PUT",
             headers: {
                 'Content-type': 'application/json'
             },
@@ -18,7 +30,7 @@ function FormPublicarProducto(){
         })
         .then(res => res.json())
         .then(res => {
-            console.log("Producto Agregado", res);
+            console.log("Producto actualizado", res);
             navigate("/");
         })
     }
@@ -30,9 +42,12 @@ function FormPublicarProducto(){
         });
     }
 
+    if(cargando) return <h1 className="titulo">Cargando...</h1>
+    if(!producto) return <h1 className="titulo">No hay producto</h1>
+
     return(
         <main className="main">
-            <h1 className="titulo">Formulario agregar producto</h1>
+            <h1 className="titulo">Formulario editar producto: #{id}</h1>
             <form action="" className="form contenedor" onSubmit={handleSubmit}>
 
                 <div className="form__apartado">
@@ -88,11 +103,11 @@ function FormPublicarProducto(){
                     />
                 </div>
 
-                <input type="submit" className="form__input form__input--boton boton" value="Publicar" />
+                <input type="submit" className="form__input form__input--boton boton" value="Editar" />
 
             </form>
         </main>
     )
 }
 
-export default FormPublicarProducto;
+export default FormEditarProducto;

@@ -30,19 +30,11 @@ CompraProducto.init({
             key: 'id'
         }
     },
-    id_proveedor: {
+    id_producto: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Proveedor',
-            key: 'id'
-        }
-    },
-    id_proveedorProducto: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'ProveedorProducto',
+            model: 'Producto',
             key: 'id'
         }
     },
