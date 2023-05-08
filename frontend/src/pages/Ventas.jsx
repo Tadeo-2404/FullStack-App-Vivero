@@ -47,7 +47,7 @@ function Ventas(){
 
             <div className="ventas">
                 {
-                    ventas ? (
+                    ventas.length > 0 ? (
                         ventas.map(venta => (
                             <div className="venta" key={venta.id}>
                                 <h2>Venta #{venta.id}</h2>

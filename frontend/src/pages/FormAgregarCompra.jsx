@@ -72,7 +72,7 @@ function FormAgregarCompra(){
 
                 <div className="form__apartado">
                     <label htmlFor="proveedor">Proveedor</label>
-                    <select name="proveedores" id="proveedores" onInput={cambiarProveedor} required>
+                    <select className="form__input" name="proveedores" id="proveedores" onInput={cambiarProveedor} required>
                         <option value="">Elige un proveedor</option>
                         {
                             proveedores && proveedores.map(p => (

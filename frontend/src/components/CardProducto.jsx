@@ -19,13 +19,17 @@ function CardProducto({ datos }){
     return(
         estado == 1 && (
             <div className="producto">
-                <Link to={`/editar-producto/${datos.id}`}>Editar</Link>
-                <button onClick={() => handleEliminar(datos.id)}>Eliminar</button>
-                <h2 className="producto__nombre">{datos.nombre}</h2>
-                <p><b>Proveedor: </b>{datos.id_proveedor}</p>
-                <p className="producto__descripcion">{datos.descripcion}</p>
-                <p className="producto__precio"><b>Precio:</b> ${datos.precio}</p>
-                <p className="producto__cantidad"><b>Cantidad:</b> {datos.cantidad} unidades</p>
+                <div className="producto__contenido">
+                    <h2 className="producto__nombre">{datos.nombre}</h2>
+                    <p><b>ID del Proveedor: </b>{datos.id_proveedor}</p>
+                    <p className="producto__descripcion"><b>Descripción</b><br />{datos.descripcion}</p>
+                    <p className="producto__precio"><b>Precio:</b> ${datos.precio}</p>
+                    <p className="producto__cantidad"><b>Cantidad:</b> {datos.cantidad} unidades</p>
+                </div>
+                <div className="botones">
+                    <Link className="boton" to={`/editar-producto/${datos.id}`}>Editar</Link>
+                    <button className="boton boton--rojo" onClick={() => handleEliminar(datos.id)}>Eliminar</button>
+                </div>
             </div>
         )
     )
