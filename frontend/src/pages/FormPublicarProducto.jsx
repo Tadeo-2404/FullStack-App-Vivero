@@ -69,7 +69,7 @@ function FormPublicarProducto(){
 
                 <div className="form__apartado">
                     <label htmlFor="proveedor">Proveedor</label>
-                    <select name="proveedores" id="proveedores" ref={selectProveedor} required>
+                    <select className="form__input" name="proveedores" id="proveedores" ref={selectProveedor} required>
                         <option value="">Elige un proveedor</option>
                         {
                             proveedores.map(p => (

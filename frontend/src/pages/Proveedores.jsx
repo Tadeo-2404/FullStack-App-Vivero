@@ -31,14 +31,22 @@ function Proveedores(){
             <h1 className="titulo">Proveedores</h1>
             <div className="contenedor proveedores">
                 {
-                    proveedores.map(proveedor => (
-                        <div className="proveedor" key={proveedor.id}>
-                            <Link to={`/editar-proveedor/${proveedor.id}`}>Editar</Link>
-                            <button onClick={() => handleEliminar(proveedor.id)}>Eliminar</button>
-                            <h2>{proveedor.nombre}</h2>
-                            <p>{proveedor.telefono}</p>
-                        </div>
-                    ))
+                    proveedores.length > 0 ? (
+                        proveedores.map(proveedor => (
+                            <div className="proveedor" key={proveedor.id}>
+                                <div className="proveedor__contenido">
+                                    <h2>ID: {proveedor.id} - {proveedor.nombre}</h2>
+                                    <p>Número: {proveedor.telefono}</p>
+                                </div>
+                                <div className="botones">
+                                    <Link className="boton" to={`/editar-proveedor/${proveedor.id}`}>Editar</Link>
+                                    <button className="boton boton--rojo" onClick={() => handleEliminar(proveedor.id)}>Eliminar</button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No hay proveedores para mostrar</p>
+                    )
                 }
             </div>
         </main>

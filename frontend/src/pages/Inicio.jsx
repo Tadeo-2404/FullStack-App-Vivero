@@ -14,10 +14,10 @@ function Inicio(){
                 </div>
             </article>
 
-            <div className="contenedor">
-                <Link to="/proveedores">Lista de proveedores</Link><br />
-                <Link to="/ventas">Lista de ventas</Link><br />
-                <Link to="/compras">Lista de compras</Link>
+            <div className="contenedor enlaces">
+                <Link className="boton" to="/proveedores">Lista de proveedores</Link>
+                <Link className="boton" to="/compras">Lista de compras</Link>
+                <Link className="boton" to="/ventas">Lista de ventas</Link>
             </div>
         </main>
     )

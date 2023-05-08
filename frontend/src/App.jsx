@@ -58,7 +58,7 @@ function App() {
           </Routes>
         </ScrollToTop>
 
-        <Footer /> 
+        {/* <Footer /> */}
     </Router>
   );
 }
