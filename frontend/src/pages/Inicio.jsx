@@ -16,8 +16,8 @@ function Inicio(){
 
             <div className="contenedor enlaces">
                 <Link className="boton" to="/proveedores">Lista de proveedores</Link>
-                <Link className="boton" to="/ventas">Lista de ventas</Link>
                 <Link className="boton" to="/compras">Lista de compras</Link>
+                <Link className="boton" to="/ventas">Lista de ventas</Link>
             </div>
         </main>
     )
