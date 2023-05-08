@@ -38,8 +38,8 @@ function FormAgregarCompra(){
         
         let productosFiltrados = [];
         for(let [id, cantidad] of Object.entries(infoProductos)){
-            // Si la cantidad es inválida, no va a agregar la compra
-            if(cantidad <= 0) continue;
+            // Si la cantidad es inválida o la llave no se debe tomar en cuenta, se salta una iteración
+            if(cantidad <= 0 || id == 'proveedores') continue;
             // Filtramos solo los productos seleccionados
             let producto = productos.find(producto => producto.id == id);
             if(producto){
