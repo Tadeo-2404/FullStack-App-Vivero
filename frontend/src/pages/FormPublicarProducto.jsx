@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function FormPublicarProducto(){
     const navigate = useNavigate(); //navigate para redireccionar al usuario
-    const [producto, setProducto] = useState({nombre: "", descripcion: "", precio: 0}); //inicializar producto
+    const [producto, setProducto] = useState({nombre: "", descripcion: "", precio_compra: 0, precio_venta: 0}); //inicializar producto
     const [cargando, setCargando] = useState(true);
     const [proveedores, setProveedores] = useState(null);
 
@@ -27,7 +27,8 @@ function FormPublicarProducto(){
         // Al objeto que se pasará al body se le agrega el id del proveedor
         let body = {
             ...producto,
-            precio: parseInt(producto.precio),
+            precio_compra: parseInt(producto.precio_compra),
+            precio_venta: parseInt(producto.precio_venta),
             id_proveedor: parseInt(selectProveedor.current.value)
         }
 
@@ -107,14 +108,27 @@ function FormPublicarProducto(){
                 </div>
 
                 <div className="form__apartado">
-                    <label htmlFor="precio">Precio</label>
+                    <label htmlFor="precio_compra">Precio Compra</label>
                     <input
-                        name="precio"
-                        id="precio"
+                        name="precio_compra"
+                        id="precio_compra"
                         className="form__input"
                         type="number"
                         onInput={handleInput}
-                        value={producto.precio}
+                        value={producto.precio_compra}
+                        required
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="precio_venta">Precio Venta</label>
+                    <input
+                        name="precio_venta"
+                        id="precio_venta"
+                        className="form__input"
+                        type="number"
+                        onInput={handleInput}
+                        value={producto.precio_venta}
                         required
                     />
                 </div>

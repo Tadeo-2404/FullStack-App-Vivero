@@ -25,12 +25,16 @@ Producto.init({
         type: DataTypes.TEXT('long'),
         allowNull: false
     },
-    precio: {
+    cantidad: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    precio_venta: {
         type: DataTypes.FLOAT,
         allowNull: false
     },
-    cantidad: {
-        type: DataTypes.INTEGER,
+    precio_compra: {
+        type: DataTypes.FLOAT,
         allowNull: false
     },
 }, {

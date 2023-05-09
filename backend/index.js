@@ -21,7 +21,7 @@ import compraProductoRoutes from './routes/compraProductoRoutes.js';
 //conexion base de datos
 try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: true });
     //? Trigger que actualiza el total de una venta
     sequelize.query(`
         -- FUNCION

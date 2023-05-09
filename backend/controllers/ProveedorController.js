@@ -1,12 +1,14 @@
 import { Op } from "sequelize"; //importamos OP para busqueda en obtener
 import Proveedor from "../models/ProveedorModel.js"; //importar modelo Proveedor
-import { regexNombreCompleto, regexTelefono, regexEnteroPositivo } from "../helpers/utils.js"; //importar regex para validacion de formato
+import { regexNombreCompleto, regexTelefono, regexEnteroPositivo, regexCadena } from "../helpers/utils.js"; //importar regex para validacion de formato
 import Producto from "../models/ProductoModel.js";
 import fetch from "node-fetch";
+import { regexNumeroCasa } from "../helpers/utils.js";
+import { regexCP } from "../helpers/utils.js";
 
 //crear un proveedor
 const crear_proveedor = async (req, res) => {
-    const { nombre, telefono } = req.body; //leer input usuario
+    const { nombre, telefono, rfc, calle, numero, colonia, cp } = req.body; //leer input usuario
 
     //validamos los campos no vacios
     if(!nombre || !telefono) {
@@ -29,11 +31,46 @@ const crear_proveedor = async (req, res) => {
         return;
     }
 
+    //validar formato calle
+    if(!regexNombreCompleto.test(calle)) {
+        const error = new Error("La calle del Proveedor debe contener solo caracteres");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    //validar formato numero
+    if(!regexNumeroCasa.test(numero)) {
+        const error = new Error("El numero del Proveedor no tiene un formato nuevo");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    //validar formato colonia
+    if(!regexNombreCompleto.test(colonia)) {
+        const error = new Error("La colonia del Proveedor debe contener solo caracteres");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    //validar formato CP
+    if(!regexCP.test(cp)) {
+        const error = new Error("El CP no tiene un formato valido");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
     try {
+        let direccion = `${calle} ${numero}, ${colonia}, ${cp} `;
         //crear objeto proveedor
-        const proveedor = await Proveedor.create(req.body);
+        const proveedor = await Proveedor.create({
+            nombre,
+            telefono,
+            rfc,
+            direccion
+        });
         res.json(proveedor);
     } catch (e) {
+        console.log({e});
         const error = new Error(e.name);
         res.status(404).json({msg: error.message});
     }
@@ -77,7 +114,7 @@ const obtener_proveedores = async  (req, res) => {
 
 //edita un proveedor en especifico
 const editar_proveedor = async  (req, res) => {
-    const { nombre, telefono } = req.body; //leer input usuario
+    const { nombre, telefono, rfc, calle, numero, colonia, cp } = req.body; //leer input usuario
     const { id } = req.query; //leer el id del proveedor
 
     //validar que ID es un entero
@@ -114,6 +151,9 @@ const editar_proveedor = async  (req, res) => {
             return;
         }
     }
+
+    // Se verifican el rfc y la dirección
+
 
     //asignamos valores
     proveedor.nombre = nombre || proveedor.nombre;
