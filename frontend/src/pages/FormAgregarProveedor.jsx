@@ -3,10 +3,6 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function FormAgregarProveedor(){
-
-    /* AGREGAR # A NUMERO
-    MANDARLO SEPARADO
-    */
     const navigate = useNavigate();
     const [datos, setDatos] = useState({
         nombre: "",
