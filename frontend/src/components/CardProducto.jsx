@@ -23,7 +23,8 @@ function CardProducto({ datos }){
                     <h2 className="producto__nombre">{datos.nombre}</h2>
                     <p><b>ID del Proveedor: </b>{datos.id_proveedor}</p>
                     <p className="producto__descripcion"><b>Descripción</b><br />{datos.descripcion}</p>
-                    <p className="producto__precio"><b>Precio:</b> ${datos.precio}</p>
+                    <p className="producto__precio"><b>Precio compra:</b> ${datos.precio_compra}</p>
+                    <p className="producto__precio"><b>Precio venta:</b> ${datos.precio_venta}</p>
                     <p className="producto__cantidad"><b>Cantidad:</b> {datos.cantidad} unidades</p>
                 </div>
                 <div className="botones">

@@ -108,7 +108,7 @@ function FormPublicarProducto(){
                 </div>
 
                 <div className="form__apartado">
-                    <label htmlFor="precio_compra">Precio Compra</label>
+                    <label htmlFor="precio_compra">Precio compra</label>
                     <input
                         name="precio_compra"
                         id="precio_compra"
@@ -121,7 +121,7 @@ function FormPublicarProducto(){
                 </div>
 
                 <div className="form__apartado">
-                    <label htmlFor="precio_venta">Precio Venta</label>
+                    <label htmlFor="precio_venta">Precio venta</label>
                     <input
                         name="precio_venta"
                         id="precio_venta"

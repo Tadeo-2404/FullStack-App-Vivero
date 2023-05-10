@@ -21,7 +21,7 @@ import compraProductoRoutes from './routes/compraProductoRoutes.js';
 //conexion base de datos
 try {
     await sequelize.authenticate();
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ alter: true });
     //? Trigger que actualiza el total de una venta
     sequelize.query(`
         -- FUNCION
@@ -58,7 +58,7 @@ try {
     sequelize.query(`
         CREATE OR REPLACE FUNCTION agregarFecha() RETURNS TRIGGER AS $$
         BEGIN
-            NEW.fecha := current_date;
+            NEW.fecha := current_timestamp;
             RETURN NEW;
         END;
         $$ LANGUAGE plpgsql;

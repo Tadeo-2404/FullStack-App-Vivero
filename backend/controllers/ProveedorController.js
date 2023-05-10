@@ -12,7 +12,7 @@ const crear_proveedor = async (req, res) => {
 
     //validamos los campos no vacios
     if(!nombre || !telefono) {
-        const error = new Error("todos los campos son obligatorios");
+        const error = new Error("Todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
@@ -60,7 +60,7 @@ const crear_proveedor = async (req, res) => {
     }
 
     try {
-        let direccion = `${calle} ${numero}, ${colonia}, ${cp} `;
+        let direccion = `${calle} #${numero}, ${colonia}, ${cp} `;
         //crear objeto proveedor
         const proveedor = await Proveedor.create({
             nombre,
@@ -184,7 +184,7 @@ const eliminar_proveedor = async (req, res) => {
 
     //arrojamos error si no se encuentra el proveedor
     if(!proveedor) {
-        const error = new Error("proveedor no encontrado");
+        const error = new Error("Proveedor no encontrado");
         res.status(404).json({msg: error.message});
         return;
     }

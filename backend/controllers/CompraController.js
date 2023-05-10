@@ -38,7 +38,7 @@ const crear_compra = async (req, res) => {
 
     // Verificar que existe proveedor
     if(!existeProveedor) {
-        const error = new Error("proveedor no existe");
+        const error = new Error("Proveedor no existe");
         res.status(404).json({msg: error.message});
     }
 
@@ -48,7 +48,7 @@ const crear_compra = async (req, res) => {
         // Iteramos sobre el arreglo de productos_proveedor
         productos_proveedor.forEach(async producto => {
             // Con cada proveedor_producto creamos un registro de compra_producto
-            let subtotal = producto.precio * producto.cantidad;
+            let subtotal = producto.precio_compra * producto.cantidad;
             total += subtotal // Al total a pagar le sumamos el precio de cada producto
             let respuesta = await crear_compra_producto({
                 id_compra: compra.id,
@@ -136,7 +136,7 @@ const obtener_compras = async  (req, res) => {
       
     //muestra error si no hay registros
     if(!consulta) {
-        const error = new Error("no hay registros que mostrar");
+        const error = new Error("No hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }

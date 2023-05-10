@@ -20,13 +20,13 @@ function Ventas(){
 
                     let nombre = resProducto[0]["nombre"];
                     let descripcion = resProducto[0]["descripcion"];
-                    let precio = resProducto[0]["precio"];
+                    let precio_venta = resProducto[0]["precio_venta"];
 
                     return {
                         ...datoVP,
                         nombre,
                         descripcion,
-                        precio
+                        precio_venta
                     }
                 })
                 datos = await Promise.all(datos);
@@ -51,17 +51,17 @@ function Ventas(){
                         ventas.map(venta => (
                             <div className="venta" key={venta.id}>
                                 <h2>Venta #{venta.id}</h2>
-                                <p><b>Fecha: </b>{venta.fecha}</p>
-                                <p><b>Total: </b>${venta.total}</p>
+                                <p><b>Fecha:</b> {venta.fecha}</p>
+                                <p><b>Total:</b> ${venta.total}</p>
                                 <div className="venta__productos">
                                     {
                                         venta.productos.map(producto => (
                                             <div className="venta__producto contenedor" key={producto.id}>
                                                 <h3>{producto.nombre}</h3>
-                                                <p><b>Descripcion: </b>{producto.descripcion}</p>
-                                                <p><b>Precio: </b>{producto.precio}</p>
-                                                <p><b>Cantidad: </b>{producto.cantidad}</p>
-                                                <p><b>Subtotal: </b>{producto.subtotal}</p>
+                                                <p><b>Descripcion:</b> {producto.descripcion}</p>
+                                                <p><b>Precio de venta:</b> ${producto.precio_venta}</p>
+                                                <p><b>Cantidad:</b> {producto.cantidad}</p>
+                                                <p><b>Subtotal:</b> {producto.subtotal}</p>
                                             </div>
                                         ))
                                     }

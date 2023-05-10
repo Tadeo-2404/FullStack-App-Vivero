@@ -43,7 +43,7 @@ function FormAgregarVenta(){
         // Obtener el total para mostrar en la página
         let total = 0;
         filtrados.forEach(filtrado => {
-            total += filtrado.cantidad * filtrado.precio;
+            total += filtrado.cantidad * filtrado.precio_venta;
         })
         setTotal(total);
     }
@@ -90,7 +90,7 @@ function FormAgregarVenta(){
                 {
                     productos.map(producto => (
                         <div className="form__apartado" key={producto.id}>
-                            <label htmlFor={`producto-${producto.id}`}>{producto.nombre} (${producto.precio}) - Cantidad: {producto.cantidad}</label>
+                            <label htmlFor={`producto-${producto.id}`}>{producto.nombre} (${producto.precio_venta}) - Cantidad: {producto.cantidad}</label>
                             <input
                                 name={producto.id}
                                 id={`producto-${producto.id}`}

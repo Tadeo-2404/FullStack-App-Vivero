@@ -2,37 +2,42 @@ import { regexCadena, regexEnteroPositivo, regexFlotantePositivo } from "../help
 import Producto from "../models/ProductoModel.js";
 import { Op } from "sequelize";
 import fetch from 'node-fetch';
-import VentaProducto from "../models/VentaProductoModel.js";
 
 const crear_producto = async (req, res) => {
-    const { id_proveedor, nombre, descripcion, precio} = req.body; //leer input usuario
+    const { id_proveedor, nombre, descripcion, precio_compra, precio_venta} = req.body; //leer input usuario
     
-    if(!id_proveedor || !nombre || !descripcion || !precio) {
-        const error = new Error("todos los campos son obligatorios");
+    if(!id_proveedor || !nombre || !descripcion || !precio_compra || !precio_venta) {
+        const error = new Error("Todos los campos son obligatorios");
         res.status(400).json({msg: error.message});
         return;
     }
 
     if(!regexEnteroPositivo.test(id_proveedor)){
-        const error = new Error("id del proveedor invalido");
+        const error = new Error("ID del proveedor invalido");
         res.status(400).json({msg: error.message});
         return;
     }
 
     if(!nombre.match(regexCadena)) {
-        const error = new Error("nombre de producto invalido");
+        const error = new Error("Nombre de producto invalido");
         res.status(400).json({msg: error.message});
         return;
     }
 
     if(!descripcion.match(regexCadena)) {
-        const error = new Error("descripcion de producto invalido");
+        const error = new Error("Descripción de producto invalido");
         res.status(400).json({msg: error.message});
         return;
     }
 
-    if(!regexFlotantePositivo.test(precio)) {
-        const error = new Error("precio de producto invalido");
+    if(!regexFlotantePositivo.test(precio_compra)) {
+        const error = new Error("Precio de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(!regexFlotantePositivo.test(precio_venta)) {
+        const error = new Error("Precio de producto invalido");
         res.status(400).json({msg: error.message});
         return;
     }
@@ -117,7 +122,7 @@ const editar_producto = async  (req, res) => {
     //validar formato nombre
     if(nombre) {
         if(!regexCadena.test(nombre)) {
-            const error = new Error("nombre de producto invalido");
+            const error = new Error("Nombre de producto invalido");
             res.status(400).json({msg: error.message});
             return;
         }
@@ -126,7 +131,7 @@ const editar_producto = async  (req, res) => {
     //validar formato descripcion
     if(descripcion) {
         if(!regexCadena.test(descripcion)) {
-            const error = new Error("descripcion de producto invalida");
+            const error = new Error("Descripcion de producto invalida");
             res.status(400).json({msg: error.message});
             return;
         }
@@ -135,7 +140,7 @@ const editar_producto = async  (req, res) => {
     //validar formato precio
     if(precio) {
         if(!regexFlotantePositivo.test(precio)) {
-            const error = new Error("precio de producto invalido");
+            const error = new Error("Precio de producto invalido");
             res.status(400).json({msg: error.message});
             return;
         }
@@ -144,7 +149,7 @@ const editar_producto = async  (req, res) => {
     //validar formato cantidad
     if(cantidad) {
         if(!regexEnteroPositivo.test(cantidad)) {
-            const error = new Error("cantidad de producto invalida");
+            const error = new Error("Cantidad de producto invalida");
             res.status(400).json({msg: error.message});
             return;
         }

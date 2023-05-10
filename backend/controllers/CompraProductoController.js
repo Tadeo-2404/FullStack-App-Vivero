@@ -105,7 +105,7 @@ const obtener_compra_productos = async (req, res) => {
       
     //muestra error si no hay registros
     if(!consulta) {
-        const error = new Error("no hay registros que mostrar");
+        const error = new Error("No hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }
