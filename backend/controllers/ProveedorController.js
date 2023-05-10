@@ -1,10 +1,8 @@
 import { Op } from "sequelize"; //importamos OP para busqueda en obtener
 import Proveedor from "../models/ProveedorModel.js"; //importar modelo Proveedor
-import { regexNombreCompleto, regexTelefono, regexEnteroPositivo, regexCadena } from "../helpers/utils.js"; //importar regex para validacion de formato
+import { regexNombreCompleto, regexTelefono, regexEnteroPositivo, regexCP, regexRFC, regexNumeroCasa } from "../helpers/utils.js"; //importar regex para validacion de formato
 import Producto from "../models/ProductoModel.js";
 import fetch from "node-fetch";
-import { regexNumeroCasa } from "../helpers/utils.js";
-import { regexCP } from "../helpers/utils.js";
 
 //crear un proveedor
 const crear_proveedor = async (req, res) => {
@@ -27,6 +25,12 @@ const crear_proveedor = async (req, res) => {
     //validar formato telefono
     if(!regexTelefono.test(telefono)) {
         const error = new Error("El telefono del Proveedor debe contener 10 digitos y solo numeros 0-9");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    if(rfc && !regexRFC.test(rfc)) {
+        const error = new Error("El RFC no es válido");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -153,11 +157,45 @@ const editar_proveedor = async  (req, res) => {
     }
 
     // Se verifican el rfc y la dirección
+    if(rfc && !regexRFC.test(rfc)) {
+        const error = new Error("El RFC no es válido");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
 
+    //validar formato calle
+    if(calle && !regexNombreCompleto.test(calle)) {
+        const error = new Error("La calle del Proveedor debe contener solo caracteres");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    //validar formato numero
+    if(numero && !regexNumeroCasa.test(numero)) {
+        const error = new Error("El numero del Proveedor no tiene un formato nuevo");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    //validar formato colonia
+    if(colonia && !regexNombreCompleto.test(colonia)) {
+        const error = new Error("La colonia del Proveedor debe contener solo caracteres");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    //validar formato CP
+    if(cp && !regexCP.test(cp)) {
+        const error = new Error("El CP no tiene un formato valido");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
 
     //asignamos valores
-    proveedor.nombre = nombre || proveedor.nombre;
-    proveedor.telefono = telefono || proveedor.telefono;
+    proveedor.nombre ||= nombre;
+    proveedor.telefono ||=telefono;
+    proveedor.rfc ||= rfc;
+    proveedor.direccion ||= `${calle} #${numero}, ${colonia}, ${cp} `;
 
     try {
         await proveedor.save(); //guardamos el proveedor
