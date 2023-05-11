@@ -78,14 +78,27 @@ function FormEditarProducto(){
                 </div>
 
                 <div className="form__apartado">
-                    <label htmlFor="precio">Precio</label>
+                    <label htmlFor="precio_compra">Precio compra</label>
                     <input
-                        name="precio"
-                        id="precio"
+                        name="precio_compra"
+                        id="precio_compra"
                         className="form__input"
                         type="number"
                         onInput={handleInput}
-                        value={producto.precio}
+                        value={producto.precio_compra}
+                        required
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="precio_venta">Precio venta</label>
+                    <input
+                        name="precio_venta"
+                        id="precio_venta"
+                        className="form__input"
+                        type="number"
+                        onInput={handleInput}
+                        value={producto.precio_venta}
                         required
                     />
                 </div>

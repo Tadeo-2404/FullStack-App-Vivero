@@ -15,9 +15,17 @@ function FormEditarProveedor(){
     useEffect(() => {
         const obtenerProveedor = async () => {
             let res = await fetch(url);
-            let datos = await res.json();
+            let datos = (await res.json())[0];
 
-            setProveedor(datos[0]);
+            // Se separan los datos
+            let [calle, numero, colonia, cp] = datos.direccion.split(/[,#]/).map(e => e.trim());
+
+            setProveedor({
+                nombre: datos.nombre,
+                telefono: datos.telefono,
+                rfc: datos.rfc,
+                calle, numero, colonia, cp
+            });
         }
         obtenerProveedor();
     }, [])
@@ -85,6 +93,81 @@ function FormEditarProveedor(){
                         pattern="\d{10}"
                         onInput={handleInput}
                         value={proveedor.telefono}
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="rfc">RFC del proveedor</label>
+                    <input
+                    name="rfc"
+                    id="rfc"
+                    className="form__input"
+                    type="text"
+                    onInput={handleInput}
+                    value={proveedor.rfc}
+                    pattern="^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$"
+                    title="Debe contener entre 12 y 13 caracteres (letras mayúsculas y números)"
+                    minLength="12"
+                    maxLength="13"
+                    required
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="calle">Calle de la empresa</label>
+                    <input
+                    name="calle"
+                    id="calle"
+                    className="form__input"
+                    type="text"
+                    onInput={handleInput}
+                    pattern="^[a-zA-Z]{1,30}(\s?[a-zA-Z]{0,30})+$"
+                    value={proveedor.calle}
+                    required
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="numero">Número de calle</label>
+                    <input
+                    name="numero"
+                    id="numero"
+                    className="form__input"
+                    type="text"
+                    onInput={handleInput}
+                    pattern="^\d+[A-Za-z]?$"
+                    value={proveedor.numero}
+                    required
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="colonia">Colonia de la empresa</label>
+                    <input
+                    name="colonia"
+                    id="colonia"
+                    className="form__input"
+                    type="text"
+                    onInput={handleInput}
+                    pattern="^[a-zA-Z]{1,30}(\s?[a-zA-Z]{0,30})+$"
+                    value={proveedor.colonia}
+                    required
+                    />
+                </div>
+
+                <div className="form__apartado">
+                    <label htmlFor="cp">Código postal de la empresa</label>
+                    <input
+                    name="cp"
+                    id="cp"
+                    className="form__input"
+                    type="tel"
+                    pattern="^\d{5}$"
+                    minLength={5}
+                    maxLength={5}
+                    onInput={handleInput}
+                    value={proveedor.cp}
+                    required
                     />
                 </div>
 

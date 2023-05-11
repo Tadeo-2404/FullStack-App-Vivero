@@ -128,7 +128,7 @@ const editar_proveedor = async  (req, res) => {
         return;
     }
 
-    //buscar proveedor por DI
+    //buscar proveedor por ID
     const proveedor = await Proveedor.findByPk(id);
 
     //validacion si el proveedor no se encuenta
@@ -192,10 +192,10 @@ const editar_proveedor = async  (req, res) => {
     }
 
     //asignamos valores
-    proveedor.nombre ||= nombre;
-    proveedor.telefono ||=telefono;
-    proveedor.rfc ||= rfc;
-    proveedor.direccion ||= `${calle} #${numero}, ${colonia}, ${cp} `;
+    proveedor.nombre = nombre || proveedor.nombre;
+    proveedor.telefono = telefono || proveedor.telefono;
+    proveedor.rfc = rfc || proveedor.rfc;
+    proveedor.direccion = `${calle} #${numero}, ${colonia}, ${cp}` || proveedor.direccion;
 
     try {
         await proveedor.save(); //guardamos el proveedor

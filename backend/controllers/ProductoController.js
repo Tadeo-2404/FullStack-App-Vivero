@@ -31,13 +31,13 @@ const crear_producto = async (req, res) => {
     }
 
     if(!regexFlotantePositivo.test(precio_compra)) {
-        const error = new Error("Precio de producto invalido");
+        const error = new Error("Precio de compra de producto invalido");
         res.status(400).json({msg: error.message});
         return;
     }
 
     if(!regexFlotantePositivo.test(precio_venta)) {
-        const error = new Error("Precio de producto invalido");
+        const error = new Error("Precio de venta de producto invalido");
         res.status(400).json({msg: error.message});
         return;
     }
@@ -56,7 +56,7 @@ const crear_producto = async (req, res) => {
 
 //retornar todos los productos
 const obtener_productos = async  (req, res) => {
-    const { limite, id, id_proveedor, nombre, descripcion, precio, cantidad } = req.query;
+    const { limite, id, id_proveedor, nombre, descripcion, precio_compra, precio_venta, cantidad } = req.query;
 
     if(id) {
         if(!regexEnteroPositivo.test(id)) {
@@ -90,12 +90,16 @@ const obtener_productos = async  (req, res) => {
         }
     }
 
-    if(precio) {
-        if(!regexEnteroPositivo.test(precio) || !regexFlotantePositivo.test(precio)) {
-            const error = new Error("La precio de Producto debe ser un entero positivo");
-            res.status(400).json({msg: error.message});
-            return;
-        }
+    if(precio_compra && !regexFlotantePositivo.test(precio_compra)) {
+        const error = new Error("Precio de compra de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(precio_venta && !regexFlotantePositivo.test(precio_venta)) {
+        const error = new Error("Precio de venta de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
     }
 
     const where = {};
@@ -103,7 +107,8 @@ const obtener_productos = async  (req, res) => {
     if(id_proveedor) where.id_proveedor = id_proveedor;
     if(nombre) where.nombre = { [Op.like]: `%${nombre}%` };
     if(descripcion) where.descripcion = { [Op.like]: `%${descripcion}%` };
-    if(precio) where.precio = precio;
+    if(precio_compra) where.precio_compra = precio_compra;
+    if(precio_venta) where.precio_venta = precio_venta;
     if(cantidad) where.cantidad = cantidad;
 
     let consulta = await Producto.findAll({ 
@@ -116,7 +121,7 @@ const obtener_productos = async  (req, res) => {
 
 //edita un producto en especifico
 const editar_producto = async  (req, res) => {
-    const { nombre, descripcion, precio, cantidad } = req.body; //leer input usuario
+    const { nombre, descripcion, precio_compra, precio_venta, cantidad } = req.body; //leer input usuario
     const { id } = req.query;
 
     //validar formato nombre
@@ -138,12 +143,16 @@ const editar_producto = async  (req, res) => {
     }
 
     //validar formato precio
-    if(precio) {
-        if(!regexFlotantePositivo.test(precio)) {
-            const error = new Error("Precio de producto invalido");
-            res.status(400).json({msg: error.message});
-            return;
-        }
+    if(precio_compra && !regexFlotantePositivo.test(precio_compra)) {
+        const error = new Error("Precio de compra de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
+    }
+
+    if(precio_venta && !regexFlotantePositivo.test(precio_venta)) {
+        const error = new Error("Precio de venta de producto invalido");
+        res.status(400).json({msg: error.message});
+        return;
     }
 
     //validar formato cantidad
@@ -181,7 +190,8 @@ const editar_producto = async  (req, res) => {
     //asignamos valores
     producto.nombre = nombre || producto.nombre;
     producto.descripcion = descripcion || producto.descripcion;
-    producto.precio = precio || producto.precio;
+    producto.precio_compra = precio_compra || producto.precio_compra;
+    producto.precio_venta = precio_venta || producto.precio_venta;
     producto.cantidad = cantidad || producto.cantidad;
 
     try {

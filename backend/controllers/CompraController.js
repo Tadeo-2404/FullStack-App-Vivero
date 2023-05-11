@@ -40,6 +40,7 @@ const crear_compra = async (req, res) => {
     if(!existeProveedor) {
         const error = new Error("Proveedor no existe");
         res.status(404).json({msg: error.message});
+        return;
     }
 
     try {

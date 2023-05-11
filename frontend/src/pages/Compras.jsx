@@ -62,7 +62,8 @@ function Compras(){
                                             <div className="compra__producto contenedor" key={producto.id}>
                                                 <h3>{producto.nombre}</h3>
                                                 <p><b>Descripcion:</b> {producto.descripcion}</p>
-                                                <p><b>Precio de compra:</b> ${producto.precio_compra}</p>
+                                                {/* Aquí se calcula el precio manualmente porque puede ser que el dueño haya editado el precio de compra recientemente */}
+                                                <p><b>Precio de compra:</b> ${producto.subtotal / producto.cantidad}</p>
                                                 <p><b>Cantidad:</b> {producto.cantidad}</p>
                                                 <p><b>Subtotal:</b> ${producto.subtotal}</p>
                                             </div>

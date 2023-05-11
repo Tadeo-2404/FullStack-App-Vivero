@@ -59,7 +59,8 @@ function Ventas(){
                                             <div className="venta__producto contenedor" key={producto.id}>
                                                 <h3>{producto.nombre}</h3>
                                                 <p><b>Descripcion:</b> {producto.descripcion}</p>
-                                                <p><b>Precio de venta:</b> ${producto.precio_venta}</p>
+                                                {/* Aquí se calcula el precio manualmente porque puede ser que el dueño haya editado el precio de venta recientemente */}
+                                                <p><b>Precio de venta:</b> ${producto.subtotal / producto.cantidad}</p>
                                                 <p><b>Cantidad:</b> {producto.cantidad}</p>
                                                 <p><b>Subtotal:</b> {producto.subtotal}</p>
                                             </div>
