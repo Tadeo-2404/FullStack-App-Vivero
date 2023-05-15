@@ -21,13 +21,13 @@ function Compras(){
 
                     let nombre = datosProducto[0]["nombre"];
                     let descripcion = datosProducto[0]["descripcion"];
-                    let precio = datosProducto[0]["precio"];
+                    let precio_compra = datosProducto[0]["precio_compra"];
 
                     return {
                         ...datoCP,
                         nombre,
                         descripcion,
-                        precio
+                        precio_compra
                     }
                 })
                 datos = await Promise.all(datos);
@@ -37,6 +37,7 @@ function Compras(){
             datos = await Promise.all(datos);
             datos.sort((a, b) => a.id - b.id);
 
+            console.log(datos);
             setCompras(datos);
         }
         obtenerCompras();
@@ -60,10 +61,11 @@ function Compras(){
                                         compra.productos.map(producto => (
                                             <div className="compra__producto contenedor" key={producto.id}>
                                                 <h3>{producto.nombre}</h3>
-                                                <p><b>Descripcion: </b>{producto.descripcion}</p>
-                                                <p><b>Precio: </b>{producto.precio}</p>
-                                                <p><b>Cantidad: </b>{producto.cantidad}</p>
-                                                <p><b>Subtotal: </b>${producto.subtotal}</p>
+                                                <p><b>Descripcion:</b> {producto.descripcion}</p>
+                                                {/* Aquí se calcula el precio manualmente porque puede ser que el dueño haya editado el precio de compra recientemente */}
+                                                <p><b>Precio de compra:</b> ${producto.subtotal / producto.cantidad}</p>
+                                                <p><b>Cantidad:</b> {producto.cantidad}</p>
+                                                <p><b>Subtotal:</b> ${producto.subtotal}</p>
                                             </div>
                                         ))
                                     }

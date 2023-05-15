@@ -9,6 +9,14 @@ Proveedor.init({
         primaryKey: true,
         autoIncrement: true
     },
+    rfc: {
+        type: DataTypes.STRING('13'),
+        allowNull: false
+    },
+    direccion: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     nombre: {
         type: DataTypes.STRING,
         allowNull: false

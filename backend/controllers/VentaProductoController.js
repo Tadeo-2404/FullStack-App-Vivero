@@ -64,7 +64,7 @@ const obtener_venta_productos = async  (req, res) => {
       
     //muestra error si no hay registros
     if(!consulta) {
-        const error = new Error("no hay registros que mostrar");
+        const error = new Error("No hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }
@@ -83,14 +83,14 @@ const editar_venta_producto = async  (req, res) => {
 
     // Validamos si no existe
     if(!venta_producto) {
-        const error = new Error("registro no encontrado");
+        const error = new Error("Registro no encontrado");
         res.status(404).json({msg: error.message});
         return;
     }
 
     if(cantidad) {
         if(!regexEnteroPositivo.test(cantidad)) {
-            const error = new Error("todos los campos deben ser enteros positivos");
+            const error = new Error("Todos los campos deben ser enteros positivos");
             res.status(400).json({ msg: error.message });
             return;
         }

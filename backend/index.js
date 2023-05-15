@@ -58,7 +58,7 @@ try {
     sequelize.query(`
         CREATE OR REPLACE FUNCTION agregarFecha() RETURNS TRIGGER AS $$
         BEGIN
-            NEW.fecha := current_date;
+            NEW.fecha := current_timestamp;
             RETURN NEW;
         END;
         $$ LANGUAGE plpgsql;

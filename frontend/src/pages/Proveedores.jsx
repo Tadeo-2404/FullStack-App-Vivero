@@ -36,7 +36,9 @@ function Proveedores(){
                             <div className="proveedor" key={proveedor.id}>
                                 <div className="proveedor__contenido">
                                     <h2>ID: {proveedor.id} - {proveedor.nombre}</h2>
-                                    <p>Número: {proveedor.telefono}</p>
+                                    <p><b>Número:</b> {proveedor.telefono}</p>
+                                    <p><b>RFC:</b> {proveedor.rfc}</p>
+                                    <p><b>Dirección:</b> {proveedor.direccion}</p>
                                 </div>
                                 <div className="botones">
                                     <Link className="boton" to={`/editar-proveedor/${proveedor.id}`}>Editar</Link>

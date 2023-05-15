@@ -15,6 +15,12 @@ const regexEnteroPositivo = /^[1-9][0-9]*$/;
 const regexCadena = /.*/;
 // Expresion regular para validar flotante positivo
 const regexFlotantePositivo = /^\d+(\.\d+)?$/;
+// Expresion regular para validar el CP
+const regexCP = /^\d{5}$/;
+// Expresion regular para validar el RFC
+const regexRFC = /^([A-ZÑ&]{3,4})(\d{2})(\d{2})(\d{2})([A-Z\d]{3})$/;
+// Expresion regulara para validar numero de casa
+const regexNumeroCasa = /^\d+[A-Za-z]?$/;
 
 //! Funciones de formato
 function formatoFechaDB(fecha){
@@ -31,5 +37,8 @@ export {
     regexEnteroPositivo,
     regexCadena,
     regexFlotantePositivo,
+    regexCP,
+    regexRFC,
+    regexNumeroCasa,
     formatoFechaDB
 }

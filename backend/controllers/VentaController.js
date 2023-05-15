@@ -35,7 +35,7 @@ const crear_venta = async (req, res) => {
 
             //iteramos sobre el arreglo de productos
             productos.forEach(async producto => {
-                let subtotal = producto.precio * producto.cantidad;
+                let subtotal = producto.precio_venta * producto.cantidad;
 
                 //con cada producto creamos un registro de venta_producto
                 //? Con el trigger, al crear una venta_producto, el total se recalcula
@@ -79,7 +79,7 @@ const obtener_ventas = async (req, res) => {
     });
 
     if(!consulta) {
-        const error = new Error("no hay registros que mostrar");
+        const error = new Error("No hay registros que mostrar");
         res.status(404).json({msg: error.message});
         return;
     }
@@ -103,7 +103,7 @@ const editar_venta = async  (req, res) => {
 
     //validar si venta no se encuentra
     if(!venta) {
-        const error = new Error("venta no encontrada");
+        const error = new Error("Venta no encontrada");
         res.status(404).json({msg: error.message});
         return;
     }
@@ -136,7 +136,7 @@ const eliminar_venta = async (req, res) => {
 
     //validamos si la venta no se encuentra
     if(!venta) {
-        const error = new Error("venta no encontrada");
+        const error = new Error("Venta no encontrada");
         res.status(404).json({msg: error.message});
         return;
     }

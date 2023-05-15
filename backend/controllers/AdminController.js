@@ -10,7 +10,7 @@ const registrarse = async (req, res) => {
 
     //validamos correo
     if(!correo.match(regexCorreo)) {
-        const error = new Error("correo invalido");
+        const error = new Error("Correo invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -19,21 +19,21 @@ const registrarse = async (req, res) => {
 
     //si se duplica mandamos error
     if(duplicado) {
-        const error = new Error("correo duplicado");
+        const error = new Error("Correo duplicado");
         res.status(404).json({ msg: error.message });
         return;
     }
 
     //validamos nombre
     if(!nombre.match(regexNombreCompleto)) {
-        const error = new Error("nombre invalido");
+        const error = new Error("Nombre invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
 
     //validamos apellido
     if(!apellido.match(regexNombreCompleto)) {
-        const error = new Error("apellido invalido");
+        const error = new Error("Apellido invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -71,7 +71,7 @@ const iniciar_sesion = async (req, res) => {
 
     //validamos correo
     if(!correo.match(regexCorreo)) {
-        const error = new Error("correo invalido");
+        const error = new Error("Correo invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -80,7 +80,7 @@ const iniciar_sesion = async (req, res) => {
 
     //si no se encuentra ese usuario
     if (!admin) {
-        const error = new Error("registro no encontrado");
+        const error = new Error("Registro no encontrado");
         res.status(404).json({ msg: error.message });
         return;
     }
@@ -90,7 +90,7 @@ const iniciar_sesion = async (req, res) => {
 
         //arrojamos error si no son validas
         if (!valido) {
-            const error = new Error("contraseña incorrecta");
+            const error = new Error("Contraseña incorrecta");
             res.status(400).json({ msg: error.message });
             return;
         }
@@ -112,7 +112,7 @@ const olvide_contrasena = async (req, res) => {
 
     //validamos correo
     if(!correo.match(regexCorreo)) {
-        const error = new Error("correo invalido");
+        const error = new Error("Correo invalido");
         res.status(400).json({ msg: error.message });
         return;
     }
@@ -122,7 +122,7 @@ const olvide_contrasena = async (req, res) => {
 
     //validamos si no se encontro el correo
     if(!encontrado) {
-        const error = new Error("registro no encontrado");
+        const error = new Error("Registro no encontrado");
         res.status(404).json({ msg: error.message });
         return;
     }
@@ -149,7 +149,7 @@ const nueva_contrasena = async (req, res) => {
 
     //si no se encuentra arrojamos error
     if(!admin) {
-        const error = new Error("registro no encontrado");
+        const error = new Error("Registro no encontrado");
         res.status(404).json({ msg: error.message });
         return;
     }
